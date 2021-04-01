@@ -1,33 +1,33 @@
 # Frontend Ecosystem
 
 - Frontend Frameworks
-  - [Angular](#)
-  - [React](#)
-  - [VueJS](#)
+  - Angular
+  - React
+  - VueJS
 - Environments
-  - [Browser](#)
-  - [NodeJS (Backend)](#)
+  - Browser
+  - NodeJS (Backend)
 - Middleware Frameworks
-  - [ExpressJS](#)
-  - [NestJS](#)
+  - ExpressJS
+  - NestJS
 - Programming Languages
-  - [Dart](#)
-  - [Go](#)
-  - [JavaScript](#)
-  - [Kotlin](#)
-  - [Python](#)
-  - [Rust](#)
-  - [TypeScript](#)
+  - Dart
+  - Go
+  - JavaScript
+  - Kotlin
+  - Python
+  - Rust
+  - TypeScript
 - State Management
   - [NgRx](NgRx/ReadMe.md)
-  - [Redux](#)
+  - Redux
 - Test Frameworks]
-  - [Jest](#)
-  - [Cypress.io](#)
-  - [TestCafe](#)
+  - Jest
+  - Cypress
+  - TestCafe
 - Utility Frameworks
-  - [Lodash](#)
-  - [Rx / RxJS](#)
-  - [DateFNS](#)
+  - Lodash
+  - Rx / RxJS
+  - DateFNS
 - Visualisation Frameworks
-  - [D3JS](#)
+  - D3JS
