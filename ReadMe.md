@@ -1,1 +1,1 @@
-# Angular & It's Ecosystem
+# Frontend Ecosystem
