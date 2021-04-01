@@ -15,9 +15,13 @@
   - [ExpressJS](#expressjs)
   - [NestJS](#nestjs)
 - [Programming Languages](#programming-languages)
+  - [Dart](#dart)
+  - [Go](#go)
   - [JavaScript](#javascript)
-  - [TypeScript](#typescript)
+  - [Kotlin](#kotlin)
   - [Python](#python)
+  - [Rust](#rust)
+  - [TypeScript](#typescript)
 - [State Management](#state-management)
   - [NgRx](#ngrx)
   - [Redux](#redux)
@@ -58,11 +62,19 @@ Angular is a platform for building mobile and desktop web applications.
 
 ## Programming Languages
 
+### Dart
+
+### Go
+
 ### JavaScript
 
-### TypeScript
+### Kotlin
 
 ### Python
+
+### Rust
+
+### TypeScript
 
 ## State Management
 
