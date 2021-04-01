@@ -29,6 +29,8 @@
   - [Lodash](#lodash)
   - [Rx / RxJS](#rx-rxjs)
   - [DateFNS](#datefns)
+- [Visualisation Frameworks](#visualisation-frameworks)
+  - [D3JS](#d3js)
 
 <!-- /code_chunk_output -->
 
@@ -89,3 +91,7 @@ Redux helps you write applications that behave consistently, run in different en
 Rx (ReactiveX) is an API for asynchronous programming with observable streams; it is a combination of ideas from the observer and the iterator patterns and from functional programming.
 
 ### DateFNS
+
+## Visualisation Frameworks
+
+### D3JS
