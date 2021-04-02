@@ -35,6 +35,8 @@
     - [Using Type Parameters in Generic Constraints](#using-type-parameters-in-generic-constraints)
     - [Using Class Types in Generics](#using-class-types-in-generics)
       - [Mixins](#mixins)
+  - [`keyof` Type Operator](#keyof-type-operator)
+  - [Typeof Type Operator](#typeof-type-operator)
 
 <!-- /code_chunk_output -->
 
@@ -383,3 +385,80 @@ function createInstance<A extends Animal>(c: new () => A): A {
 createInstance(Lion).keeper.nametag;
 createInstance(Bee).keeper.hasMask;
 ```
+
+### `keyof` Type Operator
+
+The keyof operator takes an object type and produces a string or numeric literal union of its keys:
+
+```ts
+type Point = { x: number; y: number };
+type P = keyof Point;
+```
+
+If the type has a string or number index signature, keyof will return those types instead:
+
+```ts
+type Arrayish = { [n: number]: unknown };
+type A = keyof Arrayish;
+//   ^ = type A = number
+
+type Mapish = { [k: string]: boolean };
+type M = keyof Mapish;
+//   ^ = type M = string | number
+```
+
+Note that in this example, `M` is `string | number` — this is because JavaScript object keys are always coerced to a string, so `obj[0]` is always the same as `obj["0"]`.
+
+keyof types become especially useful when combined with mapped types, which we’ll learn more about later.
+
+### Typeof Type Operator
+
+```ts
+type WhatEverType = {
+  x: number;
+  y: number;
+};
+
+type Predicate = (x: unknown) => WhatEverType;
+
+// predefined type ReturnType<T>
+type K = ReturnType<Predicate>;
+
+/*
+type K = {
+    x: number;
+    y: number;
+}
+*/
+```
+
+If we try to use ReturnType on a function name, we see an instructive error:
+
+```ts
+type WhatEverType = {
+  x: number;
+  y: number;
+};
+
+function f(): WhatEverType {
+  return { x: 10, y: 3 };
+}
+type P = ReturnType<f>; // ERROR
+// 'f' refers to a value, but is being used as a type here.
+// Did you mean 'typeof f'?
+
+type T = ReturnType<typeof f>; // OK
+
+/*
+  type T = {
+      x: number;
+      y: number;
+  }
+  */
+```
+
+### Indexed Access Types
+
+TODO: Proceeding here -> <https://www.typescriptlang.org/docs/handbook/2/types-from-types.html>
+
+Overview here: <https://www.typescriptlang.org/docs/>
