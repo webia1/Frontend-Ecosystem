@@ -37,6 +37,7 @@
       - [Mixins](#mixins)
   - [`keyof` Type Operator](#keyof-type-operator)
   - [Typeof Type Operator](#typeof-type-operator)
+  - [Indexed Access Types](#indexed-access-types)
 
 <!-- /code_chunk_output -->
 
