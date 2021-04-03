@@ -38,6 +38,9 @@
   - [`keyof` Type Operator](#keyof-type-operator)
   - [`typeof` & ReturnType Operator](#typeof-returntype-operator)
   - [Indexed Access Types](#indexed-access-types)
+  - [Conditional Types](#conditional-types)
+    - [Conditional Type Constraints](#conditional-type-constraints)
+      - [Using `infer` keyword (&rarr; MORE EXAMPLES!)](#using-infer-keyword-rarr-more-examples)
 
 <!-- /code_chunk_output -->
 
@@ -529,3 +532,167 @@ However, you can use a type alias for a similar style of refactor:
 type key = 'age';
 type Age = Person[key];
 ```
+
+### Conditional Types
+
+```ts
+SomeType extends OtherType ? TrueType : FalseType;
+
+interface Mammal {
+    live(): void;
+}
+interface Human extends Mammal {
+    think(): void;
+}
+
+type Example1 = Human extends Mammal ? number : string;
+//   ^ type Example1 = number
+
+type Example2 = Mammal extends Human ? number : string;
+//   ^ type Example2 = string
+```
+
+From the examples above, conditional types might not immediately seem useful - we can tell ourselves whether or not `Human` extends `Mammal` and pick number or string! But the power of conditional types comes from using them with generics:
+
+```ts
+interface IdLabel {
+  id: number;
+}
+interface NameLabel {
+  name: string;
+}
+
+function createLabel(id: number): IdLabel;
+function createLabel(name: string): NameLabel;
+function createLabel(nameOrId: string | number): IdLabel | NameLabel;
+
+function createLabel(nameOrId: string | number): IdLabel | NameLabel {
+  if (typeof nameOrId === 'string') {
+    return { name: nameOrId };
+  } else return { id: nameOrId };
+}
+
+createLabel(3); // { id: 3 }
+createLabel('George'); // { name: 'George' }
+```
+
+Improvement:
+
+```ts
+type IdLabel = { id: number };
+type NameLabel = { name: string };
+
+type NameOrIdType<T extends number | string> = T extends number
+  ? IdLabel
+  : NameLabel;
+
+function createLabel<T extends number | string>(
+  paramNameOrId: T,
+): NameOrIdType<T> {
+  if (typeof paramNameOrId === 'string') {
+    return <NameOrIdType<T>>(<unknown>{ name: paramNameOrId });
+  } else {
+    return <NameOrIdType<T>>(<unknown>{ id: paramNameOrId });
+  }
+}
+
+let a = createLabel('typescript'); // { name: 'typescript' }
+let b = createLabel(4.1); // { id: 4.1 }
+```
+
+#### Conditional Type Constraints
+
+Often, the checks in a conditional type will provide us with some new information. Just like with narrowing with type guards can give us a more specific type, the true branch of a conditional type will further constraint generics by the type we check against.
+
+For example, let’s take the following:
+
+```ts
+type MessageOf<T> = T["message"];
+
+ERROR: Type '"message"' cannot be used to index type 'T'.
+```
+
+In this example, TypeScript errors because `T` isn’t known to have a property called message. We could constrain `T`, and TypeScript would no longer complain:
+
+```ts
+type MessageOf<T extends { message: unknown }> = T['message'];
+interface Email {
+  message: string;
+}
+type EmailMessageContents = MessageOf<Email>;
+//   ^ = type EmailMessageContents = string
+```
+
+However, what if we wanted MessageOf to take any type, and default to something like never if a message property isn’t available? We can do this by moving the constraint out and introducing a conditional type:
+
+```ts
+type MessageOf<T> = T extends { message: unknown }
+  ? T['message']
+  : never;
+
+interface Email {
+  message: string;
+}
+
+interface Dog {
+  woff(): void;
+}
+
+type EmailMessageContents = MessageOf<Email>;
+//   ^ = type EmailMessageContents = string
+
+type DogMessageContents = MessageOf<Dog>;
+//   ^ = type DogMessageContents = never
+```
+
+As another example, we could also write a type called Flatten that flattens array types to their element types, but leaves them alone otherwise:
+
+```ts
+type Flatten<T> = T extends any[] ? T[number] : T;
+
+// Extracts out the element type.
+type Str = Flatten<string[]>;
+//   ^ = type Str = string
+
+// Leaves the type alone.
+type Num = Flatten<number>;
+//   ^ = type Num = number
+```
+
+When `Flatten` is given an array type, it uses an indexed access with `number` to fetch out `string[]`’s element type. Otherwise, it just returns the type it was given.
+
+##### Using `infer` keyword (&rarr; MORE EXAMPLES!)
+
+Here, we used the `infer` keyword to declaratively introduce a new generic type variable named `Item` instead of specifying how to retrieve the element type of `T` within the true branch. This frees us from having to think about how to dig through and probing apart the structure of the types we’re interested in.
+
+We can write some useful helper type aliases using the `infer` keyword. For example, for simple cases, we can extract the return type out from function types:
+
+```ts
+type GetReturnType<Type> = Type extends (
+  ...args: never[]
+) => infer Return
+  ? Return
+  : never;
+
+type Num = GetReturnType<() => number>;
+//   ^ = type Num = number
+
+type Str = GetReturnType<(x: string) => string>;
+//   ^ = type Str = string
+
+type Bools = GetReturnType<(a: boolean, b: boolean) => boolean[]>;
+//   ^ = type Bools = boolean[]
+```
+
+When inferring from a type with multiple call signatures (such as the type of an overloaded function), inferences are made from the last signature (which, presumably, is the most permissive catch-all case). It is not possible to perform overload resolution based on a list of argument types.
+
+```ts
+declare function stringOrNum(x: string): number;
+declare function stringOrNum(x: number): string;
+declare function stringOrNum(x: string | number): string | number;
+
+type T1 = ReturnType<typeof stringOrNum>;
+//   ^ = type T1 = string | number
+```
+
+#### Distributive Conditional Types
