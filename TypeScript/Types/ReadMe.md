@@ -40,7 +40,8 @@
   - [Indexed Access Types](#indexed-access-types)
   - [Conditional Types](#conditional-types)
     - [Conditional Type Constraints](#conditional-type-constraints)
-      - [Using `infer` keyword (&rarr; MORE EXAMPLES!)](#using-infer-keyword-rarr-more-examples)
+      - [Using `infer` keyword (&rarr; MORE EXAMPLES NECESSARY!)](#using-infer-keyword-rarr-more-examples-necessary)
+    - [Distributive Conditional Types](#distributive-conditional-types)
 
 <!-- /code_chunk_output -->
 
@@ -661,7 +662,17 @@ type Num = Flatten<number>;
 
 When `Flatten` is given an array type, it uses an indexed access with `number` to fetch out `string[]`’s element type. Otherwise, it just returns the type it was given.
 
-##### Using `infer` keyword (&rarr; MORE EXAMPLES!)
+##### Using `infer` keyword (&rarr; MORE EXAMPLES NECESSARY!)
+
+> **to infer:** schlussfolgern, etw. schließen, erschließen (from &rarr; aus)
+
+We just found ourselves using conditional types to apply constraints and then extract out types. This ends up being such a common operation that conditional types make it easier.
+
+Conditional types provide us with a way to infer from types we compare against in the true branch using the `infer` keyword. For example, we could have inferred the element type in `Flatten` instead of fetching it out “manually” with an indexed access type:
+
+```ts
+type Flatten<Type> = Type extends Array<infer Item> ? Item : Type;
+```
 
 Here, we used the `infer` keyword to declaratively introduce a new generic type variable named `Item` instead of specifying how to retrieve the element type of `T` within the true branch. This frees us from having to think about how to dig through and probing apart the structure of the types we’re interested in.
 
@@ -674,14 +685,24 @@ type GetReturnType<Type> = Type extends (
   ? Return
   : never;
 
-type Num = GetReturnType<() => number>;
-//   ^ = type Num = number
+type SomeObjectType = { a: string; b: number };
 
-type Str = GetReturnType<(x: string) => string>;
-//   ^ = type Str = string
+type FNum = () => number;
+type FStr = () => string;
+type FArrStr = (arg: SomeObjectType) => Array<string>;
+type FObj = () => SomeObjectType;
+type FVoid = () => void;
 
-type Bools = GetReturnType<(a: boolean, b: boolean) => boolean[]>;
-//   ^ = type Bools = boolean[]
+type Num = GetReturnType<FNum>;
+//   ^ type Num = number
+type Str = GetReturnType<FStr>;
+//   ^ type Str = string
+type ArrStr = GetReturnType<FArrStr>;
+//   ^ type ArrStr = Array<string>
+type Obj = GetReturnType<FObj>;
+//   ^ type Obj = { a: string; b: number; }
+type Void = GetReturnType<FVoid>;
+//   ^ type Void = void
 ```
 
 When inferring from a type with multiple call signatures (such as the type of an overloaded function), inferences are made from the last signature (which, presumably, is the most permissive catch-all case). It is not possible to perform overload resolution based on a list of argument types.
