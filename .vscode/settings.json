@@ -1,7 +1,25 @@
 {
     "cSpell.ignoreWords": [
+        "alve",
         "arrayish",
+        "checks",
+        "en",
+        "erschlie",
+        "erschließen",
         "mapish",
-        "nametag"
+        "nametag",
+        "null",
+        "return",
+        "returntype",
+        "schlie",
+        "schließen",
+        "schlussfolgern",
+        "strict",
+        "strictnullchecks",
+        "type"
+    ],
+    "cSpell.words": [
+        "return",
+        "type"
     ]
 }

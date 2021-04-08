@@ -42,6 +42,13 @@
     - [Conditional Type Constraints](#conditional-type-constraints)
       - [Using `infer` keyword (&rarr; MORE EXAMPLES NECESSARY!)](#using-infer-keyword-rarr-more-examples-necessary)
     - [Distributive Conditional Types](#distributive-conditional-types)
+  - [Mapped Types](#mapped-types)
+    - [Mapping Modifiers](#mapping-modifiers)
+    - [Key Remapping via `as`](#key-remapping-via-as)
+  - [Template Literal Types](#template-literal-types)
+    - [String Unions in Types](#string-unions-in-types)
+    - [Inference with Template Literals](#inference-with-template-literals)
+    - [Intrinsic String Manipulation Types](#intrinsic-string-manipulation-types)
 
 <!-- /code_chunk_output -->
 
@@ -232,7 +239,10 @@ There are two ways to work around this.
 
 ```ts
 // Change 1:
-const req = { url: 'https://example.com', method: 'GET' as 'GET' };
+const req = {
+  url: 'https://example.com',
+  method: 'GET' as 'GET',
+};
 // Change 2
 handleRequest(req.url, req.method as 'GET');
 ```
@@ -240,7 +250,10 @@ handleRequest(req.url, req.method as 'GET');
 2. You can use as const to convert the entire object to be type literals:
 
 ```ts
-const req = { url: 'https://example.com', method: 'GET' } as const;
+const req = {
+  url: 'https://example.com',
+  method: 'GET',
+} as const;
 handleRequest(req.url, req.method);
 ```
 
@@ -717,3 +730,396 @@ type T1 = ReturnType<typeof stringOrNum>;
 ```
 
 #### Distributive Conditional Types
+
+When conditional types act on a generic type, they become distributive when given a union type. For example, take the following:
+
+```ts
+type ToArray<Type> = Type extends any ? Type[] : never;
+
+type StrArrOrNumArr = ToArray<string | number>;
+//   ^ type StrArrOrNumArr = Array<string> | Array<number>
+```
+
+What happens here is that StrOrNumArray distributes on:
+
+```ts
+string | number;
+```
+
+and maps over each member type of the union, to what is effectively:
+
+```ts
+ToArray<string> | ToArray<number>;
+```
+
+which leaves us with:
+
+```ts
+string[] | number[];
+```
+
+Typically, distributivity is the desired behavior. To avoid that behavior, you can surround each side of the extends keyword with square brackets.
+
+```ts
+type ToArrayNonDist<Type> = [Type] extends [any] ? Type[] : never;
+
+// 'StrOrNumArr' is no longer a union.
+type StrOrNumArr = ToArrayNonDist<string | number>;
+//   ^ = type StrOrNumArr = (string | number)[]
+```
+
+### Mapped Types
+
+When you don’t want to repeat yourself, sometimes a type needs to be based on another type.
+
+Mapped types build on the syntax for index signatures, which are used to declare the types of properties which has not been declared ahead of time:
+
+```ts
+type Horse = {};
+
+type OnlyBooleansAndHorses = {
+  [key: string]: boolean | Horse;
+};
+
+const conforms: OnlyBooleansAndHorses = {
+  del: true,
+  rodney: false,
+};
+```
+
+A mapped type is a generic type which uses a union created via a keyof to iterate through the keys of one type to create another. In this example below, OptionFlags will take all the properties from the type Type and change their values to be a boolean:
+
+```ts
+type OptionsFlags<Type> = {
+  [Property in keyof Type]: boolean;
+};
+
+type FeatureFlags = {
+  darkMode: () => void;
+  newUserProfile: () => void;
+};
+
+type FeatureOptions = OptionsFlags<FeatureFlags>;
+/*   ^ type FeatureOptions = {
+         darkMode: boolean;
+         newUserProfile: boolean;
+       } 
+*/
+```
+
+#### Mapping Modifiers
+
+There are two additional modifiers which can be applied during mapping: readonly and ? which affect mutability and optionality respectively.
+
+You can remove or add these modifiers by prefixing with `-` or `+`. If you don’t add a prefix, then `+` is assumed.
+
+Example 1: Removes 'readonly' attributes from a type's properties
+
+```ts
+type CreateMutable<Type> = {
+  -readonly [Property in keyof Type]: Type[Property];
+};
+
+type LockedAccount = {
+  readonly id: string;
+  readonly name: string;
+};
+
+type UnlockedAccount = CreateMutable<LockedAccount>;
+//   ^ = type UnlockedAccount = {
+//       id: string;
+//       name: string;
+//   }
+```
+
+Example 2: Removes 'optional' attributes from a type's properties
+
+```ts
+type Concrete<Type> = {
+  [Property in keyof Type]-?: Type[Property];
+};
+
+type MaybeUser = {
+  id: string;
+  name?: string;
+  age?: number;
+};
+
+type User = Concrete<MaybeUser>;
+//   ^ = type User = {
+//       id: string;
+//       name: string;
+//       age: number;
+//   }
+```
+
+#### Key Remapping via `as`
+
+In TypeScript 4.1 and onwards, you can re-map keys in mapped types with an as clause in a mapped type:
+
+```ts
+type MappedTypeWithNewProperties<Type> = {
+  [Properties in keyof Type as NewKeyType]: Type[Properties];
+};
+```
+
+You can leverage features like [template literal types](https://www.typescriptlang.org/docs/handbook/2/template-literal-types.html) to create new property names from prior ones:
+
+```ts
+type Getters<Type> = {
+  [Property in keyof Type as `get${Capitalize<
+    string & Property
+  >}`]: () => Type[Property];
+};
+
+interface Person {
+  name: string;
+  age: number;
+  location: string;
+}
+
+type LazyPersonType = Getters<Person>;
+//   ^ = type LazyPerson = {
+//       getName: () => string;
+//       getAge: () => number;
+//       getLocation: () => string;
+//   }
+```
+
+You can filter out keys by producing never via a conditional type:
+
+```ts
+// Remove the 'kind' property
+type RemoveKindField<Type> = {
+  [Property in keyof Type as Exclude<
+    Property,
+    'kind'
+  >]: Type[Property];
+};
+
+interface Circle {
+  kind: 'circle';
+  radius: number;
+}
+
+type KindlessCircle = RemoveKindField<Circle>;
+//   ^ = type KindlessCircle = {
+//       radius: number;
+//   }
+```
+
+Mapped types work well with other features in this type manipulation section, for example here is a mapped type using a conditional type which returns either a true or false depending on whether an object has the property pii set to the literal true:
+
+```ts
+type ExtractPII<Type> = {
+  [Property in keyof Type]: Type[Property] extends { pii: true }
+    ? true
+    : false;
+};
+
+type DBFields = {
+  id: { format: 'incrementing' };
+  name: { type: string; pii: true };
+};
+
+type ObjectsNeedingGDPRDeletion = ExtractPII<DBFields>;
+//   ^ = type ObjectsNeedingGDPRDeletion = {
+//       id: false;
+//       name: true;
+//   }
+```
+
+### Template Literal Types
+
+Template literal types build on [string literal types](https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#literal-types), and have the ability to expand into many strings via unions.
+
+They have the same syntax as [template literal strings in JavaScript](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Template_literals), but are used in type positions. When used with concrete literal types, a template literal produces a new string literal type by concatenating the contents.
+
+```ts
+type World = 'world';
+
+type Greeting = `hello ${World}`;
+//   ^ = type Greeting = "hello world"
+```
+
+When a union is used in the interpolated position, the type is the set of every possible string literal that could be represented by each union member:
+
+```ts
+type EmailLocaleIDs = 'welcome_email' | 'email_heading';
+type FooterLocaleIDs = 'footer_title' | 'footer_sendoff';
+
+type AllLocaleIDs = `${EmailLocaleIDs | FooterLocaleIDs}_id`;
+//   ^ = type AllLocaleIDs = "welcome_email_id" | "email_heading_id" | "footer_title_id" | "footer_sendoff_id"
+```
+
+For each interpolated position in the template literal, the unions are cross multiplied:
+
+```ts
+type EmailLocaleIDs = 'welcome_email' | 'email_heading';
+type FooterLocaleIDs = 'footer_title' | 'footer_sendoff';
+
+type AllLocaleIDs = `${EmailLocaleIDs | FooterLocaleIDs}_id`;
+type Lang = 'en' | 'ja' | 'pt';
+
+type LocaleMessageIDs = `${Lang}_${AllLocaleIDs}`;
+//   ^ = type LocaleMessageIDs =
+//       | 'en_welcome_email_id'
+//       | 'en_email_heading_id'
+//       | 'en_footer_title_id'
+//       | 'en_footer_sendoff_id'
+//       | 'ja_welcome_email_id'
+//       | 'ja_email_heading_id'
+//       | 'ja_footer_title_id'
+//       | 'ja_footer_sendoff_id'
+//       | 'pt_welcome_email_id'
+//       | 'pt_email_heading_id'
+//       | 'pt_footer_title_id'
+//       | 'pt_footer_sendoff_id';
+```
+
+TS-Team generally recommend that people use ahead-of-time generation for large string unions, but this is useful in smaller cases.
+
+#### String Unions in Types
+
+The power in template literals comes when defining a new string based off an existing string inside a type.
+
+For example, a common pattern in JavaScript is to extend an object based on the fields that it currently has. We’ll provide a type definition for a function which adds support for an on function which lets you know when a value has changed (additionally, makeWatchedObject has to be defined):
+
+```ts
+type PropEventSource<Type> = {
+  on(
+    eventName: `${string & keyof Type}Changed`,
+    callback: (newValue: any) => void,
+  ): void;
+};
+
+/// Create a "watched object" with an 'on' method
+/// so that you can watch for changes to properties.
+declare function makeWatchedObject<Type>(
+  obj: Type,
+): Type & PropEventSource<Type>;
+
+const person = makeWatchedObject({
+  firstName: 'Saoirse',
+  lastName: 'Ronan',
+  age: 26,
+});
+
+person.on('firstNameChanged', (newValue) => {
+  console.log(`firstName was changed to ${newValue}!`);
+});
+
+// It's typo-resistent
+person.on('firstName', () => {});
+// Argument of type '"firstName"' is not assignable
+// to parameter of type '"firstNameChanged" | "lastNameChanged"
+// | "ageChanged"'.
+```
+
+#### Inference with Template Literals
+
+Note how the last examples did not re-use the type of the original value. The callback used an `any`. Template literal types can infer from substitution positions.
+
+We can make our last example generic to infer from parts of the `eventName` string to figure out the associated property.
+
+```ts
+type PropEventSource<Type> = {
+  on<Key extends string & keyof Type>(
+    eventName: `${Key}Changed`,
+    callback: (newValue: Type[Key]) => void,
+  ): void;
+};
+
+declare function makeWatchedObject<Type>(
+  obj: Type,
+): Type & PropEventSource<Type>;
+
+const person = makeWatchedObject({
+  firstName: 'Saoirse',
+  lastName: 'Ronan',
+  age: 26,
+});
+
+person.on('firstNameChanged', (newName) => {
+  //                           ^?
+  console.log(`new name is ${newName.toUpperCase()}`);
+});
+
+person.on('ageChanged', (newAge) => {
+  //                     ^?
+  if (newAge < 0) {
+    console.warn('warning! negative age');
+  }
+});
+
+person.firstName = 'Hi';
+```
+
+Here we made `on` into a generic method.
+
+When a user calls with the string `firstNameChanged`, TypeScript will try to infer the right type for `Key`. To do that, it will match `Key` against the content prior to `Changed` and infer the string `firstName`. Once TypeScript figures that out, the `on` method can fetch the type of `firstName` on the original object, which is `string` in this case. Similarly, when called with `ageChanged`, TypeScript finds the type for the property `age` which is `number`.
+
+Inference can be combined in different ways, often to deconstruct strings, and reconstruct them in different ways.
+
+#### Intrinsic String Manipulation Types
+
+To help with string manipulation, TypeScript includes a set of types which can be used in string manipulation. These types come built-in to the compiler for performance and can’t be found in the .d.ts files included with TypeScript.
+
+```ts
+Uppercase<StringType>
+Lowercase<StringType>
+Capitalize<StringType>
+Uncapitalize<StringType>
+```
+
+Examples:
+
+```ts
+type Greeting = 'Hello, world';
+type ShoutyGreeting = Uppercase<Greeting>;
+//   ^ = type ShoutyGreeting = "HELLO, WORLD"
+
+type ASCIICacheKey<Str extends string> = `ID-${Uppercase<Str>}`;
+type MainID = ASCIICacheKey<'my_app'>;
+//   ^ = type MainID = "ID-MY_APP"
+```
+
+```ts
+type Greeting = 'Hello, world';
+type QuietGreeting = Lowercase<Greeting>;
+//   ^ = type QuietGreeting = "hello, world"
+
+type ASCIICacheKey<Str extends string> = `id-${Lowercase<Str>}`;
+type MainID = ASCIICacheKey<'MY_APP'>;
+//   ^ = type MainID = "id-my_app"
+```
+
+```ts
+type LowercaseGreeting = 'hello, world';
+type Greeting = Capitalize<LowercaseGreeting>;
+//   ^ = type Greeting = "Hello, world"
+```
+
+```ts
+type UppercaseGreeting = 'HELLO WORLD';
+type UncomfortableGreeting = Uncapitalize<UppercaseGreeting>;
+//   ^ = type UncomfortableGreeting = "hELLO WORLD"
+```
+
+The code, as of TypeScript 4.1, for these intrinsic functions uses the JavaScript string runtime functions directly for manipulation and are not locale aware.
+
+```ts
+function applyStringMapping(symbol: Symbol, str: string) {
+  switch (intrinsicTypeKinds.get(symbol.escapedName as string)) {
+    case IntrinsicTypeKind.Uppercase:
+      return str.toUpperCase();
+    case IntrinsicTypeKind.Lowercase:
+      return str.toLowerCase();
+    case IntrinsicTypeKind.Capitalize:
+      return str.charAt(0).toUpperCase() + str.slice(1);
+    case IntrinsicTypeKind.Uncapitalize:
+      return str.charAt(0).toLowerCase() + str.slice(1);
+  }
+  return str;
+}
+```
