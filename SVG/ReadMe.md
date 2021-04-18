@@ -50,6 +50,7 @@
        24. [Appendix I: IDL Index](#appendix-i-idl-index)
        25. [Appendix J: Media Type Registration for image/svg+xml](#appendix-j-media-type-registration-for-imagesvgxml)
        26. [Appendix K: Changes from SVG 1.1](#appendix-k-changes-from-svg-11)
+   12. [Indexed TOC](#indexed-toc)
 
 <!-- /code_chunk_output -->
 
