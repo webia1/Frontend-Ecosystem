@@ -21,10 +21,16 @@
    6. [Color](#color)
    7. [Transformations](#transformations)
    8. [Structural Elements and Document Organization](#structural-elements-and-document-organization)
+   9. [Coordinating, Scaling, Rendering](#coordinating-scaling-rendering)
+   10. [SVG and CSS](#svg-and-css)
+   11. [Accessibility](#accessibility)
+   12. [Further Reading](#further-reading)
 
 <!-- /code_chunk_output -->
 
 ## Introduction
+
+> Details online: <https://svgwg.org/svg2-draft/intro.html>
 
 - Two-dimensional
 - Support of interactivity and animation
@@ -210,5 +216,9 @@
 ### Coordinating, Scaling, Rendering
 
 ### SVG and CSS
+
+### Accessibility
+
+> Details online: <https://svgwg.org/svg2-draft/access.html>
 
 ### Further Reading
