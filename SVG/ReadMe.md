@@ -23,8 +23,33 @@
    8. [Structural Elements and Document Organization](#structural-elements-and-document-organization)
    9. [Coordinating, Scaling, Rendering](#coordinating-scaling-rendering)
    10. [SVG and CSS](#svg-and-css)
-   11. [Accessibility](#accessibility)
-   12. [Further Reading](#further-reading)
+   11. [Further Reading - svgwg.org](#further-reading-svgwgorg)
+       1. [Chapter 1: Introduction](#chapter-1-introduction)
+       2. [Chapter 2: Conformance Criteria](#chapter-2-conformance-criteria)
+       3. [Chapter 3: Rendering Model](#chapter-3-rendering-model)
+       4. [Chapter 4: Basic Data Types and Interfaces](#chapter-4-basic-data-types-and-interfaces)
+       5. [Chapter 5: Document Structure](#chapter-5-document-structure)
+       6. [Chapter 6: Styling](#chapter-6-styling)
+       7. [Chapter 7: Geometry Properties](#chapter-7-geometry-properties)
+       8. [Chapter 8: Coordinate Systems, Transformations and Units](#chapter-8-coordinate-systems-transformations-and-units)
+       9. [Chapter 9: Paths](#chapter-9-paths)
+       10. [Chapter 10: Basic Shapes](#chapter-10-basic-shapes)
+       11. [Chapter 11: Text](#chapter-11-text)
+       12. [Chapter 12: Embedded Content](#chapter-12-embedded-content)
+       13. [Chapter 13: Painting: Filling, Stroking and Marker Symbols](#chapter-13-painting-filling-stroking-and-marker-symbols)
+       14. [Chapter 14: Paint Servers: Gradients and Patterns](#chapter-14-paint-servers-gradients-and-patterns)
+       15. [Chapter 15: Scripting and Interactivity](#chapter-15-scripting-and-interactivity)
+       16. [Chapter 16: Linking](#chapter-16-linking)
+       17. [Appendix A: IDL Definitions](#appendix-a-idl-definitions)
+       18. [Appendix B: Implementation Notes](#appendix-b-implementation-notes)
+       19. [Appendix C: Accessibility Support](#appendix-c-accessibility-support)
+       20. [Appendix D: Animating SVG Documents](#appendix-d-animating-svg-documents)
+       21. [Appendix F: Element Index](#appendix-f-element-index)
+       22. [Appendix G: Attribute Index](#appendix-g-attribute-index)
+       23. [Appendix H: Property Index](#appendix-h-property-index)
+       24. [Appendix I: IDL Index](#appendix-i-idl-index)
+       25. [Appendix J: Media Type Registration for image/svg+xml](#appendix-j-media-type-registration-for-imagesvgxml)
+       26. [Appendix K: Changes from SVG 1.1](#appendix-k-changes-from-svg-11)
 
 <!-- /code_chunk_output -->
 
@@ -217,8 +242,109 @@
 
 ### SVG and CSS
 
-### Accessibility
+### Further Reading - svgwg.org
 
-> Details online: <https://svgwg.org/svg2-draft/access.html>
+#### Chapter 1: Introduction
 
-### Further Reading
+<https://svgwg.org/svg2-draft/intro.html>
+
+#### Chapter 2: Conformance Criteria
+
+<https://svgwg.org/svg2-draft/conform.html>
+
+#### Chapter 3: Rendering Model
+
+<https://svgwg.org/svg2-draft/render.html>
+
+#### Chapter 4: Basic Data Types and Interfaces
+
+<https://svgwg.org/svg2-draft/types.html>
+
+#### Chapter 5: Document Structure
+
+<https://svgwg.org/svg2-draft/struct.html>
+
+#### Chapter 6: Styling
+
+<https://svgwg.org/svg2-draft/styling.html>
+
+#### Chapter 7: Geometry Properties
+
+<https://svgwg.org/svg2-draft/geometry.html>
+
+#### Chapter 8: Coordinate Systems, Transformations and Units
+
+<https://svgwg.org/svg2-draft/coords.html>
+
+#### Chapter 9: Paths
+
+<https://svgwg.org/svg2-draft/paths.html>
+
+#### Chapter 10: Basic Shapes
+
+<https://svgwg.org/svg2-draft/shapes.html>
+
+#### Chapter 11: Text
+
+<https://svgwg.org/svg2-draft/text.html>
+
+#### Chapter 12: Embedded Content
+
+<https://svgwg.org/svg2-draft/embedded.html>
+
+#### Chapter 13: Painting: Filling, Stroking and Marker Symbols
+
+<https://svgwg.org/svg2-draft/painting.html>
+
+#### Chapter 14: Paint Servers: Gradients and Patterns
+
+<https://svgwg.org/svg2-draft/pservers.html>
+
+#### Chapter 15: Scripting and Interactivity
+
+<https://svgwg.org/svg2-draft/interact.html>
+
+#### Chapter 16: Linking
+
+<https://svgwg.org/svg2-draft/linking.html>
+
+#### Appendix A: IDL Definitions
+
+<https://svgwg.org/svg2-draft/idl.html>
+
+#### Appendix B: Implementation Notes
+
+<https://svgwg.org/svg2-draft/implnote.html>
+
+#### Appendix C: Accessibility Support
+
+<https://svgwg.org/svg2-draft/access.html>
+
+#### Appendix D: Animating SVG Documents
+
+> Overview: <https://svgwg.org/svg2-draft/animate.html>
+> Details: <https://svgwg.org/specs/animations/>
+
+#### Appendix F: Element Index
+
+<https://svgwg.org/svg2-draft/eltindex.html>
+
+#### Appendix G: Attribute Index
+
+<https://svgwg.org/svg2-draft/attindex.html>
+
+#### Appendix H: Property Index
+
+<https://svgwg.org/svg2-draft/propidx.html>
+
+#### Appendix I: IDL Index
+
+<https://svgwg.org/svg2-draft/idlindex.html>
+
+#### Appendix J: Media Type Registration for image/svg+xml
+
+<https://svgwg.org/svg2-draft/mimereg.html>
+
+#### Appendix K: Changes from SVG 1.1
+
+<https://svgwg.org/svg2-draft/changes.html>
