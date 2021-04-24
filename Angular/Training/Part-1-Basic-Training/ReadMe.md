@@ -31,7 +31,7 @@
     - [Components](#components)
     - [Templates](#templates)
     - [Directives](#directives)
-    - [Routing 6 Navigation](#routing-6-navigation)
+    - [Routing & Navigation](#routing-navigation)
     - [Forms](#forms)
     - [API (HttpClient)](#api-httpclient)
     - [Modules](#modules)
@@ -113,7 +113,9 @@
 
 ### Directives
 
-### Routing 6 Navigation
+### Routing & Navigation
+
+<https://angular.io/guide/router>
 
 ### Forms
 
