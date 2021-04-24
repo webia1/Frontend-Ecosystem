@@ -17,6 +17,7 @@
     - [Overview](#overview)
     - [Types](#types)
     - [Action](#action)
+      - [Additional info about `props`](#additional-info-about-props)
     - [Reducers](#reducers)
     - [Action Reducer Mapping](#action-reducer-mapping)
     - [Store Configuration](#store-configuration)
