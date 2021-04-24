@@ -1,6 +1,6 @@
 # Angular Minimal Installation - OPINIONATED
 
-This list is for me to not forget an important step in repetetive installations.
+This list is for me to not forget an important step in repetitive installations.
 
 ## 1) Install `@angular/cli`
 
