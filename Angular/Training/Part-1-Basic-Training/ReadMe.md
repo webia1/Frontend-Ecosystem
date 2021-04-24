@@ -11,6 +11,9 @@
   - [Principles](#principles)
     - [Why Angular?](#why-angular)
       - [Alternatives](#alternatives)
+    - [TypeScript](#typescript)
+      - [Basics](#basics)
+      - [Types (Basics)](#types-basics)
     - [Observables](#observables)
       - [Observables vs Promises](#observables-vs-promises)
     - [Angular API Reference](#angular-api-reference)
@@ -24,7 +27,7 @@
     - [Angular CLI](#angular-cli)
     - [Angular Configuration](#angular-configuration)
       - [Workspace](#workspace)
-      - [TypeScript](#typescript)
+      - [TypeScript](#typescript-1)
     - [UI Libraries](#ui-libraries)
     - [Other Libraries](#other-libraries)
   - [Angular - Building Blocks](#angular-building-blocks)
@@ -51,11 +54,21 @@
 
 ### Node/Npm
 
+### Fake-API-Setup
+
 ## Principles
 
 ### Why Angular?
 
 #### Alternatives
+
+### TypeScript
+
+#### Basics
+
+#### Types (Basics)
+
+> See TypeScript/Types/ on this repo!
 
 ### Observables
 
