@@ -5,7 +5,7 @@
 - Angular
 
   - [Minimal Basic Setup](Angular/Documentation/Basics/Minimal-Basic-Setup)
-  - [Changing Jasmin to Jest](Angular/Documentation/Basics/Minimal-Basic-Setup)
+  - [Changing Jasmine to Jest](Angular/Documentation/Basics/Minimal-Basic-Setup)
   - [UI-Libraries](Angular/Documentation/UI-Libraries/ReadMe.md)
 
 - State Management

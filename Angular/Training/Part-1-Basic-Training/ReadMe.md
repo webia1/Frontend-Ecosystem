@@ -8,6 +8,7 @@
   - [Preconditions](#preconditions)
     - [Git](#git)
     - [Node/Npm](#nodenpm)
+    - [Fake-API-Setup](#fake-api-setup)
   - [Principles](#principles)
     - [Why Angular?](#why-angular)
       - [Alternatives](#alternatives)
@@ -16,7 +17,8 @@
       - [Types (Basics)](#types-basics)
     - [Observables](#observables)
       - [Observables vs Promises](#observables-vs-promises)
-    - [Angular API Reference](#angular-api-reference)
+    - [References & Resources](#references-resources)
+      - [Angular API Reference](#angular-api-reference)
       - [Angular Cheat Sheet](#angular-cheat-sheet)
       - [Angular Coding Style Guide - Clean Code](#angular-coding-style-guide-clean-code)
       - [Angular Glossary](#angular-glossary)
@@ -76,7 +78,9 @@
 
 <https://angular.io/guide/comparing-observables>
 
-### Angular API Reference
+### References & Resources
+
+#### Angular API Reference
 
 <https://angular.io/api>
 
