@@ -120,6 +120,8 @@ export class AppModule {}
 
 ### First Example: Simple Counter
 
+![Basic Example](BasicExample.png)
+
 #### Overview
 
 > I may change some paths afterwards (ongoing documentation). Please do not be confused; principles remain the same!
@@ -155,35 +157,50 @@ export interface State {
 #### Action
 
 ```ts
-import { createAction, props } from "@ngrx/store";
+import { createAction, props } from '@ngrx/store';
 
-export const increment = createAction("[Counter] Increment");
+export const increment = createAction('[Counter] Increment');
 
 export const multiply = createAction(
-  "[Counter] Multiply",
-  props<{ factor: number }>()
+  '[Counter] Multiply',
+  props<{ factor: number }>(),
 );
+```
+
+##### Additional info about `props`
+
+It's TypeDefinition:
+
+```ts
+export declare function props<
+  P extends object
+>(): ActionCreatorProps<P>;
+
+export interface ActionCreatorProps<T> {
+  _as: 'props';
+  _p: T;
+}
 ```
 
 #### Reducers
 
 ```ts
-import { createReducer, on } from "@ngrx/store";
-import { increment, multiply } from "./actions";
+import { createReducer, on } from '@ngrx/store';
+import { increment, multiply } from './actions';
 
 export const countReducer = createReducer(
   0,
   on(increment, (count) => count + 1),
-  on(multiply, (count, { factor }) => count * factor)
+  on(multiply, (count, { factor }) => count * factor),
 );
 ```
 
 #### Action Reducer Mapping
 
 ```ts
-import { ActionReducerMap } from "@ngrx/store";
-import { State } from "../static/types";
-import { countReducer } from "./reducers";
+import { ActionReducerMap } from '@ngrx/store';
+import { State } from '../static/types';
+import { countReducer } from './reducers';
 
 export const actionReducerMap: ActionReducerMap<State> = {
   count: countReducer,
@@ -228,16 +245,16 @@ StoreDevtoolsModule.instrument({
 ##### TS
 
 ```ts
-import { Component, OnInit } from "@angular/core";
-import { Store } from "@ngrx/store";
-import { Observable } from "rxjs";
-import { increment, multiply } from "src/app/store/counter/actions";
-import { CounterState } from "src/app/static/types";
+import { Component, OnInit } from '@angular/core';
+import { Store } from '@ngrx/store';
+import { Observable } from 'rxjs';
+import { increment, multiply } from 'src/app/store/counter/actions';
+import { CounterState } from 'src/app/static/types';
 
 @Component({
-  selector: "app-counter",
-  templateUrl: "./counter.component.html",
-  styleUrls: ["./counter.component.scss"],
+  selector: 'app-counter',
+  templateUrl: './counter.component.html',
+  styleUrls: ['./counter.component.scss'],
 })
 export class CounterComponent implements OnInit {
   count$: Observable<number>;
