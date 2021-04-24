@@ -1,33 +1,20 @@
 # Frontend Ecosystem
 
-- Frontend Frameworks
-  - Angular
-  - React
-  - VueJS
-- Environments
-  - Browser
-  - NodeJS (Backend)
-- Middleware Frameworks
-  - ExpressJS
-  - NestJS
-- Programming Languages
-  - Dart
-  - Go
-  - JavaScript
-  - Kotlin
-  - Python
-  - Rust
-  - TypeScript
+> UNDER CONSTRUCTION
+
+- Angular
+
+  - [Minimal Basic Setup](Angular/Documentation/Basics/Minimal-Basic-Setup)
+  - [Changing Jasmin to Jest](Angular/Documentation/Basics/Minimal-Basic-Setup)
+  - [UI-Libraries](Angular/Documentation/UI-Libraries/ReadMe.md)
+
 - State Management
+
   - [NgRx](NgRx/ReadMe.md)
-  - Redux
-- Test Frameworks]
-  - Jest
-  - Cypress
-  - TestCafe
-- Utility Frameworks
-  - Lodash
-  - Rx / RxJS
-  - DateFNS
-- Visualisation Frameworks
-  - D3JS
+
+- SVG
+
+  - [Basics](SVG/ReadMe.md)
+
+- TypeScript
+  - [Types](TypeScript/Types/ReadMe.md)
