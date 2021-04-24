@@ -1,11 +1,17 @@
 {
     "cSpell.ignoreWords": [
         "alve",
+        "angularjson",
         "arrayish",
+        "briebug",
         "checks",
+        "confighelperts",
         "en",
         "erschlie",
         "erschließen",
+        "jestconfigts",
+        "jestts",
+        "karmaconfjs",
         "mapish",
         "nametag",
         "null",
@@ -16,11 +22,14 @@
         "schlussfolgern",
         "strict",
         "strictnullchecks",
+        "testjs",
+        "tsconfigspecjson",
         "type"
     ],
     "cSpell.words": [
         "Onsen",
         "Teradata",
+        "devkit",
         "return",
         "svgwg",
         "type"
