@@ -35,7 +35,7 @@
 
 - SVG
 
-  - [Basics](SVG/ReadMe.md)
+  - [Basics](SVG)
 
 - TypeScript
   - [Types](TypeScript/Types/ReadMe.md)
