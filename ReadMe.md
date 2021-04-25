@@ -13,6 +13,10 @@
 
   - [Prettier](Prettier/ReadMe.md)
 
+- Design & More
+
+  - [Animation Libraries](Animation/Animation-Libraries/ReadMe.md)
+
 - Lodash
 
   - [Basics](Lodash/ReadMe.md)
