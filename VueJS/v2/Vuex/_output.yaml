@@ -1,0 +1,5 @@
+output:
+  pdf_document:
+    toc: true
+    highlight: zenburn
+    fontsize: 16pt
