@@ -9,6 +9,10 @@
   - [UI-Libraries](Angular/Documentation/UI-Libraries/ReadMe.md)
   - [>> More](Angular/Documentation)
 
+- Coding Style Guides
+
+  - [Prettier](Prettier/ReadMe.md)
+
 - Lodash
 
   - [Basics](Lodash/ReadMe.md)
