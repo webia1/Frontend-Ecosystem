@@ -1,9 +1,3 @@
 # JavaScript Documentation
 
-## Concepts
-
-## Built-Ins
-
-## Future
-
-## Examples
+> TODO: Sorting
