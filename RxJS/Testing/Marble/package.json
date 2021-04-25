@@ -1,0 +1,23 @@
+{
+  "name": "t1",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha -r ts-node/register test/**/*.spec.ts"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/chai": "^4.2.12",
+    "@types/mocha": "^8.0.3",
+    "chai": "^4.2.0",
+    "mocha": "^7.1.1",
+    "ts-node": "^9.0.0"
+  },
+  "dependencies": {
+    "rxjs": "^6.6.2"
+  },
+  "type": "module"
+}
