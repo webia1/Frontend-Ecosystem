@@ -8,6 +8,7 @@
   - [Changing Jasmine to Jest](Angular/Documentation/Basics/Minimal-Basic-Setup)
   - [UI-Libraries](Angular/Documentation/UI-Libraries/ReadMe.md)
   - [>> More](Angular/Documentation)
+  - Some Design Related Parts &rarr; CSS Cookbook
 
 - Coding Style Guides
 
