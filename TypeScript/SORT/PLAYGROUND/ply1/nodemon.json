@@ -1,0 +1,7 @@
+{
+  "watch": ["src/**/*.ts", "nodemon.json", "package.json"],
+  "ignore": ["src/**/*.spec.ts"],
+  "exec": "ts-node src/main.ts",
+  "verbose": "true",
+  "ext": "ts"
+}
