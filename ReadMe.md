@@ -10,7 +10,9 @@
 
 - State Management
 
-  - [NgRx](NgRx/ReadMe.md)
+  - NgRx
+    - [Basics](NgRx/Basic-Example/ReadMe.md)
+    - [Issue Tracker Example](NgRx/Issue-Tracker-Example/ReadMe.md)
 
 - SVG
 
