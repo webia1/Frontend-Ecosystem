@@ -1,0 +1,108 @@
+{
+  "auto-close-tag.activationOnLanguage": ["html", "xml"],
+
+  "css.lint.emptyRules": "ignore",
+
+  "editor.codeLens": true,
+  "editor.fontFamily": "Menlo",
+  "editor.fontSize": 13,
+  "editor.formatOnSave": true,
+  "editor.minimap.enabled": false,
+  //  "editor.quickSuggestions": true,
+  "editor.rulers": [66],
+  //  "editor.snippetSuggestions": "top",
+  "editor.suggestSelection": "first",
+  "editor.tabCompletion": "on",
+
+  "explorer.confirmDelete": false,
+
+  "files.associations": {
+    "*.htm": "html"
+  },
+
+  "git.autofetch": true,
+
+  "grammarly.autoActivate": false,
+  "grammarly.userWords": ["dotAll"],
+  "grammarly.diagnostics": {
+    "[markdown]": {
+      "ignore": ["code"]
+    }
+  },
+
+  "markdown-preview-enhanced.enableExtendedTableSyntax": true,
+  "markdown-preview-enhanced.enableTypographer": true,
+
+  "peacock.favoriteColors": [
+    {
+      "name": "Angular Red",
+      "value": "#dd0531"
+    },
+    {
+      "name": "Azure Blue",
+      "value": "#007fff"
+    },
+    {
+      "name": "JavaScript Yellow",
+      "value": "#f9e64f"
+    },
+    {
+      "name": "Mandalorian Blue",
+      "value": "#1857a4"
+    },
+    {
+      "name": "Node Green",
+      "value": "#215732"
+    },
+    {
+      "name": "React Blue",
+      "value": "#61dafb"
+    },
+    {
+      "name": "Something Different",
+      "value": "#832561"
+    },
+    {
+      "name": "Svelte Orange",
+      "value": "#ff3d00"
+    },
+    {
+      "name": "Vue Green",
+      "value": "#42b883"
+    }
+  ],
+
+  "scss.lint.emptyRules": "ignore",
+
+  "terminal.integrated.fontFamily": "'Meslo LG S for Powerline'",
+  "terminal.integrated.fontSize": 13,
+  "terminal.integrated.rendererType": "dom",
+  "terminal.integrated.shell.osx": "/bin/zsh",
+
+  "typescript.referencesCodeLens.enabled": false,
+
+  "vsintellicode.typescript.completionsEnabled": true,
+
+  "window.zoomLevel": 0.2,
+
+  "workbench.editor.highlightModifiedTabs": true,
+  "workbench.editor.tabSizing": "shrink",
+  "workbench.colorTheme": "Material Theme Darker High Contrast",
+  "workbench.iconTheme": "eq-material-theme-icons-darker",
+  "workbench.statusBar.visible": true,
+  "workbench.colorCustomizations": {
+    "editor.selectionHighlightBackground": "#a3620099",
+    "editor.selectionBackground": "#ff00cc44"
+  },
+
+  "[jsonc]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+
+  "[html]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[typescript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  }
+}

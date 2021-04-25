@@ -1,0 +1,47 @@
+{
+  "auto-close-tag.activationOnLanguage": ["html", "xml"],
+  "css.lint.emptyRules": "ignore",
+  "editor.codeLens": true,
+  "editor.fontFamily": "fira code light",
+  "editor.fontSize": 14,
+  "editor.fontLigatures": true,
+  "editor.formatOnSave": true,
+  "editor.minimap.enabled": false,
+  "editor.rulers": [66],
+  "editor.suggestSelection": "first",
+  "editor.tabCompletion": "on",
+  "git.autofetch": true,
+  "workbench.editorAssociations": [
+    {
+      "viewType": "jupyter-notebook",
+      "filenamePattern": "*.ipynb"
+    }
+  ],
+  "scss.lint.emptyRules": "ignore",
+  "terminal.integrated.fontFamily": "'Meslo LG S for Powerline'",
+  "terminal.integrated.fontSize": 13,
+  "terminal.integrated.lineHeight": 1.4,
+  "jupyter.alwaysTrustNotebooks": true,
+  "jupyter.askForKernelRestart": false,
+  "vsintellicode.modify.editor.suggestSelection": "automaticallyOverrodeDefaultValue",
+  "python.insidersChannel": "daily",
+  "python.languageServer": "Pylance",
+  "pythonautovenv.autoInstallVenv": true,
+  "pythonautovenv.venvDirectoryNames": [
+    ".venv",
+    "venv",
+    "~/tensorflow_macos_venv",
+    "/opt/homebrew/anaconda3/envs"
+  ],
+  "kite.showWelcomeNotificationOnStartup": false,
+  "python.venvPath": "~/tensorflow_macos_venv, /opt/homebrew/anaconda3/envs, /Users/user/.pyenv/",
+  "terminal.integrated.inheritEnv": false,
+  "python.envFile": "/Users/user/.pyenv/",
+  "AREPL.envFile": "",
+  "[python]": {
+    "editor.defaultFormatter": "ms-python.python"
+  },
+  "editor.formatOnSaveMode": "modifications",
+  "python.defaultInterpreterPath": "/Users/user/.pyenv/shims/python",
+  "python.pythonPath": "/Users/user/tensorflow_macos_venv/bin/python"
+}

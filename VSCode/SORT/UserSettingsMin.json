@@ -1,0 +1,19 @@
+{
+  "css.lint.emptyRules": "ignore",
+  "editor.codeLens": true,
+  "editor.fontFamily": "fira code light",
+  "editor.fontSize": 14,
+  "editor.fontLigatures": true,
+  "editor.formatOnSave": true,
+  "editor.formatOnSaveMode": "modifications",
+  "editor.minimap.enabled": false,
+  "editor.rulers": [66, 70],
+  "editor.suggestSelection": "first",
+  "editor.tabCompletion": "on",
+  "git.autofetch": true,
+  "scss.lint.emptyRules": "ignore",
+  "terminal.integrated.fontFamily": "'Meslo LG S for Powerline'",
+  "terminal.integrated.fontSize": 13,
+  "terminal.integrated.lineHeight": 1.4,
+  "terminal.integrated.inheritEnv": false
+}

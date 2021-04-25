@@ -1,0 +1,28 @@
+// Place your key bindings in this file to override the defaultsauto[]
+[
+  {
+    "key": "alt+t",
+    "command": "editor.action.toggleWordWrap"
+  },
+  {
+    "key": "alt+g",
+    "command": "grammarly.check"
+  },
+  // Toggle - rebornix.toggle - extension
+  {
+    "key": "F4",
+    "command": "toggle",
+    "when": "editorTextFocus",
+    "args": {
+      "id": "ref",
+      "value": [
+        {
+          "typescript.referencesCodeLens.enabled": true
+        },
+        {
+          "typescript.referencesCodeLens.enabled": false
+        }
+      ]
+    }
+  }
+]
