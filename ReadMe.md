@@ -8,6 +8,10 @@
   - [Changing Jasmine to Jest](Angular/Documentation/Basics/Minimal-Basic-Setup)
   - [UI-Libraries](Angular/Documentation/UI-Libraries/ReadMe.md)
 
+- Lodash
+
+  - [Basics](Lodash/ReadMe.md)
+
 - State Management
 
   - NgRx
