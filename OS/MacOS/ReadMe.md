@@ -11,6 +11,7 @@
 - [Replace Python 2 through Python 3](#replace-python-2-through-python-3)
 - [Python & tcl-tk](#python-tcl-tk)
 - [Turn Off Screen if connected to external monitors](#turn-off-screen-if-connected-to-external-monitors)
+- [Show Hidden Files in Finder - Shortcut](#show-hidden-files-in-finder-shortcut)
 - [Show Hidden Files in Finder](#show-hidden-files-in-finder)
 - [Change Screenshots Folder](#change-screenshots-folder)
 - [Show the Path in the Finder Title Bar](#show-the-path-in-the-finder-title-bar)
@@ -84,6 +85,10 @@ For compilers to find tcl-tk you may need to set:
 
     sudo nvram boot-args="iog=0x0"  // OFF
     sudo nvram -d boot-args         // ON AGAIN
+
+## Show Hidden Files in Finder - Shortcut
+
+    Command + Shift + dot
 
 ## Show Hidden Files in Finder
 
