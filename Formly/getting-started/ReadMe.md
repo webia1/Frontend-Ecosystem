@@ -16,13 +16,14 @@
   - [Options](#options)
     - [`formState`](#formstate)
     - [`fieldTransform`](#fieldtransform)
-- [API](#api)
+- [API (Excerpt)](#api-excerpt)
   - [ExpressionPropertyCache](#expressionpropertycache)
   - [FormlyFieldConfigCache](#formlyfieldconfigcache)
   - [FormlyFieldConfig](#formlyfieldconfig)
   - [FormlyFormOptions](#formlyformoptions)
   - [FormlyAttributeEvent](#formlyattributeevent)
   - [FormlyTemplateOptions](#formlytemplateoptions)
+  - [Core Type Files](#core-type-files)
 
 <!-- /code_chunk_output -->
 
@@ -180,7 +181,7 @@ a mechanism for communicating between fields
 Allows you to modify/convert the fields before Formly handles them or validates them
 
 
-## API
+## API (Excerpt)
 
 ### ExpressionPropertyCache
 
@@ -418,3 +419,18 @@ export interface FormlyTemplateOptions {
 ```
 
 
+
+### Type Files
+
+[field-array.type.d.ts](../formly-types/field-array.type.d.ts)
+[field-template.type.d.ts](../formly-types/field-template.type.d.ts)
+[field.type.d.ts](../formly-types/field.type.d.ts)
+[field.wrapper.d.ts](../formly-types/field.wrapper.d.ts)
+[formly.attributes.d.ts](../formly-types/formly.attributes.d.ts)
+[formly.config.d.ts](../formly-types/formly.config.d.ts)
+[formly.field.config.d.ts](../formly-types/formly.field.config.d.ts)
+[formly.field.d.ts](../formly-types/formly.field.d.ts)
+[formly.form.builder.d.ts](../formly-types/formly.form.builder.d.ts)
+[formly.form.d.ts](../formly-types/formly.form.d.ts)
+[formly.group.d.ts](../formly-types/formly.group.d.ts)
+[formly.validation-message.d.ts](../formly-types/formly.validation-message.d.ts)
