@@ -13,6 +13,13 @@
     - [Inputs](#inputs)
     - [Outputs](#outputs)
   - [Fields (`interface FormlyFieldConfig`)](#fields-interface-formlyfieldconfig)
+    - [Read Only](#read-only)
+    - [Others](#others)
+    - [Examples or Interfaces](#examples-or-interfaces)
+      - [hooks](#hooks)
+      - [modelOptions](#modeloptions)
+      - [optionTypes](#optiontypes)
+      - [validation](#validation)
   - [Options](#options)
     - [`formState`](#formstate)
     - [`fieldTransform`](#fieldtransform)
@@ -145,29 +152,106 @@ Everything starts with the formly-form. General use of it will look something li
 
 ### Fields (`interface FormlyFieldConfig`)
 
+#### Read Only 
+
+```ts
+readonly model?:   any;
+readonly parent?:  FormlyFieldConfig;
+readonly options?: FormlyFormOptions;
+readonly form?:    FormGroup;
+```
+#### Others
+
 ```shell
-key                   string
-id                    string
-name                  string
-type                  string
-className             string
-templateOptions       object
-template              string
-defaultValue          any
-hide                  boolean
-hideExpression        boolean | string | function
-expressionProperties  boolean | string | function
-focus                 boolean
-wrappers              string[]
-parsers               function[]
-fieldGroup            FormlyFieldConfig[]  # ? Stimmt das so ?
-fieldArray            FormlyFieldConfig 
-fieldGroupClassName   string
-validation            object (some useful properties like: messages, show)
-validators            any (Object of key-value-pairs)
-asyncValidators       any (like above)
-formControl           AbstractControl
-modelOptions          object (some useful properties like: debounce, updateOn)
+asyncValidators?:       any (like above)
+className?:             string
+defaultValue ?:         any
+expressionProperties?:  boolean | string | function
+fieldArray?:            FormlyFieldConfig 
+fieldGroup?:            FormlyFieldConfig[]  # ? Stimmt das so ?
+fieldGroupClassName?:   string
+focus?:                 boolean
+formControl?:           AbstractControl
+hide?:                  boolean
+hideExpression?:        boolean | string | function
+hooks?:                 FormlyLifeCycleOptions<FormlyHookFn>;
+id?:                    string
+key?:                   string
+modelOptions            object (some useful properties like: debounce, updateOn)
+name?:                  string
+optionsTypes?:          string[];
+parsers?:               function[]
+template ?:             string (It is expected to be the name of the wrappers)
+templateOptions?:       object (FormlyTemplateOptions)
+type?:                  string
+validation?:            object (some useful properties like: messages, show)
+validators?:            any (Object of key-value-pairs)
+wrappers?:              string[]
+```
+
+#### Examples or Interfaces
+
+##### hooks
+
+```ts
+export interface FormlyLifeCycleOptions<T = FormlyLifeCycleFn> {
+    onInit?: T;
+    onChanges?: T;
+    afterContentInit?: T;
+    afterViewInit?: T;
+    onDestroy?: T;
+    [additionalProperties: string]: any;
+    /** @deprecated */
+    doCheck?: T;
+    /** @deprecated */
+    afterContentChecked?: T;
+    /** @deprecated */
+    afterViewChecked?: T;
+}
+```
+
+##### modelOptions
+
+```ts
+modelOptions?: {
+    debounce?: {
+        default: number;
+    };
+    /**
+     * @see https://angular.io/api/forms/AbstractControl#updateOn
+     */
+    updateOn?: 'change' | 'blur' | 'submit';
+};
+```
+
+##### optionTypes
+
+```ts
+optionsTypes?: string[];
+```
+
+An object with a few useful properties
+- `validation.messages`: A map of message names that will be displayed when the field has errors.
+- `validation.show`: A boolean you as the developer can set to force displaying errors whatever the state of field. This is useful when you're trying to call the user's attention to some fields for some reason.
+
+##### validation
+
+```ts
+
+export interface ValidationMessageOption {
+    name: string;
+    message: string 
+    | ((error: any, field: FormlyFieldConfig) => string 
+    | Observable<string>);
+}
+
+validation?: {
+    messages?: {
+        [messageProperties: string]: ValidationMessageOption['message'];
+    };
+    show?: boolean;
+    [additionalProperties: string]: any;
+};
 ```
 
 ### Options
@@ -369,7 +453,11 @@ export interface FormlyFormOptions {
     resetModel?: (model?: any) => void;
     formState?: any;
     fieldChanges?: Subject<FormlyValueChangeEvent>;
-    fieldTransform?: (fields: FormlyFieldConfig[], model: any, form: FormGroup | FormArray, options: FormlyFormOptions) => FormlyFieldConfig[];
+    fieldTransform?: (
+      fields: FormlyFieldConfig[], 
+      model: any, 
+      form: FormGroup | FormArray, 
+      options: FormlyFormOptions) => FormlyFieldConfig[];
     showError?: (field: FieldType) => boolean;
     parentForm?: FormGroupDirective | null;
 }
