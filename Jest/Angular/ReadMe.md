@@ -28,7 +28,7 @@
          1. [Coverage Reporter](#coverage-reporter)
          2. [Watch Coverage](#watch-coverage)
    6. [Cypress](#cypress)
-   7. [Google Puppeteer](#google-puppeteer)
+   7. [Google Puppeteer (does not work within Nx yet)](#google-puppeteer-does-not-work-within-nx-yet)
       1. [Installing](#installing)
       2. [Config](#config)
 
@@ -310,12 +310,16 @@ Nx has already installed and configured Cypress, just type:
 nx e2e
 ```
 
-### Google Puppeteer (does not work within Nx)
+### Google Puppeteer (does not work within Nx yet)
 
 Additional "Executer" necessary, please follow these links:
 
 - [Nx Creating Custom Executers](https://nx.dev/latest/react/executors/creating-custom-builders)
 - [Nx Cypress.io Executer](https://github.com/nrwl/nx/blob/master/packages/cypress/src/executors/cypress/cypress.impl.ts)
+
+Short Introduction:
+
+[Puppeteer/React](https://egghead.io/courses/end-to-end-testing-with-google-s-puppeteer-and-jest)
 
 #### Installing
 
