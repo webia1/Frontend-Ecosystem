@@ -1,27 +1,37 @@
-# Changing to Jest - Angular 11+
+# Testing Angular Applications with Jest
 
 <!-- @import "[TOC]" {cmd="toc" depthFrom=2 depthTo=6 orderedList=true} -->
 
 <!-- code_chunk_output -->
 
-1. [Simple Method to Change](#simple-method-to-change)
-   1. [For an Existing Project](#for-an-existing-project)
+1. [Changing to Jest for an existing Project - &ge; v11](#changing-to-jest-for-an-existing-project-ge-v11)
+   1. [Simple Method to replace Karma/Jasmine](#simple-method-to-replace-karmajasmine)
    2. [Optionally: Install Globally](#optionally-install-globally)
-2. [Issues](#issues)
-3. [Explanation of Modifications](#explanation-of-modifications)
-   1. [`angular.json` will be modified](#angularjson-will-be-modified)
-   2. [`jest.config.ts` will be created](#jestconfigts-will-be-created)
-   3. [`karma.conf.js` will be deleted](#karmaconfjs-will-be-deleted)
-   4. [`setup-jest.ts` will be created](#setup-jestts-will-be-created)
-   5. [`test-config.helper.ts` will be created](#test-confighelperts-will-be-created)
-   6. [`tsconfig.spec.json` will be modified](#tsconfigspecjson-will-be-modified)
-   7. [`test.js` will be deleted](#testjs-will-be-deleted)
+   3. [Issues](#issues)
+   4. [Explanation of Modifications](#explanation-of-modifications)
+      1. [`angular.json` will be modified](#angularjson-will-be-modified)
+      2. [`jest.config.ts` will be created](#jestconfigts-will-be-created)
+      3. [`karma.conf.js` will be deleted](#karmaconfjs-will-be-deleted)
+      4. [`setup-jest.ts` will be created](#setup-jestts-will-be-created)
+      5. [`test-config.helper.ts` will be created](#test-confighelperts-will-be-created)
+      6. [`tsconfig.spec.json` will be modified](#tsconfigspecjson-will-be-modified)
+      7. [`test.js` will be deleted](#testjs-will-be-deleted)
+2. [Creating an empty Angular Project with Nx](#creating-an-empty-angular-project-with-nx)
+   1. [Install Nx](#install-nx)
+   2. [Create an Angular Project](#create-an-angular-project)
+   3. [Initialize git and Initial Commit](#initialize-git-and-initial-commit)
+   4. [Install Material UI](#install-material-ui)
+   5. [Serving Project](#serving-project)
+      1. [Existing Tests](#existing-tests)
+      2. [Installing Jest-CLI globally](#installing-jest-cli-globally)
+      3. [Code Coverage](#code-coverage)
+         1. [Coverage Reporter](#coverage-reporter)
 
 <!-- /code_chunk_output -->
 
-## Simple Method to Change
+## Changing to Jest for an existing Project - &ge; v11
 
-### For an Existing Project
+### Simple Method to replace Karma/Jasmine
 
 To replace Karma/Jasmine with Jest, just use:
 
@@ -41,7 +51,7 @@ Then in an Angular CLI project run
 ng g @briebug/jest-schematic:add
 ```
 
-## Issues
+### Issues
 
 > Excerpt from: https://github.com/briebug/jest-schematic
 
@@ -57,9 +67,9 @@ module.exports = {
 
 Issues with this schematic can be filed [here](https://github.com/briebug/jest-schematic/issues/new/choose).
 
-## Explanation of Modifications
+### Explanation of Modifications
 
-### `angular.json` will be modified
+#### `angular.json` will be modified
 
 ```diff
 "test": {
@@ -82,7 +92,7 @@ Issues with this schematic can be filed [here](https://github.com/briebug/jest-s
 },
 ```
 
-### `jest.config.ts` will be created
+#### `jest.config.ts` will be created
 
 ```typescript
 module.exports = {
@@ -94,9 +104,9 @@ module.exports = {
 };
 ```
 
-### `karma.conf.js` will be deleted
+#### `karma.conf.js` will be deleted
 
-### `setup-jest.ts` will be created
+#### `setup-jest.ts` will be created
 
 ```typescript
 import 'jest-preset-angular';
@@ -132,7 +142,7 @@ Object.defineProperty(document.body.style, 'transform', {
 // Error.stackTraceLimit = 2;
 ```
 
-### `test-config.helper.ts` will be created
+#### `test-config.helper.ts` will be created
 
 ```typescript
 import { TestBed } from '@angular/core/testing';
@@ -163,7 +173,7 @@ export const configureTests = (
 };
 ```
 
-### `tsconfig.spec.json` will be modified
+#### `tsconfig.spec.json` will be modified
 
 To learn more about this file see: <https://angular.io/config/tsconfig>.
 
@@ -191,4 +201,89 @@ To learn more about this file see: <https://angular.io/config/tsconfig>.
 }
 ```
 
-### `test.js` will be deleted
+#### `test.js` will be deleted
+
+## Creating an empty Angular Project with Nx
+
+Cookbook:
+
+### Install Nx
+
+```shell
+npm install -g @nrwl/cli
+```
+
+### Create an Angular Project
+
+```shell
+npx create-nx-workspace@latest <project-name>
+```
+
+### Initialize git and Initial Commit
+
+```shell
+cd <project-name>
+git init
+git add .
+git commit -m "Initial Commit"
+
+```
+
+### Install Material UI
+
+```shell
+ng add @ngx-formly/schematics --ui-theme=material
+```
+
+> Angular 12+ Issue: <https://github.com/just-jeb/angular-builders/issues/972>
+
+```shell
+# eventually delete package-lock.json before
+npm install --legacy-peer-deps
+```
+
+### Serving Project
+
+```shell
+# See angular.json for details, e.g. main project etc
+nx serve
+```
+
+#### Existing Tests
+
+```shell
+nx test
+nx e2e
+```
+
+Watch mode:
+
+```shell
+# better add it to package.json
+nx test -- --watch
+```
+
+#### Installing Jest-CLI globally
+
+```shell
+npm i -g jest
+jest # or watch mode
+jest --watch
+```
+
+#### Code Coverage
+
+```shell
+jest --collect-coverage
+# see now /coverage folder
+```
+
+##### Coverage Reporter
+
+```js
+// jest.config.js
+module.exports = {
+  projects: ['<rootDir>/apps/t1'],
+  coverageReporters: ['html'],
+};
+```
