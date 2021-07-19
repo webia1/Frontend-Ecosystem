@@ -26,6 +26,7 @@
       2. [Installing Jest-CLI globally](#installing-jest-cli-globally)
       3. [Code Coverage](#code-coverage)
          1. [Coverage Reporter](#coverage-reporter)
+         2. [Watch Coverage](#watch-coverage)
 
 <!-- /code_chunk_output -->
 
@@ -216,13 +217,15 @@ npm install -g @nrwl/cli
 ### Create an Angular Project
 
 ```shell
-npx create-nx-workspace@latest <project-name>
+npx create-nx-workspace@latest <app-name>
 ```
+
+> See Nx Editor Plugins -> <https://nx.dev/latest/angular/getting-started/console>
 
 ### Initialize git and Initial Commit
 
 ```shell
-cd <project-name>
+cd <app-name>
 git init
 git add .
 git commit -m "Initial Commit"
@@ -286,4 +289,11 @@ module.exports = {
   projects: ['<rootDir>/apps/t1'],
   coverageReporters: ['html'],
 };
+```
+
+##### Watch Coverage
+
+```shell
+jest --collect-coverage --watch
+# /coverage -> lite-server
 ```
