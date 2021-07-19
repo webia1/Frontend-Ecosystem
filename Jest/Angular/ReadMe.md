@@ -27,6 +27,10 @@
       3. [Code Coverage](#code-coverage)
          1. [Coverage Reporter](#coverage-reporter)
          2. [Watch Coverage](#watch-coverage)
+   6. [Cypress](#cypress)
+   7. [Google Puppeteer](#google-puppeteer)
+      1. [Installing](#installing)
+      2. [Config](#config)
 
 <!-- /code_chunk_output -->
 
@@ -296,4 +300,50 @@ module.exports = {
 ```shell
 jest --collect-coverage --watch
 # /coverage -> lite-server
+```
+
+### Cypress
+
+Nx has already installed and configured Cypress, just type:
+
+```shell
+nx e2e
+```
+
+### Google Puppeteer (does not work within Nx)
+
+Additional "Executer" necessary, please follow these links:
+
+- [Nx Creating Custom Executers](https://nx.dev/latest/react/executors/creating-custom-builders)
+- [Nx Cypress.io Executer](https://github.com/nrwl/nx/blob/master/packages/cypress/src/executors/cypress/cypress.impl.ts)
+
+#### Installing
+
+```shell
+npm install -D puppeteer @types/puppeteer
+npm install -D jest-puppeteer
+npm install -D @types/jest-environment-puppeteer
+npm install -D @types/expect-puppeteer
+```
+
+#### Config
+
+```shell
+# jest.config.js excerpt
+module.exports = {
+  preset: 'jest-puppeteer',
+}
+
+```
+
+```shell
+# tsconfig.json excerpt
+  "compilerOptions": {
+    # ...
+    "types": [
+      "puppeteer",
+      "jest-environment-puppeteer",
+      "expect-puppeteer"
+    ]
+  },
 ```
