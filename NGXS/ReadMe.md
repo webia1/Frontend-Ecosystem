@@ -117,8 +117,38 @@
       - [Caveats](#caveats)
       - [Preventing sub-state erasure](#preventing-sub-state-erasure)
     - [Recipes](#recipes)
+      - [Authentication](#authentication)
+      - [Caching](#caching)
+      - [Component Events from NGXS](#component-events-from-ngxs)
+      - [Debouncing Actions](#debouncing-actions)
+      - [Dynamic Plugins](#dynamic-plugins)
+      - [Immutability Helpers](#immutability-helpers)
+      - [Style Guide](#style-guide)
+      - [Unit Testing](#unit-testing)
+      - [RxAngular Integration](#rxangular-integration)
     - [Plugins](#plugins)
-- [Labs](#labs)
+      - [Introduction](#introduction)
+      - [cli](#cli)
+      - [logger](#logger)
+      - [devtools](#devtools)
+      - [storage](#storage)
+      - [form](#form)
+      - [websocket](#websocket)
+      - [router](#router)
+      - [hmr](#hmr)
+  - [Labs](#labs)
+    - [Stable Packages](#stable-packages)
+      - [@ngxs-labs/data](#ngxs-labsdata)
+      - [@ngxs-labs/emitter](#ngxs-labsemitter)
+      - [@ngxs-labs/immer-adapter](#ngxs-labsimmer-adapter)
+      - [@ngxs-labs/dispatch-decorator](#ngxs-labsdispatch-decorator)
+      - [@ngxs-labs/select-snapshot](#ngxs-labsselect-snapshot)
+    - [Alpha or in Development](#alpha-or-in-development)
+      - [@ngxs-labs/async-storage-plugin](#ngxs-labsasync-storage-plugin)
+      - [@ngxs-labs/entity-state](#ngxs-labsentity-state)
+      - [@ngxs-labs/actions-executing](#ngxs-labsactions-executing)
+      - [@ngxs-labs/attach-action](#ngxs-labsattach-action)
+      - [@ngxs-labs/firestore-plugin](#ngxs-labsfirestore-plugin)
 
 <!-- /code_chunk_output -->
 
@@ -3361,32 +3391,129 @@ If we had used the `setState` function - we would have overwritten the whole sta
 
 <https://www.ngxs.io/recipes>
 
+#### Authentication
+
 - Authentication <https://www.ngxs.io/recipes/authentication>
+
+#### Caching
+
 - Caching <https://www.ngxs.io/recipes/cache>
+
+#### Component Events from NGXS
+
 - Component Events from NGXS <https://www.ngxs.io/recipes/component-events-from-ngxs>
+
+#### Debouncing Actions
+
 - Debouncing Actions <https://www.ngxs.io/recipes/debouncing-actions>
+
+#### Dynamic Plugins
+
 - Dynamic Plugins <https://www.ngxs.io/recipes/dynamic-plugins>
+
+#### Immutability Helpers
+
 - Immutability Helpers <https://www.ngxs.io/recipes/immutability-helpers>
+
+#### Style Guide
+
 - Style Guide <https://www.ngxs.io/recipes/style-guide>
+
+#### Unit Testing
+
 - Unit Testing <https://www.ngxs.io/recipes/unit-testing>
+
+#### RxAngular Integration
+
 - RxAngular Integration <https://www.ngxs.io/recipes/intregration-with-rxangular>
 
 ### Plugins
 
+#### Introduction
+
 - Introduction <https://www.ngxs.io/plugins/intro>
+
+#### cli
+
 - CLI <https://www.ngxs.io/plugins/cli>
+
+#### logger
+
 - Logger <https://www.ngxs.io/plugins/logger>
+
+#### devtools
+
 - Devtools <https://www.ngxs.io/plugins/devtools>
+
+#### storage
+
 - Storage <https://www.ngxs.io/plugins/storage>
+
+#### form
+
 - Forms <https://www.ngxs.io/plugins/form>
+
+#### websocket
+
 - Web Socket <https://www.ngxs.io/plugins/websocket>
+
+#### router
+
 - Router <https://www.ngxs.io/plugins/router>
+
+#### hmr
+
 - HMR <https://www.ngxs.io/plugins/hmr>
 
 > As of Angular v10, HMR is no longer supported and will be deprecated.
 >
 > As a workaround to keep store's state on full-page reloads you can use [`@ngxs/storage-plugin`](https://www.ngxs.io/plugins/storage). Here's a [basic implementation example](https://stackblitz.com/edit/ngxs-hmr-workaround-using-storage-plugin)
 
-# Labs
+## Labs
 
-<https://www.ngxs.io/ngxs-labs/intro>
+Intro: <https://www.ngxs.io/ngxs-labs/intro>
+Github: <https://github.com/ngxs-labs>
+
+### Stable Packages
+
+#### @ngxs-labs/data
+
+- <https://www.npmjs.com/package/@ngxs-labs/data>
+
+#### @ngxs-labs/emitter
+
+- <https://www.npmjs.com/package/@ngxs-labs/emitter>
+
+#### @ngxs-labs/immer-adapter
+
+- <https://www.npmjs.com/package/@ngxs-labs/immer-adapter>
+
+#### @ngxs-labs/dispatch-decorator
+
+- <https://www.npmjs.com/package/@ngxs-labs/dispatch-decorator>
+
+#### @ngxs-labs/select-snapshot
+
+- <https://www.npmjs.com/package/@ngxs-labs/select-snapshot>
+
+### Alpha or in Development
+
+#### @ngxs-labs/async-storage-plugin
+
+- <https://www.npmjs.com/package/@ngxs-labs/async-storage-plugin>
+
+#### @ngxs-labs/entity-state
+
+- <https://www.npmjs.com/package/@ngxs-labs/entity-state>
+
+#### @ngxs-labs/actions-executing
+
+- <https://www.npmjs.com/package/@ngxs-labs/actions-executing>
+
+#### @ngxs-labs/attach-action
+
+- <https://www.npmjs.com/package/@ngxs-labs/attach-action>
+
+#### @ngxs-labs/firestore-plugin
+
+- <https://www.npmjs.com/package/@ngxs-labs/firestore-plugin>
