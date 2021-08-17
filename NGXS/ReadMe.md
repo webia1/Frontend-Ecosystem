@@ -8,6 +8,7 @@
   - [What is NGXS](#what-is-ngxs)
     - [CQRS - Command Query Responsibility Segregation](#cqrs-command-query-responsibility-segregation)
   - [Installation](#installation)
+    - [Options for NgxsModule](#options-for-ngxsmodule)
     - [Development Tools & PlugIns](#development-tools-plugins)
       - [Package.json Dependencies](#packagejson-dependencies)
     - [Ivy Migration](#ivy-migration)
@@ -37,18 +38,71 @@
       - [Meta Selectors](#meta-selectors)
       - [The Order of Interacting Selectors](#the-order-of-interacting-selectors)
       - [Inheriting Selectors](#inheriting-selectors)
+    - [Special Considerations](#special-considerations)
+      - [Angular Libraries: Use of lambdas in static functions](#angular-libraries-use-of-lambdas-in-static-functions)
+      - [Using Select Decorator with `strictPropertyInitialization`](#using-select-decorator-with-strictpropertyinitialization)
   - [Actions](#actions-1)
     - [Naming Conventions](#naming-conventions)
       - [Actions taking place in the future](#actions-taking-place-in-the-future)
       - [Actions as Reaction of Events (already triggered)](#actions-as-reaction-of-events-already-triggered)
-    - [Creating Actions](#creating-actions)
-      - [Actions with Metadata](#actions-with-metadata)
+    - [Internal Actions](#internal-actions)
+    - [Creating/Defining Actions](#creatingdefining-actions)
+      - [Quick Example](#quick-example)
+        - [Actions with Metadata](#actions-with-metadata)
+      - [Details](#details)
+        - [Simple Actions](#simple-actions)
+        - [Actions with a payload](#actions-with-a-payload)
+        - [Async Actions](#async-actions)
+        - [Dispatching Actions From Actions](#dispatching-actions-from-actions)
     - [Grouping Actions](#grouping-actions)
     - [Dispatching Actions](#dispatching-actions)
     - [Dispatching Multiple Actions](#dispatching-multiple-actions)
     - [Dispatching & Observables](#dispatching-observables)
       - [Reseting a form after dispatching - I](#reseting-a-form-after-dispatching-i)
       - [Reseting a form - II - getting state](#reseting-a-form-ii-getting-state)
+  - [Advanced Topics](#advanced-topics)
+    - [Actions Life Cycle](#actions-life-cycle)
+      - [Theory](#theory)
+      - [Asynchronous actions](#asynchronous-actions)
+      - [Error life cycle](#error-life-cycle)
+      - [Asynchronous Actions continued - "Fire and forget" vs "Fire and wait"](#asynchronous-actions-continued-fire-and-forget-vs-fire-and-wait)
+      - [Summary](#summary)
+    - [Action Handlers](#action-handlers)
+    - [Canceling](#canceling)
+      - [Basic](#basic)
+      - [Advanced](#advanced)
+    - [Composition](#composition)
+    - [Error Handling](#error-handling)
+      - [Handling errors within an `@Select`](#handling-errors-within-an-select)
+        - [Why does RxJS unsubscribe on error?](#why-does-rxjs-unsubscribe-on-error)
+      - [Handling errors within an `@Action`](#handling-errors-within-an-action)
+      - [Handling errors after dispatching an action](#handling-errors-after-dispatching-an-action)
+    - [Lazy Loaded Stores](#lazy-loaded-stores)
+    - [Life-cycle](#life-cycle)
+      - [`ngxsOnChanges`](#ngxsonchanges)
+      - [`ngxsOnInit`](#ngxsoninit)
+      - [`ngxsAfterBootstrap`](#ngxsafterbootstrap)
+      - [Lifecycle sequence](#lifecycle-sequence)
+      - [Feature Modules Order of Imports](#feature-modules-order-of-imports)
+      - [APP_INITIALIZER Stage](#app_initializer-stage)
+        - [Theoretical Introduction](#theoretical-introduction)
+        - [APP_INITIALIZER and NGXS](#app_initializer-and-ngxs)
+        - [Solution](#solution)
+        - [Summary](#summary-1)
+    - [Mapped Sub States](#mapped-sub-states)
+    - [Meta Reducers](#meta-reducers)
+    - [Optimizing Selectors](#optimizing-selectors)
+  - [Memoization](#memoization)
+    - [Implementation](#implementation)
+    - [Shared State](#shared-state)
+    - [State Operators](#state-operators)
+      - [Why?](#why)
+      - [Basic](#basic-1)
+      - [Example](#example)
+        - [Supplied State Operators](#supplied-state-operators)
+        - [Advanced Example](#advanced-example)
+        - [Custom Operators](#custom-operators)
+        - [Relevant Articles](#relevant-articles)
 
 <!-- /code_chunk_output -->
 
@@ -109,6 +163,17 @@ import { AppComponent } from './app.component';
 })
 export class AppModule {}
 ```
+
+When you include the module in the import, you can pass root stores along with **options** (see coming chapters).
+
+If you are lazy loading, you can use the `forFeature` option with the same arguments.
+
+Options such as `developmentMode` can be passed to the module as the second argument in the `forRoot` method.
+
+In development mode, plugin authors can add additional runtime checks/etc to enhance the developer experience. Switching to development mode will also freeze your store using [deep-freeze-strict](https://www.npmjs.com/package/deep-freeze-strict)
+module.
+
+It's important that you add `NgxsModule.forRoot([])` at the root of your module even if all of your states are feature states.
 
 ### Options for NgxsModule
 
@@ -904,7 +969,119 @@ Or:
 this.store.select(UsersState.entities<User>());
 ```
 
+### Special Considerations
+
+#### Angular Libraries: Use of lambdas in static functions
+
+_If you are building an Angular lib directly so that it can be deployed to npm the Angular compiler option `strictMetadataEmit` (see [docs](https://angular.io/guide/aot-compiler#strictmetadataemit)) will most likely be set to true and, as a result, Angular's `MetadataCollector` from the `@angular/compiler-cli` package will report the following issue with using lambdas in static methods:_
+
+> Metadata collected contains an error that will be reported at runtime: Lambda not supported.`
+
+This error would be reported for each of the selectors defined below but, as demonstrated in the sample, you can prevent this by including the `// @dynamic` comment before the class expression and decorators:
+
+```ts
+// @dynamic
+@State<string[]>({
+  name: 'animals',
+  defaults: ['panda', 'horse', 'bee'],
+})
+@Injectable()
+export class ZooState {
+  @Selector()
+  static pandas(state: string[]) {
+    return state.filter((s) => s.indexOf('panda') > -1);
+  }
+
+  @Selector()
+  static horses(state: string[]) {
+    return (type: string) => {
+      return state
+        .filter((s) => s.indexOf('horse') > -1)
+        .filter((s) => s.indexOf(type) > -1);
+    };
+  }
+
+  static bees(type: string) {
+    return createSelector([ZooState], (state: string[]) => {
+      return state
+        .filter((s) => s.indexOf('bee') > -1)
+        .filter((s) => s.indexOf(type) > -1);
+    });
+  }
+}
+```
+
+As an alternative you can assign your result to a variable before you return it:  
+See https://github.com/ng-packagr/ng-packagr/issues/696#issuecomment-387114613
+
+```ts
+@State<string[]>({
+  name: 'animals',
+  defaults: ['panda', 'horse', 'bee'],
+})
+@Injectable()
+export class ZooState {
+  @Selector()
+  static pandas(state: string[]) {
+    const result = state.filter((s) => s.indexOf('panda') > -1);
+    return result;
+  }
+
+  @Selector()
+  static horses(state: string[]) {
+    const fn = (type: string) => {
+      return state
+        .filter((s) => s.indexOf('horse') > -1)
+        .filter((s) => s.indexOf(type) > -1);
+    };
+    return fn;
+  }
+
+  static bees(type: string) {
+    const selector = createSelector([ZooState], (state: string[]) => {
+      return state
+        .filter((s) => s.indexOf('bee') > -1)
+        .filter((s) => s.indexOf(type) > -1);
+    });
+    return selector;
+  }
+}
+```
+
+#### Using Select Decorator with `strictPropertyInitialization`
+
+If `strictPropertyInitialization` option is enabled then the TypeScript compiler will require all class properties to be explicitly initialized in the constructor. Given the following code:
+
+```ts
+@Component({ ... })
+export class ZooComponent {
+  @Select(ZooState.pandas) pandas$: Observable<string[]>;
+}
+```
+
+In the above example the compiler will emit the following error only if `strictPropertyInitialization` is turned on:
+
+```
+// Type error: Property 'pandas$' has no initializer
+// and is not definitely assigned in the constructor
+```
+
+We can solve that by applying the [definite assignment assertion](https://www.typescriptlang.org/docs/handbook/release-notes/typescript-2-7.html#definite-assignment-assertions) to `pandas$` property declaration (note the added exclamation mark):
+
+```ts
+@Component({ ... })
+export class ZooComponent {
+  @Select(ZooState.pandas) pandas$!: Observable<string[]>;
+}
+```
+
+By adding the definite assignment assertion we're telling the type-checker that we're sure that `pandas$` property will be initialized (by the `@Select` decorator).
+
 ## Actions
+
+Actions can either be thought of as a command which should trigger something to happen, or as the resulting event of something that has already happened.
+
+Each action contains a `type` field which is its unique identifier.
 
 ### Naming Conventions
 
@@ -943,7 +1120,16 @@ Examples:
 A great video on the topic is [Good Action Hygiene by Mike Ryan](https://www.youtube.com/watch?v=JmnsEvoy-gY)
 It's for NgRx, but the same naming conventions apply to NGXS.
 
-### Creating Actions
+### Internal Actions
+
+There are two actions that get triggered in the internals of the library:
+
+1. @@INIT - store being initialized, before all the **ngxsOnInit Life-cycle** events. <https://www.ngxs.io/advanced/life-cycle>
+1. @@UPDATE_STATE - a new **lazy-loaded state** being added to the store. <https://www.ngxs.io/advanced/lazy>
+
+### Creating/Defining Actions
+
+#### Quick Example
 
 ```ts
 export class AddAnimal {
@@ -952,7 +1138,7 @@ export class AddAnimal {
 }
 ```
 
-#### Actions with Metadata
+##### Actions with Metadata
 
 ```ts
 export class FeedZebra {
@@ -960,6 +1146,341 @@ export class FeedZebra {
   constructor(public name: string, public hayAmount: number) {}
 }
 ```
+
+#### Details
+
+Our states listen to actions via an **@Action** decorator. The action decorator accepts an action class or an array of action classes.
+
+##### Simple Actions
+
+Let's define a state that will listen to a `FeedAnimals` action to toggle whether the animals have been fed:
+
+```ts
+import { Injectable } from '@angular/core';
+import { State, Action, StateContext } from '@ngxs/store';
+
+export class FeedAnimals {
+  static readonly type = '[Zoo] FeedAnimals';
+}
+
+export interface ZooStateModel {
+  feed: boolean;
+}
+
+@State<ZooStateModel>({
+  name: 'zoo',
+  defaults: {
+    feed: false,
+  },
+})
+@Injectable()
+export class ZooState {
+  @Action(FeedAnimals)
+  feedAnimals(ctx: StateContext<ZooStateModel>) {
+    const state = ctx.getState();
+    ctx.setState({
+      ...state,
+      feed: !state.feed,
+    });
+  }
+}
+```
+
+The `feedAnimals` function has one argument called `ctx` with a type of `StateContext<ZooStateModel>`.
+
+This context state has a slice pointer and a function exposed to set the state. It's important to note that the `getState()` method will always return the freshest state slice from the global store each time it is accessed.
+
+This ensures that when we're performing async operations the state is always fresh. If you want a snapshot, you can always clone the state in the method.
+
+##### Actions with a payload
+
+Actions can also pass along metadata that has to do with the action.
+Say we want to pass along how much hay and carrots each zebra needs.
+
+```ts
+import { Injectable } from '@angular/core';
+import { State, Action, StateContext } from '@ngxs/store';
+
+// This is an interface that is part of your domain model
+export interface ZebraFood {
+  name: string;
+  hay: number;
+  carrots: number;
+}
+
+// naming your action metadata explicitly makes it easier to understand what the action
+// is for and makes debugging easier.
+export class FeedZebra {
+  static readonly type = '[Zoo] FeedZebra';
+  constructor(public zebraToFeed: ZebraFood) {}
+}
+
+export interface ZooStateModel {
+  zebraFood: ZebraFood[];
+}
+
+@State<ZooStateModel>({
+  name: 'zoo',
+  defaults: {
+    zebraFood: [],
+  },
+})
+@Injectable()
+export class ZooState {
+  @Action(FeedZebra)
+  feedZebra(ctx: StateContext<ZooStateModel>, action: FeedZebra) {
+    const state = ctx.getState();
+    ctx.setState({
+      ...state,
+      zebraFood: [
+        ...state.zebraFood,
+        // this is the new ZebraFood instance that we add to the state
+        action.zebraToFeed,
+      ],
+    });
+  }
+}
+```
+
+In this example, we have a second argument that represents the action and we destructure it
+to pull out the name, hay, and carrots which we then update the state with.
+
+There is also a shortcut `patchState` function to make updating the state easier. In this case, you only pass it the properties you want to update on the state and it handles the rest. The above function could be reduced to this:
+
+```ts
+@Action(FeedZebra)
+feedZebra(ctx: StateContext<ZooStateModel>, action: FeedZebra) {
+  const state = ctx.getState();
+  ctx.patchState({
+    zebraFood: [
+      ...state.zebraFood,
+      action.zebraToFeed,
+    ]
+  });
+}
+```
+
+The `setState` function can also be called with a function which will be given the existing state and should return the new state. All immutability concerns need to be honoured by this function.
+
+For comparison, here are the two ways that you can invoke the `setState` function...  
+With a new constructed state value:
+
+```ts
+@Action(MyAction)
+public addValue(ctx: StateContext, { payload }: MyAction) {
+  ctx.setState({ ...ctx.getState(), value: payload  });
+}
+```
+
+With a function that returns the new state value:
+
+```ts
+@Action(MyAction)
+public addValue(ctx: StateContext, { payload }: MyAction) {
+  ctx.setState((state) => ({ ...state, value: payload }));
+}
+```
+
+You may ask _"How is this valuable?"_. Well, it opens the door for refactoring of your immutable updates into `state operators` so that your code can become more declarative as opposed to imperative. We will be adding some standard `state operators` soon that you will be able to use to express your updates to the state. Follow the issue here for updates: https://github.com/ngxs/store/issues/545
+
+As another example you could use a library like [immer](https://github.com/mweststrate/immer) that can handle the immutability updates for you and provide a different way of expressing your immutable update through direct mutation of a draft object. We can use this external library because it supports the same signature as out `state operators` through their curried `produce` function. Here is the example from above expressed in this way:
+
+```ts
+import produce from 'immer';
+
+// in class ZooState ...
+@Action(FeedZebra)
+feedZebra(ctx: StateContext<ZooStateModel>, action: FeedZebra) {
+  ctx.setState(produce((draft) => {
+    draft.zebraFood.push(action.zebraToFeed);
+  }));
+}
+```
+
+Here the `produce` function from the `immer` library is called with just a single parameter so that it returns its' [curried form](https://github.com/mweststrate/immer#currying) that will take a value and return a new value with all the expressed changes applied.
+
+This approach can also allow for the creation of well named helper functions that can be shared between handlers that require the same type of update.
+The above example could be refactored to this:
+
+```ts
+// in class ZooState ...
+@Action(FeedZebra)
+feedZebra(ctx: StateContext<ZooStateModel>, action: FeedZebra) {
+  ctx.setState(addToZebraFood(action.zebraToFeed));
+}
+
+// defined elsewhere
+import produce from 'immer';
+
+function addToZebraFood(itemToAdd) {
+  return produce((draft) => {
+    draft.zebraFood.push(itemToAdd);
+  });
+}
+```
+
+##### Async Actions
+
+Actions can perform async operations and update the state after an operation.
+
+Typically in Redux your actions are pure functions and you have some other system like a saga or an effect to perform
+these operations and dispatch another action back to your state to mutate it. There are some
+reasons for this, but for the most part it can be redundant and just add boilerplate. The great thing here is
+we give you the flexibility to make that decision yourself based on your requirements.
+
+Let's take a look at a simple async action:
+
+```ts
+import { Injectable } from '@angular/core';
+import { State, Action, StateContext } from '@ngxs/store';
+import { tap } from 'rxjs/operators';
+
+export class FeedAnimals {
+  static readonly type = '[Zoo] FeedAnimals';
+  constructor(public animalsToFeed: string) {}
+}
+
+export interface ZooStateModel {
+  feedAnimals: string[];
+}
+
+@State<ZooStateModel>({
+  name: 'zoo',
+  defaults: {
+    feedAnimals: [],
+  },
+})
+@Injectable()
+export class ZooState {
+  constructor(private animalService: AnimalService) {}
+
+  @Action(FeedAnimals)
+  feedAnimals(ctx: StateContext<ZooStateModel>, action: FeedAnimals) {
+    return this.animalService.feed(action.animalsToFeed).pipe(
+      tap((animalsToFeedResult) => {
+        const state = ctx.getState();
+        ctx.setState({
+          ...state,
+          feedAnimals: [...state.feedAnimals, animalsToFeedResult],
+        });
+      }),
+    );
+  }
+}
+```
+
+In this example, we reach out to the animal service and call `feed` and then
+call `setState` with the result. Remember that we can guarantee that the state
+is fresh since the state property is a getter back to the current state slice.
+
+You might notice I returned the Observable and just did a `tap`. If we return
+the Observable, the framework will automatically subscribe to it for us, so
+we don't have to deal with that ourselves. Additionally, if we want the stores
+`dispatch` function to be able to complete only once the operation is completed,
+we need to return that so it knows that.
+
+Observables are not a requirement, you can use promises too. We could swap
+that observable chain to look like this:
+
+```ts
+import { Injectable } from '@angular/core';
+import { State, Action } from '@ngxs/store';
+
+export class FeedAnimals {
+  static readonly type = '[Zoo] FeedAnimals';
+  constructor(public animalsToFeed: string) {}
+}
+
+export interface ZooStateModel {
+  feedAnimals: string[];
+}
+
+@State<ZooStateModel>({
+  name: 'zoo',
+  defaults: {
+    feedAnimals: [],
+  },
+})
+@Injectable()
+export class ZooState {
+  constructor(private animalService: AnimalService) {}
+
+  @Action(FeedAnimals)
+  async feedAnimals(
+    ctx: StateContext<ZooStateModel>,
+    action: FeedAnimals,
+  ) {
+    const result = await this.animalService.feed(
+      action.animalsToFeed,
+    );
+    const state = ctx.getState();
+    ctx.setState({
+      ...state,
+      feedAnimals: [...state.feedAnimals, result],
+    });
+  }
+}
+```
+
+##### Dispatching Actions From Actions
+
+If you want your action to dispatch another action, you can use the `dispatch` function that is contained in the state context object.
+
+```ts
+import { Injectable } from '@angular/core';
+import { State, Action, StateContext } from '@ngxs/store';
+import { map } from 'rxjs/operators';
+
+export interface ZooStateModel {
+  feedAnimals: string[];
+}
+
+@State<ZooStateModel>({
+  name: 'zoo',
+  defaults: {
+    feedAnimals: [],
+  },
+})
+@Injectable()
+export class ZooState {
+  constructor(private animalService: AnimalService) {}
+
+  /**
+   * Simple Example
+   */
+  @Action(FeedAnimals)
+  feedAnimals(ctx: StateContext<ZooStateModel>, action: FeedAnimals) {
+    const state = ctx.getState();
+    ctx.setState({
+      ...state,
+      feedAnimals: [...state.feedAnimals, action.animalsToFeed],
+    });
+
+    return ctx.dispatch(new TakeAnimalsOutside());
+  }
+
+  /**
+   * Async Example
+   */
+  @Action(FeedAnimals)
+  feedAnimals2(
+    ctx: StateContext<ZooStateModel>,
+    action: FeedAnimals,
+  ) {
+    return this.animalService.feed(action.animalsToFeed).pipe(
+      tap((animalsToFeedResult) => {
+        const state = ctx.getState();
+        ctx.patchState({
+          feedAnimals: [...state.feedAnimals, animalsToFeedResult],
+        });
+      }),
+      mergeMap(() => ctx.dispatch(new TakeAnimalsOutside())),
+    );
+  }
+}
+```
+
+Notice I returned the dispatch function, this goes back to our example above with async operations and the dispatcher subscribing to the result. It is not required though.
 
 ### Grouping Actions
 
@@ -1072,3 +1593,1589 @@ export class ZooComponent {
 
 }
 ```
+
+## Advanced Topics
+
+### Actions Life Cycle
+
+This document describes the life cycle of actions, after reading it you should have a better understanding of how NGXS handles actions and what stages they may be at.
+
+#### Theory
+
+Any action in NGXS can be in one of four states, these states are `DISPATCHED`, `SUCCESSFUL`, `ERRORED`, `CANCELED`, think of it as a finite state machine.
+
+<https://www.ngxs.io/advanced/actions-life-cycle> &rarr; Image
+
+NGXS has an internal stream of actions. When we dispatch any action using the following code:
+
+```ts
+store.dispatch(new GetNovels());
+```
+
+The internal actions stream emits an object called `ActionContext`, that has 2 properties:
+
+```ts
+{
+  action: GetNovelsInstance,
+  status: 'DISPATCHED'
+}
+```
+
+There is an action stream listener that filters actions by `DISPATCHED` status and invokes the appropriate handlers for this action. After all processing for the action has completed it generates a new `ActionContext` with the following `status` value:
+
+```ts
+{
+  action: GetNovelsInstance,
+  status: 'SUCCESSFUL'
+}
+```
+
+The observable returned by the `dispatch` method is then triggered after the action is handled "successfully" and, in response to this observable, you are able to do the actions you wanted to do on completion of the action.
+
+If the `GetNovels` handler throws an error, for example:
+
+```ts
+@Action(GetNovels)
+getNovels() {
+  throw new Error('This is just a simple error!');
+}
+```
+
+Then the following `ActionContext` will be created:
+
+```ts
+{
+  action: GetNovelsInstance,
+  status: 'ERRORED'
+}
+```
+
+Actions can be both synchronous and asynchronous, for example if you send a request to your API and wait for the response. Asynchronous actions are handled in parallel, synchronous actions are handled one after another.
+
+What about the `CANCELED` status? Only asynchronous actions can be canceled, this means that the new action was dispatched before the previous action handler finished doing some asynchronous job. Canceling actions can be achieved by providing options to the `@Action` decorator:
+
+```ts
+export class NovelsState {
+  constructor(private novelsService: NovelsService) {}
+
+  @Action(GetNovels, { cancelUncompleted: true })
+  getNovels(ctx: StateContext<Novel[]>) {
+    return this.novelsService.getNovels().pipe(
+      tap((novels) => {
+        ctx.setState(novels);
+      }),
+    );
+  }
+}
+```
+
+Imagine a component where you've got a button that dispatches the `GetNovels` action on click:
+
+```ts
+@Component({
+  selector: 'app-novels',
+  template: `
+    <app-novel
+      *ngFor="let novel of novels$ | async"
+      [novel]="novel"
+    ></app-novel>
+    <button (click)="getNovels()">Get novels</button>
+  `,
+})
+export class NovelsComponent {
+  @Select(NovelsState) novels$: Observable<Novel[]>;
+
+  constructor(private store: Store) {}
+
+  getNovels() {
+    this.store.dispatch(new GetNovels());
+  }
+}
+```
+
+If you click the button twice - two actions will be dispatched and the previous action will be canceled because it's asynchronous. This works exactly the same as `switchMap`. If we didn't use NGXS - the code would look as follows:
+
+```ts
+@Component({
+  selector: 'app-novels',
+  template: `
+    <app-novel
+      *ngFor="let novel of novels"
+      [novel]="novel"
+    ></app-novel>
+    <button #button>Get novels</button>
+  `,
+})
+export class NovelsComponent implements OnInit {
+  @ViewChild('button', { static: true })
+  button: ElementRef<HTMLButtonElement>;
+
+  novels: Novel[] = [];
+
+  constructor(private novelsService: NovelsService) {}
+
+  ngOnInit() {
+    fromEvent(this.button.nativeElement, 'click')
+      .pipe(switchMap(() => this.novelsService.getNovels()))
+      .subscribe((novels) => {
+        this.novels = novels;
+      });
+  }
+}
+```
+
+#### Asynchronous actions
+
+Let's talk more about asynchronous actions, imagine a simple state that stores different genres of books and has the following code:
+
+```ts
+export interface BooksStateModel {
+  novels: Book[];
+  detectives: Book[];
+}
+
+export class GetNovels {
+  static type = '[Books] Get novels';
+}
+
+export class GetDetectives {
+  static type = '[Books] Get detectives';
+}
+
+@State<BooksStateModel>({
+  name: 'books',
+  defaults: {
+    novels: [],
+    detectives: [],
+  },
+})
+@Injectable()
+export class BooksState {
+  constructor(private booksService: BooksService) {}
+
+  @Action(GetNovels)
+  getNovels(ctx: StateContext<BooksStateModel>) {
+    return this.booksService.getNovels().pipe(
+      tap((novels) => {
+        ctx.patchState({ novels });
+      }),
+    );
+  }
+
+  @Action(GetDetectives)
+  getDetectives(ctx: StateContext<BooksStateModel>) {
+    return this.booksService.getDetectives().pipe(
+      tap((detectives) => {
+        ctx.patchState({ detectives });
+      }),
+    );
+  }
+}
+```
+
+Let's say that you dispatch `GetNovels` and `GetDetectives` actions separately like this:
+
+```ts
+store
+  .dispatch(new GetNovels())
+  .subscribe(() => {
+    ...
+  });
+
+store
+  .dispatch(new GetDetectives())
+  .subscribe(() => {
+    ...
+  });
+```
+
+You could correctly assume that the request for `GetNovels` would be dispatched before `GetDetectives`. This is true due to the synchronous nature of the dispatch, but their action handlers are asynchronous so you can't be sure which HTTP response would return first. In this example we dispatch the `GetNovels` action before `GetDetectives`, but if the call to fetch novels takes longer then the `novels` property will be set after `detectives`. The `store.dispatch` function returns an observable that can be used to respond to the completion of each of these actions.
+
+Alternatively you could dispatch an array of actions:
+
+```ts
+store
+  .dispatch([
+    new GetNovels(),
+    new GetDetectives()
+  ])
+  .subscribe(() => {
+    ...
+  });
+```
+
+The order of dispatch would be the same as the previous example, but in this code we are able to subscribe to an observable from the `store.dispatch` function that will fire only when both actions have completed. The below diagram demonstrates how asynchronous actions are handled under the hood:
+
+<https://www.ngxs.io/advanced/actions-life-cycle> &rarr; Image
+
+#### Error life cycle
+
+So, how are errors handled in this regard? Let's say that you dispatch multiple actions at the same time like this:
+
+```ts
+store
+  .dispatch([
+    new GetNovelById(id), // action handler throws `new Error(...)`
+    new GetDetectiveById(id),
+  ])
+  .subscribe(
+    () => {
+      // they will never see me
+    },
+    (error) => {
+      console.log(error); // `Error` that was thrown by the `getNovelById` handler
+    },
+  );
+```
+
+Because at least one action throws an error NGXS returns an error to the `onError` observable callback and neither the `onNext` or `onComplete` callbacks would be called.
+
+#### Asynchronous Actions continued - "Fire and forget" vs "Fire and wait"
+
+In NGXS, when you do asynchronous work you should return an `Observable` or `Promise` from your `@Action` method that represents that asynchronous work (and completion). The completion of the action will then be bound to the completion of the asynchronous work. If you use the `async/await` javascript syntax then NGXS will know about the completion because an `async` method returns the `Promise` for you. If you return an `Observable` NGXS will subscribe to the observable for you and bind the action's completion lifecycle event to the completion of the `Observable`.
+
+Sometimes you may not want the completion of an action to wait for the asynchronous work to complete. This is what we will refer to as "fire and forget". This can be achieved by simply not returning the handle to your asynchronous work from the `@Action` method. Note that in the case of an `Observable` you would have to `.subscribe(...)` or call `.toPromise()` to ensure that your observable runs.
+
+`Observable` version:
+
+```ts
+@Action(GetNovels)
+getNovels(ctx: StateContext<BooksStateModel>) {
+  this.booksService.getNovels().subscribe(novels => {
+    ctx.patchState({ novels });
+  });
+}
+```
+
+`Promise` version:
+
+```ts
+@Action(GetNovels)
+getNovels(ctx: StateContext<BooksStateModel>) {
+  this.booksService.getNovels().toPromise()
+    .then(novels => {
+      ctx.patchState({ novels });
+    });
+}
+```
+
+Another more common use case of using the "fire and forget" approach would be when you dispatch a new action inside a handler and you don't want to wait for the 'child' action to complete. For example, if we want to load detectives right after novels but we don't want the completion of our `GetNovels` action to wait for the detectives to load then we would have the following code:
+
+```ts
+export class BooksState {
+  constructor(private booksService: BooksService) {}
+
+  @Action(GetNovels)
+  getNovels(ctx: StateContext<BooksStateModel>) {
+    return this.booksService.getNovels().pipe(
+      tap((novels) => {
+        ctx.patchState({ novels });
+        ctx.dispatch(new GetDetectives());
+      }),
+    );
+  }
+
+  @Action(GetDetectives)
+  getDetectives(ctx: StateContext<BooksStateModel>) {
+    return this.booksService.getDetectives().pipe(
+      tap((detectives) => {
+        ctx.patchState({ detectives });
+      }),
+    );
+  }
+}
+```
+
+Here the `GetDetectives` action would be dispatched just before the `GetNovels` action completes. The `GetDetectives` action is just a "fire and forget" as far as the `GetNovels` action is concerned. To be clear, NGXS will wait for a response from the `getNovels` service call, then it will populate a new state with the returned novels, then it will dispatch the new `GetDetectives` action (which kicks off another asynchronous request), and then `GetNovels` would move into its' success state (without waiting for the completion of the `GetDetectives` action):
+
+```ts
+store.dispatch(new GetNovels()).subscribe(() => {
+  // they will see me, but detectives will be still loading in the background
+});
+```
+
+If you want the `GetNovels` action to wait for the `GetDetectives` action to complete, you will have to use `mergeMap` operator (or any operator that maps to the inner `Observable`, like `concatMap`, `switchMap`, `exhaustMap`) so that the `Observable` returned by the `@Action` method has bound its completion to the inner action's completion:
+
+```ts
+@Action(GetNovels)
+getNovels(ctx: StateContext<BooksStateModel>) {
+  return this.booksService.getNovels().pipe(
+    tap(novels => {
+      ctx.patchState({ novels });
+    }),
+    mergeMap(() => ctx.dispatch(new GetDetectives()))
+  );
+}
+```
+
+Often this type of code can be made simpler by converting to Promises and using the `async/await` syntax. The same method would be as follows:
+
+```ts
+@Action(GetNovels)
+async getNovels(ctx: StateContext<BooksStateModel>) {
+  const novels = await this.booksService.getNovels().toPromise();
+  ctx.patchState({ novels });
+  await ctx.dispatch(new GetDetectives()).toPromise();
+}
+```
+
+Note: leaving out the final `await` keyword here would cause this to be "fire and forget" again.
+
+#### Summary
+
+In summary - any dispatched action starts with the status `DISPATCHED`. Next, NGXS looks for handlers that listen to this action, if there are any — NGXS invokes them and processes the return value and errors. If the handler has done some work and has not thrown an error, the status of the action changes to `SUCCESSFUL`. If something went wrong while processing the action (for example, if the server returned an error) then the status of the action changes to `ERRORED`. And if an action handler is marked as `cancelUncompleted` and a new action has arrived before the old one was processed then NGXS interrupts the processing of the first action and sets the action status to `CANCELED`.
+
+### Action Handlers
+
+Event sourcing involves modeling the state changes made by applications as an immutable sequence or “log” of events.
+
+Instead of focusing on current state, you focus on the changes that have occurred over time. It is the practice of modeling your system as a sequence of events. In NGXS, we called this Action Handlers.
+
+Typically actions directly correspond to state changes but it can be difficult to always make your component react based on state. As a side effect of this paradigm, we end up creating lots of intermediate state properties
+to do things like reset a form/etc. Action handlers let us drive our components based on state along with events that are emitted.
+
+For example, if we were to have a shopping cart and we were to delete an item out of it you might want to show a notification that it was successfully removed. In a pure state driven application, you might create some kind
+of message array to make the dialog show up. With Action Handlers, we can respond to the action directly.
+
+The action handler is an Observable that receives all the actions dispatched before the state takes any action on it.
+
+Actions in NGXS also have a lifecycle. Since any potential action can be async we tag actions showing when they are "DISPATCHED", "SUCCESSFUL", "CANCELED" or "ERRORED". This gives you the ability to react to actions at different points in their existence.
+
+Since it's an Observable, we can use the following pipes:
+
+- `ofAction`: triggers when any of the below lifecycle events happen
+- `ofActionDispatched`: triggers when an action has been dispatched
+- `ofActionSuccessful`: triggers when an action has been completed successfully
+- `ofActionCanceled`: triggers when an action has been canceled
+- `ofActionErrored`: triggers when an action has caused an error to be thrown
+- `ofActionCompleted`: triggers when an action has been completed whether it was successful or not (returns completion summary)
+
+All of the above pipes return the original `action` in the observable except for the `ofActionCompleted` pipe which returns some summary information for the completed action. This summary is an object with the following interface:
+
+```ts
+interface ActionCompletion<T = any> {
+  action: T;
+  result: {
+    successful: boolean;
+    canceled: boolean;
+    error?: Error;
+  };
+}
+```
+
+Below is a action handler that filters for `RouteNavigate` actions and then tells the router to navigate to that
+route.
+
+```ts
+import { Injectable } from '@angular/core';
+import { Actions, ofActionDispatched } from '@ngxs/store';
+
+@Injectable({ providedIn: 'root' })
+export class RouteHandler {
+  constructor(private router: Router, private actions$: Actions) {
+    this.actions$
+      .pipe(ofActionDispatched(RouteNavigate))
+      .subscribe(({ payload }) => this.router.navigate([payload]));
+  }
+}
+```
+
+Remember you need to make sure to inject the `RouteHandler` somewhere in your application for DI to hook things up. If you want it to happen on application startup, Angular provides a method for doing this:
+
+```ts
+import { NgModule, APP_INITIALIZER } from '@angular/core';
+
+// Noop handler for factory function
+export function noop() {
+  return function () {};
+}
+
+@NgModule({
+  providers: [
+    {
+      provide: APP_INITIALIZER,
+      useFactory: noop,
+      deps: [RouteHandler],
+      multi: true,
+    },
+  ],
+})
+export class AppModule {}
+```
+
+Action handlers can be used in components too. Given the cart deletion example, we might construct something like:
+
+```ts
+@Component({ ... })
+export class CartComponent {
+  constructor(private actions$: Actions) {}
+
+  ngOnInit() {
+    this.actions$
+    .pipe(ofActionSuccessful(CartDelete))
+    .subscribe(() => alert('Item deleted'));
+  }
+}
+```
+
+Remember to unsubscribe from an action handler with something like this:
+
+```ts
+@Component({ ... })
+export class CartComponent implements OnInit, OnDestroy {
+  private ngUnsubscribe = new Subject();
+
+  constructor(private actions$: Actions) {}
+
+  ngOnInit() {
+    this.actions$
+      .pipe(
+        ofActionSuccessful(CartDelete),
+        takeUntil(this.ngUnsubscribe)
+      )
+      .subscribe(() => alert('Item deleted'));
+  }
+
+  ngOnDestroy() {
+    this.ngUnsubscribe.next();
+    this.ngUnsubscribe.complete();
+  }
+}
+```
+
+### Canceling
+
+If you have an async action, you may want to cancel a previous Observable if the action has been dispatched again.
+
+This is useful for canceling previous requests like in a typeahead.
+
+#### Basic
+
+For basic scenarios, we can use the `cancelUncompleted` action decorator option.
+
+```ts
+import { Injectable } from '@angular/core';
+import { State, Action } from '@ngxs/store';
+
+@State<ZooStateModel>({
+  defaults: {
+    animals: []
+  }
+})
+@Injectable()
+export class ZooState {
+  constructor(private animalService: AnimalService, private actions$: Actions) {}
+
+  @Action(FeedAnimals, { cancelUncompleted: true })
+  get(ctx: StateContext<ZooStateModel>, action: FeedAnimals) {
+    return this.animalService.get(action.payload).pipe(
+      tap((res) => ctx.setState(res))
+    ));
+  }
+}
+```
+
+#### Advanced
+
+For more advanced cases, we can use normal Rx operators.
+
+```ts
+import { Injectable } from '@angular/core';
+import { State, Action, Actions, ofAction } from '@ngxs/store';
+import { tap } from 'rxjs/operators';
+
+@State<ZooStateModel>({
+  defaults: {
+    animals: []
+  }
+})
+@Injectable()
+export class ZooState {
+  constructor(private animalService: AnimalService, private actions$: Actions) {}
+
+  @Action(FeedAnimals)
+  get(ctx: StateContext<ZooStateModel>, action: FeedAnimals) {
+    return this.animalService.get(action.payload).pipe(
+      tap((res) => ctx.setState(res)),
+      takeUntil(this.actions$.pipe(ofAction(RemoveTodo)))
+    ));
+  }
+}
+```
+
+### Composition
+
+You can compose multiple stores together using class inheritance. This is quite simple:
+
+```ts
+@State({
+  name: 'zoo',
+  defaults: {
+    type: null,
+  },
+})
+@Injectable()
+class ZooState {
+  @Action(Eat)
+  eat(ctx: StateContext) {
+    ctx.setState({ type: 'eat' });
+  }
+}
+
+@State({
+  name: 'stlzoo',
+})
+@Injectable()
+class StLouisZooState extends ZooState {
+  @Action(Drink)
+  drink(ctx: StateContext) {
+    ctx.setState({ type: 'drink' });
+  }
+}
+```
+
+Now when `StLouisZooState` is invoked, it will share the actions of the `ZooState`. Also all state options are inherited.
+
+### Error Handling
+
+NGXS uses Angular's default `ErrorHandler` class, so if an action throws an error, Angular's `ErrorHandler` is called. You can easily override this flow by providing your own handler like so:
+
+```ts
+import { NgModule, ErrorHandler } from '@angular/core';
+
+@Injectable()
+export class MyErrorHandler implements ErrorHandler {
+  handleError(error: any) {
+    console.log('ERROR! ', error);
+
+    // Make sure to rethrow the error so Angular can pick it up
+    throw error;
+  }
+}
+
+@NgModule({
+  imports: [AppComponent],
+  providers: [
+    {
+      provide: ErrorHandler,
+      useClass: MyErrorHandler,
+    },
+  ],
+})
+export class AppModule {}
+```
+
+#### Handling errors within an `@Select`
+
+```ts
+@Component({ ... })
+class AppComponent {
+  @Select(state => state.count.number.value) count$: Observable<number>;
+}
+```
+
+Let's take a look at the below example:
+
+```ts
+this.store.reset({}); // reset all states
+```
+
+The catch is that when resetting the entire state, the object will no longer have those deeply nested properties (`state.count.number.value`). Given the following code:
+
+```ts
+const state = {};
+
+function getCount() {
+  return state.count.number.value;
+}
+
+const count = getCount(); // will throw
+```
+
+RxJS will automatically complete the stream under the hood if any error is thrown.
+
+You have to disable suppressing errors using the `suppressErrors` option:
+
+```ts
+@NgModule({
+  imports: [
+    NgxsModule.forRoot([CountState], {
+      selectorOptions: {
+        suppressErrors: false, // `true` by default
+      },
+    }),
+  ],
+})
+export class AppModule {}
+```
+
+This option allows to track errors and handle them.
+
+```ts
+@Component({ ... })
+class AppComponent {
+  @Select(state => {
+    try {
+      return state.count.number.value;
+    } catch (error) {
+      console.log('error', error);
+      // throw error;
+      // Automatic unsubscription will occur if
+      // you use the `throw` statement here.
+      // Skip it if you don't want the stream
+      // to be completed on error.
+    }
+  })
+  count$: Observable<number>;
+}
+```
+
+##### Why does RxJS unsubscribe on error?
+
+RxJS [design guidelines](https://github.com/ReactiveX/rxjs/blob/master/docs_app/content/guide/observable.md#executing-observables) provides a great explanation of this behavior.
+
+#### Handling errors within an `@Action`
+
+When you define an @Action you can handle error within the action and if you do so, the error will not propagate to Angular's global `ErrorHandler`, nor the `dispatch` Observable. This applies to both sync and async types of Actions.
+
+```ts
+  @Action(HandledError)
+  handledError(ctx: StateContext<StateModel>) {
+    try {
+      // error is thrown
+    } catch (err) {
+      console.log(`error catched inside
+      @Action wont propagate to ErrorHandler
+      or dispatch subscription`)
+    }
+  }
+```
+
+#### Handling errors after dispatching an action
+
+If an unhandled exception is thrown inside an action, the error will be propagated to the `ErrorHandler` and you can also catch it subscribing to the `dispatch` Observable. If you subscribe to the `dispatch` Observable the error will be caught twice, once in the ErrorHandler and on your `dispatch` handle.
+
+```ts
+  @Action(UnhandledError)
+  unhandledError(ctx: StateContext<StateModel>) {
+    // error is thrown
+  }
+```
+
+```ts
+  unhandled() {
+    this.store.dispatch(new UnhandledError()).pipe(
+      catchError(err => {
+        console.log('unhandled error on dispatch subscription')
+        return of('')
+      })
+    ).subscribe();
+  }
+```
+
+It is recommended to handle errors within `@Action` and update state to reflect the error, which you can later select to display where required.
+
+You can play around with error handling in this following [stackblitz](https://stackblitz.com/edit/ngxs-error-handling)
+
+### Lazy Loaded Stores
+
+Stores can be lazy-loaded easily by importing the `NgxsModule` using the
+`forFeature` method. All the other syntax for how you import
+and describe them are the same. For example:
+
+```ts
+@NgModule({
+  imports: [NgxsModule.forFeature([LazyState])],
+})
+export class LazyModule {}
+```
+
+It's important to note when lazy-loading a store, it is registered in the global
+state so this state object will now be persisted globally. Even though
+it's available globally, you should only use it within that feature module so you
+make sure not to create dependencies on things that could not be loaded yet.
+
+How are feature states added to the global state graph? Assume you've got a `ZoosState`:
+
+```ts
+@State<Zoo[]>({
+  name: 'zoos',
+  defaults: [],
+})
+@Injectable()
+export class ZoosState {}
+```
+
+And it's registered in the root module via `NgxsModule.forRoot([ZoosState])`. Assume you've got a feature `offices` state:
+
+```ts
+@State<Office[]>({
+  name: 'offices',
+  defaults: [],
+})
+@Injectable()
+export class OfficesState {}
+```
+
+You register this state in some lazy-loaded module via `NgxsModule.forFeature([OfficesState])`. After the lazy module is loaded - the global state will have such signature:
+
+```ts
+{
+  zoos: [],
+  offices: []
+}
+```
+
+You can try it yourself by invoking `store.snapshot()` and printing the result to the console before and after the lazy module is loaded.
+
+### Life-cycle
+
+States can implement life-cycle events.
+
+#### `ngxsOnChanges`
+
+If a state implements the NgxsOnChanges interface, its ngxsOnChanges method respond when (re)sets state. The states' ngxsOnChanges methods are invoked in a topological sorted order going from parent to child. The first parameter is the NgxsSimpleChange object of current and previous state.
+
+```ts
+export interface ZooStateModel {
+  animals: string[];
+}
+
+@State<ZooStateModel>({
+  name: 'zoo',
+  defaults: {
+    animals: [],
+  },
+})
+@Injectable()
+export class ZooState implements NgxsOnChanges {
+  ngxsOnChanges(change: NgxsSimpleChange) {
+    console.log('prev state', change.previousValue);
+    console.log('next state', change.currentValue);
+  }
+}
+```
+
+#### `ngxsOnInit`
+
+If a state implements the `NgxsOnInit` interface, its `ngxsOnInit` method will be invoked after
+all the states from the state's module definition have been initialized and pushed into the state stream.
+The states' `ngxsOnInit` methods are invoked in a topological sorted order going from parent to child.
+The first parameter is the `StateContext` where you can get the current state and dispatch actions as usual.
+
+```ts
+export interface ZooStateModel {
+  animals: string[];
+}
+
+@State<ZooStateModel>({
+  name: 'zoo',
+  defaults: {
+    animals: [],
+  },
+})
+@Injectable()
+export class ZooState implements NgxsOnInit {
+  ngxsOnInit(ctx: StateContext<ZooStateModel>) {
+    console.log('State initialized, now getting animals');
+    ctx.dispatch(new GetAnimals());
+  }
+}
+```
+
+#### `ngxsAfterBootstrap`
+
+If a state implements the `NgxsAfterBootstrap` interface, its `ngxsAfterBootstrap` method will be invoked after the root view and all its children have been rendered, because Angular invokes functions, retrieved from the injector by `APP_BOOTSTRAP_LISTENER` token, only after creating and attaching `ComponentRef` of the root component to the tree of views.
+
+```ts
+export interface ZooStateModel {
+  animals: string[];
+}
+
+@State<ZooStateModel>({
+  name: 'zoo',
+  defaults: {
+    animals: [],
+  },
+})
+@Injectable()
+export class ZooState implements NgxsAfterBootstrap {
+  ngxsAfterBootstrap(ctx: StateContext<ZooStateModel>) {
+    console.log('The application has been fully rendered');
+    ctx.dispatch(new GetAnimals());
+  }
+}
+```
+
+#### Lifecycle sequence
+
+After creating the state by calling its constructor, NGXS calls the lifecycle hook methods in the following sequence at specific moments:
+
+| Hook                 | Purpose and Timing                                                                                       |
+| -------------------- | -------------------------------------------------------------------------------------------------------- |
+| ngxsOnChanges()      | Called _before_ `ngxsOnInit()` and whenever state changes.                                               |
+| ngxsOnInit()         | Called _once_, after the _first_ `ngxsOnChanges()` and _before_ the `APP_INITIALIZER` token is resolved. |
+| ngxsAfterBootstrap() | Called _once_, after the root view and all its children have been rendered.                              |
+
+#### Feature Modules Order of Imports
+
+If you have feature modules they need to be imported after the root module:
+
+```ts
+// feature.module.ts
+@NgModule({
+  imports: [NgxsModule.forFeature([FeatureState])],
+})
+export class FeatureModule {}
+
+// app.module.ts
+@NgModule({
+  imports: [NgxsModule.forRoot([]), FeatureModule],
+})
+export class AppModule {}
+```
+
+#### APP_INITIALIZER Stage
+
+##### Theoretical Introduction
+
+The `APP_INITIALIZER` is just a token that references Promise factories. If you've ever used the `APP_INITIALIZER` token, then you are already familiar with its syntax:
+
+```ts
+export function appInitializerFactory() {
+  return () => Promise.resolve();
+}
+
+@NgModule({
+  providers: [
+    {
+      provide: APP_INITIALIZER,
+      useFactory: appInitializerFactory,
+      multi: true,
+    },
+  ],
+})
+export class AppModule {}
+```
+
+This token is injected into `ApplicationInitStatus` class. What does Angular do under the hood? It gets an instance of this class and invokes the `runInitializers` method:
+
+```ts
+const initStatus = moduleRef.injector.get(ApplicationInitStatus);
+initStatus.runInitializers();
+```
+
+All that it does inside this method is looping via the `APP_INITIALIZER` array (as it's a `multi` token) and invoking those factories, that you've provided in `useFactory` properties:
+
+```ts
+for (let i = 0; i < this.appInits.length; i++) {
+  const initResult = this.appInits[i]();
+  if (isPromise(initResult)) {
+    asyncInitPromises.push(initResult);
+  }
+}
+```
+
+Then `asyncInitPromises` are provided into `Promise.all`. That's all the magic. That's why the `bootstrapModule` returns a `Promise`:
+
+```ts
+platformBrowser()
+  .bootstrapModule(AppModule)
+  .then(() => {
+    console.log('Hey there!');
+  });
+```
+
+##### APP_INITIALIZER and NGXS
+
+Everything that we examined earlier is very important, because from this comes the fact that `APP_INITIALIZER` is resolved after NGXS states are initialized. They are initialized by the `NgxsModule` that is imported into the `AppModule`. The `ngxsOnInit` method on states is also invoked before the `APP_INITIALIZER` token is resolved. Given the following code:
+
+```ts
+@Injectable({ providedIn: 'root' })
+export class ConfigService {
+  private version: string | null = null;
+
+  constructor(private http: HttpClient) {}
+
+  loadVersion(): Observable<string> {
+    return this.http.get<string>('/api/version').pipe(
+      tap((version) => {
+        this.version = version;
+      }),
+    );
+  }
+
+  getVersion(): never | string {
+    if (this.version === null) {
+      throw new Error('"version" is not available yet!');
+    }
+
+    return this.version;
+  }
+}
+
+@State<string | null>({
+  name: 'version',
+  defaults: null,
+})
+@Injectable()
+export class VersionState implements NgxsOnInit {
+  constructor(private configService: ConfigService) {}
+
+  ngxsOnInit(ctx: StateContext<string | null>) {
+    ctx.setState(this.configService.getVersion());
+  }
+}
+
+export function appInitializerFactory(configService: ConfigService) {
+  return () => configService.loadVersion().toPromise();
+}
+
+@NgModule({
+  imports: [NgxsModule.forRoot([VersionState])],
+  providers: [
+    {
+      provide: APP_INITIALIZER,
+      useFactory: appInitializerFactory,
+      multi: true,
+      deps: [ConfigService],
+    },
+  ],
+})
+export class AppModule {}
+```
+
+The above example is used only for demonstration purposes! This code will throw an error because the `getVersion` method is invoked before the `version` property is set. Why? Because the `ngxsOnInit` methods on states are invoked before the `APP_INITIALIZER` is invoked!
+
+##### Solution
+
+There are different solutions. Let's look at the simplest. The first solution would be to use the `ngxsAfterBootstrap` method:
+
+```ts
+@State<string | null>({
+  name: 'version',
+  defaults: null,
+})
+@Injectable()
+export class VersionState implements NgxsAfterBootstrap {
+  constructor(private configService: ConfigService) {}
+
+  ngxsAfterBootstrap(ctx: StateContext<string | null>) {
+    ctx.setState(this.configService.getVersion());
+  }
+}
+```
+
+The second solution would be dispatching some `SetVersion` action right after the version is fetched:
+
+```ts
+export class SetVersion {
+  static readonly type = '[Version] Set version';
+  constructor(public version: string) {}
+}
+
+@State<string | null>({
+  name: 'version',
+  defaults: null,
+})
+@Injectable()
+export class VersionState {
+  @Action(SetVersion)
+  setVersion(
+    ctx: StateContext<string | null>,
+    action: SetVersion,
+  ): void {
+    ctx.setState(action.version);
+  }
+}
+
+@Injectable({ providedIn: 'root' })
+export class ConfigService {
+  constructor(private http: HttpClient, private store: Store) {}
+
+  loadVersion() {
+    return this.http.get<string>('/api/version').pipe(
+      tap((version) => {
+        this.store.dispatch(new SetVersion(version));
+      }),
+    );
+  }
+}
+```
+
+##### Summary
+
+In conclusion, do not try to access any data in state constructors or `ngxsOnInit` methods that is fetched during the `APP_INITIALIZER` stage.
+
+### Mapped Sub States
+
+NGXS provides the ability to merge multiple dynamic selectors into one.
+
+Let's look at the code below:
+
+```ts
+interface Animal {
+  type: string;
+  age: string;
+  name: string;
+}
+
+@State<Animal[]>({
+  name: 'animals',
+  defaults: [
+    { type: 'zebra', age: 'old', name: 'Ponny' },
+    { type: 'panda', age: 'young', name: 'Jimmy' },
+  ],
+})
+@Injectable()
+export class ZooState {
+  static pandas(age: string) {
+    return createSelector([ZooState], (state: Animal[]) => {
+      return state.filter(
+        (animal) => animal.type === 'panda' && animal.age === age,
+      );
+    });
+  }
+
+  static zebras(age: string) {
+    return createSelector([ZooState], (state: Animal[]) => {
+      return state.filter(
+        (animal) => animal.type === 'zebra' && animal.age === age,
+      );
+    });
+  }
+
+  static pandasAndZebras(age: string) {
+    return createSelector(
+      [ZooState.pandas(age), ZooState.zebras(age)],
+      (pandas: Animal[], zebras: Animal[]) => {
+        return [pandas, zebras];
+      },
+    );
+  }
+}
+```
+
+This construct will merge 2 dynamic selectors and memoize the result.
+
+Another example could be multiple Zoos in our application:
+
+```ts
+interface Animal {
+  type: string;
+  age: string;
+  name: string;
+}
+
+interface ZooStateModel {
+  [id: string]: {
+    animals: Animal[];
+    ageFilter: string;
+  };
+}
+
+@State<ZooStateModel>({
+  name: 'animals',
+  defaults: {
+    zoo1: {
+      ageFilter: 'young',
+      animals: [
+        { type: 'zebra', age: 'old', name: 'Ponny' },
+        { type: 'panda', age: 'young', name: 'Jimmy' },
+      ],
+    },
+  },
+})
+@Injectable()
+export class ZooState {
+  static getZooAnimals(zooName: string) {
+    return createSelector(
+      [ZooState],
+      (state: ZooStateModel) => state[zooName].animals,
+    );
+  }
+
+  static pandas(zooName: string) {
+    return createSelector(
+      [ZooState.getZooAnimals(zooName)],
+      (state: Animal[]) => {
+        return state.filter(
+          (animal) =>
+            animal.type === 'panda' && animal.age === 'young',
+        );
+      },
+    );
+  }
+
+  static pandasWithoutMemoize(zooName: string) {
+    return createSelector([ZooState], (state: ZooStateModel) => {
+      return state[zooName].animals.filter(
+        (animal) => animal.type === 'panda' && animal.age === 'young',
+      );
+    });
+  }
+}
+```
+
+In that example merging is required to avoid unnecessary store events.
+
+When we subscribe to **Zoo.pandasWithoutMemoize** store will dispatch event whenever **ZooState** will **change** (even ZooState.ageFilter), but when subscribing to **Zoo.pandas** store will dispatch event only if result has been changed.
+
+### Meta Reducers
+
+A meta reducer is a higher order reducer that allows you to
+take action on the global state rather than a state slice.
+In NGXS, we don't have this concept but you can accomplish
+this with [plugins](../plugins/intro.md).
+
+An example of a meta reducer might be to clear the entire
+state when a user logs out. An example implementation would be:
+
+```ts
+import { getActionTypeFromInstance } from '@ngxs/store';
+
+export function logoutPlugin(state, action, next) {
+  // Use the get action type helper to determine the type
+  if (getActionTypeFromInstance(action) === Logout.type) {
+    // if we are a logout type, lets erase all the state
+    state = {};
+  }
+
+  // return the next function with the empty state
+  return next(state, action);
+}
+```
+
+Then we import that like:
+
+```ts
+import { NgModule } from '@angular/core';
+import { NGXS_PLUGINS } from '@ngxs/store';
+
+@NgModule({
+  imports: [NgxsModule.forRoot([])],
+  providers: [
+    {
+      provide: NGXS_PLUGINS,
+      useValue: logoutPlugin,
+      multi: true,
+    },
+  ],
+})
+export class AppModule {}
+```
+
+Now when we dispatch the logout action it will use our new
+plugin and erase the state.
+
+### Optimizing Selectors
+
+Selectors are responsible for providing state data to your application. As your application code grows, naturally the number of selectors you create also increases. Ensuring your selectors are optimized can be instrumental in building a faster performing application.
+
+#### Memoization
+
+Selectors are memoized functions. Memoized functions are calculated when their arguments change and the results are cached. Regardless of how many components or services consume a selector, a selector will calculate only once when state changes and the cached result will be returned to all consumers. Taking advantage of this feature can result in performance increases.
+
+For example, there exists this state model:
+
+```ts
+interface SomeStateModel {
+  data: Data[];
+  name: string;
+}
+```
+
+And in this example there is an input component where a user can type a name. On key down, an action is dispatched updating the `name` property of state. On the same page, another component renders `data`. In order to render state data we create a selector in our state class:
+
+```ts
+@Selector()
+static getViewData(state: SomeStateModel) {
+   return state.data.map(d => expensiveFunction(d));
+}
+```
+
+Selectors defined in state classes implicitly have `state` injected as their first argument. The above selector will be recalculated every time the user types into the input component.
+
+Since `state` could update rapidly when a user types, the expensive selector will needlessly recalculate even though it does not care about the `name` property of `state` changing. This selector does not take advantage of memoization.
+
+One way to solve this problem is to turn off the `injectContainerState` selector **option** at _root_, _state_, or **selector level**.
+
+By default (in NGXS v3), the state is implicitly injected as the first argument for composite selectors _defined within state classes_.
+
+Turning off this setting prevents the container state from being injected as the first argument. This requires you to explicitly specify all arguments when you use the `@Selector([...])` decorator.
+
+Any parameterless `@Selector()` decorators will still inject the state as an implicit argument. Note that this option does not apply to selectors declared _outside of state classes_ (because there is no container state to inject). For example, we create two selectors in our state class:
+
+```ts
+@Selector([SomeState])
+static getData(state: SomeStateModel) {
+   return state.data;
+}
+
+@Selector([SomeState.getData])
+static getViewData(data: Data[]) {
+  return data.map(d => expensiveFunction(d));
+}
+```
+
+This `getViewData` selector will not be recalculated when a user types into the input component. This selector targets the specific property of `state` it cares about as its argument by leveraging an additional selector. When the `name` property of state changes, the `getViewData` arguments _do not change_. Memoization is taken advantage of.
+
+An alternative solution to turning off the selector option is to create a **meta selector**. For example, we declare one selector in our state class and declare another selector outside of our state class:
+
+```ts
+@State({...})
+@Injectable()
+export class SomeState {
+  @Selector()
+  static getData(state: SomeStateModel) {
+    return state.data;
+  }
+}
+
+export class SomeStateQueries {
+  @Selector([SomeState.getData])
+  static getViewData(data: Data[]) {
+    return data.map(d => expensiveFunction(d));
+  }
+}
+```
+
+#### Implementation
+
+Selectors are calculated when state changes. As your application grows, the number of state changes increases. Finding optimizations in your selector implementations can have significant benefits.
+
+For example, say you have this state model:
+
+```ts
+interface SelectedDataStateModel {
+  selectedIds: number[];
+}
+```
+
+And you have this selector:
+
+```ts
+@Selector([SelectedDataState])
+isDataSelected(state: SelectedDataStateModel) {
+  return (id: number) => state.selectedIds.includes(id);
+}
+```
+
+The above selector is an example of a **lazy selector**.
+
+This selector returns a function, which accepts an `id` as an argument and returns a boolean indicating whether or not this `id` is selected. The lazy selector returned by `isDataSelected` uses [Array.includes](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/includes) and has `O(n)` time complexity. In this example, we want to render a list of checkboxes:
+
+```html
+<ng-container *ngIf="isDataSelected$ | async as isDataSelected">
+  <data-check-box
+    *ngFor="data of data$ | async"
+    [checked]="isDataSelected(d.id)"
+  ></data-check-box>
+</ng-container>
+```
+
+When a user checks or unchecks an item, `state.selectedIds` is updated, therefore the `isDataSelected` selector is recalculated and the list must re-render.
+
+Every time the list re-renders, the lazy selector `isDataSelected` is invoked `data.length` number of times. Because the lazy selector implementation has `O(n)` time complexity, this template renders with `O(n^2)` time complexity - **Ugh!**.
+
+One magnitude of `n` for the length of `data` , another for `state.selectedIds.length`.
+
+Here's one way to improve performance in that example:
+
+```ts
+@Selector([SelectedDataState])
+isDataSelected(state: SelectedDataStateModel) {
+  const selectedIds = new Set(state.selectedIds);
+  return (id: number) => selectedIds.has(id);
+}
+```
+
+The above selector implementation creates a [Set](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Set). The lazy selector returned by `isDataSelected` _is a closure with access to the `selectedIds` variable created in the parent function_. The lazy selector uses [Set.has](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Set/has) which has `O(1)` time complexity.
+
+Now when the list re-renders, because the lazy selector has `O(1)` time complexity, this template renders with `O(n)` time complexity. This optimizes performance by a magnitude of `n`.
+
+### Shared State
+
+Shared States
+
+Shared state is the ability to get state from one state container and use its properties
+in another state container in a read-only manner. While it's not natively supported it can
+be accomplished.
+
+Let's say you have 2 stores: Animals and Preferences. In your preferences store, which is backed
+by `localstorage`, you have the sort order for the Animals. You need to get the state from the
+preferences in order to be able to sort your animals. This is achievable with `selectSnapshot`.
+
+```ts
+@State<PreferencesStateModel>({
+  name: 'preferences',
+  defaults: {
+    sort: [{ prop: 'name', dir: 'asc' }]
+  }
+})
+@Injectable()
+export class PreferencesState {
+  @Selector()
+  static getSort(state: PreferencesStateModel) {
+    return state.sort;
+  }
+}
+
+@State<AnimalStateModel>({
+  name: 'animals',
+  defaults: [
+    animals: []
+  ]
+})
+@Injectable()
+export class AnimalState {
+
+  constructor(private store: Store) {}
+
+  @Action(GetAnimals)
+  getAnimals(ctx: StateContext<AnimalStateModel>) {
+    const state = ctx.getState();
+
+    // select the snapshot state from preferences
+    const sort = this.store.selectSnapshot(PreferencesState.getSort);
+
+    // do sort magic here
+    return state.sort(sort);
+  }
+
+}
+```
+
+### State Operators
+
+#### Why?
+
+The NGXS `patchState` method is used to do [immutable object](https://en.wikipedia.org/wiki/Immutable_object) updates to the container state slice without the typical long-handed syntax. This is very neat and convenient because you do not have to use the `getState` and `setState` as well as the `Object.assign(...)`or the spread operator to update the state. The `patchState` method only offers a shallow patch and as a result is left wanting in more advanced scenarios. This is where state operators come in. The `setState` method can be passed a state operator which will be used to determine the new state.
+
+#### Basic
+
+The basic idea of operators is that we could describe the modifications to the state using curried functions that are given any inputs that they need to describe the change and are finalized using the state slice that they are assigned to.
+
+#### Example
+
+From theory to practice - let's take the following example:
+
+```ts
+import { Injectable } from '@angular/core';
+import { State, Action, StateContext } from '@ngxs/store';
+import { patch } from '@ngxs/store/operators';
+
+export interface AnimalsStateModel {
+  zebras: string[];
+  pandas: string[];
+  monkeys?: string[];
+}
+
+export class CreateMonkeys {
+  static readonly type = '[Animals] Create monkeys';
+}
+
+@State<AnimalsStateModel>({
+  name: 'animals',
+  defaults: {
+    zebras: [],
+    pandas: [],
+  },
+})
+@Injectable()
+export class AnimalsState {
+  @Action(CreateMonkeys)
+  createMonkeys(ctx: StateContext<AnimalsStateModel>) {
+    ctx.setState(
+      patch({
+        monkeys: [],
+      }),
+    );
+  }
+}
+```
+
+The `patch` operator expresses the intended modification quite nicely and returns a function that will apply these modifications as a new object based on the provided state.
+In order to understand what this is doing let's express this in a long handed form:
+
+```ts
+  // For demonstration purposes! This long handed form is not needed from NGXS v3.4 onwards.
+  @Action(CreateMonkeys)
+  createMonkeys(ctx: StateContext<AnimalsStateModel>) {
+    const state = ctx.getState();
+    ctx.setState({
+      ...state,
+      monkeys: []
+    });
+  }
+```
+
+##### Supplied State Operators
+
+This is not the only operator, we introduce much more that can be used along with or in place of `patch`.
+
+If you want to update the value of a property based on some condition - you can use `iif`, it's signature is:
+
+```ts
+iif<T>(
+  condition: Predicate<T> | boolean,
+  trueOperatorOrValue: StateOperator<T> | T,
+  elseOperatorOrValue?: StateOperator<T> | T
+): StateOperator<T>
+```
+
+If you want to update an item in the array using an operator or value - you can use `updateItem`, it's signature is:
+
+```ts
+updateItem<T>(selector: number | Predicate<T>, operator: T | StateOperator<T>): StateOperator<T[]>
+```
+
+If you want to remove an item from an array by index or predicate - you can use `removeItem`:
+
+```ts
+removeItem<T>(selector: number | Predicate<T>): StateOperator<T[]>
+```
+
+If you want to insert an item to an array, optionally before a specified index - use `insertItem` operator:
+
+```ts
+insertItem<T>(value: T, beforePosition?: number): StateOperator<T[]>
+```
+
+If you want to append specified items to the end of an array - the `append` operator is suitable for that:
+
+```ts
+append<T>(items: T[]): StateOperator<T[]>
+```
+
+It's also possible to compose multiple operators into a single operator that would apply each consecutively using `compose`:
+
+```ts
+compose<T>(...operators: StateOperator<T>[]): StateOperator<T>
+```
+
+These operators introduce a new way of declarative state mutation.
+
+##### Advanced Example
+
+Let's look at more advanced examples:
+
+```ts
+import { Injectable } from '@angular/core';
+import { State, Action, StateContext } from '@ngxs/store';
+import { patch, append, removeItem, insertItem, updateItem } from '@ngxs/store/operators';
+
+export interface AnimalsStateModel {
+  zebras: string[];
+  pandas: string[];
+}
+
+export class AddZebra {
+  static readonly type = '[Animals] Add zebra';
+  constructor(public payload: string) {}
+}
+
+export class RemovePanda {
+  static readonly type = '[Animals] Remove panda';
+  constructor(public payload: string) {}
+}
+
+export class ChangePandaName {
+  static readonly type = '[Animals] Change panda name';
+  constructor(public payload: { name: string; newName: string }) {}
+}
+
+@State<AnimalsStateModel>({
+  name: 'animals',
+  defaults: {
+    zebras: ['Jimmy', 'Jake', 'Alan'],
+    pandas: ['Michael', 'John']
+  }
+})
+@Injectable()
+export class AnimalsState {
+  @Action(AddZebra)
+  addZebra(ctx: StateContext<AnimalsStateModel>, { payload }: AddZebra) {
+    ctx.setState(
+      patch({
+        zebras: append([payload])
+      })
+    );
+  }
+
+  @Action(RemovePanda)
+  removePanda(ctx: StateContext<AnimalsStateModel>, { payload }: RemovePanda) {
+    ctx.setState(
+      patch({
+        pandas: removeItem<string>(name => name === payload)
+      })
+    );
+  }
+
+  @Action(ChangePandaName)
+  changePandaName(ctx: StateContext<AnimalsStateModel>, { payload }: ChangePandaName) {
+    ctx.setState(
+      patch({
+        pandas: updateItem<string>(name => name === payload.name, payload.newName)
+      })
+    );
+  }
+```
+
+You will see that in each case above the state operators are wrapped within a call to the `patch` operator. This is only done because of the convenience that the `patch` state operator provides for targeting a nested property of the state.
+
+##### Custom Operators
+
+You can also define your own operators for updates that are common to your domain. For example:
+
+```ts
+function addEntity(
+  entity: Entity,
+): StateOperator<EntitiesStateModel> {
+  return (state: ReadOnly<EntitiesStateModel>) => {
+    return {
+      ...state,
+      entities: { ...state.entities, [entity.id]: entity },
+      ids: [...state.ids, entity.id],
+    };
+  };
+}
+
+interface CitiesStateModel {
+  // ...
+}
+
+@State<CitiesStateModel>({
+  name: 'cities',
+  defaults: {
+    entities: {},
+    ids: [],
+  },
+})
+@Injectable()
+export class CitiesState {
+  @Action(AddCity)
+  addCity(ctx: StateContext<CitiesStateModel>, { payload }: AddCity) {
+    ctx.setState(addEntity(payload.city));
+  }
+}
+```
+
+Here you can see that the developer chose to define a convenience method called `addEntity` for doing a common state modification. This operator could also have also been defined using existing operators like so:
+
+```ts
+function addEntity(
+  entity: Entity,
+): StateOperator<EntitiesStateModel> {
+  return patch<EntitiesStateModel>({
+    entities: patch({ [entity.id]: entity }),
+    ids: append([entity.id]),
+  });
+}
+```
+
+As you can see, state operators are very powerful to start moving your immutable state updates to be more declarative and expressive. Enhancing the overall maintainability and readability of your state class code.
+
+##### Relevant Articles
+
+[NGXS State Operators](https://medium.com/ngxs/ngxs-state-operators-8b339641b220)
