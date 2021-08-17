@@ -5,7 +5,7 @@
 <!-- code_chunk_output -->
 
 1. [What is NGXS](#what-is-ngxs)
-    1. [CQRS - Command Query Responsibility Segregation](#cqrs-command-query-responsibility-segregation)
+    1. [CQRS Command Query Responsibility Segregation](#cqrs-command-query-responsibility-segregation)
 2. [Installation](#installation)
     1. [Options for NgxsModule.forRoot](#options-for-ngxsmoduleforroot)
         1. [developmentMode](#developmentmode)
@@ -167,7 +167,7 @@
 
 NGXS is modeled after the **CQRS pattern** popularly implemented in libraries like _Redux_ and _NgRx_ but reduces boilerplate by using modern **TypeScript** features such as **classes** and **decorators**.
 
-### CQRS - Command Query Responsibility Segregation
+### CQRS Command Query Responsibility Segregation
 
 It's very useful to separate methods into those that change state (commands) and those that don't (queries).
 
