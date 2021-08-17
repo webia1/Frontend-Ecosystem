@@ -5,157 +5,157 @@
 <!-- code_chunk_output -->
 
 1. [What is NGXS](#what-is-ngxs)
-    1. [CQRS Command Query Responsibility Segregation](#cqrs-command-query-responsibility-segregation)
+   1. [CQRS Command Query Responsibility Segregation](#cqrs-command-query-responsibility-segregation)
 2. [Installation](#installation)
-    1. [Options for NgxsModule.forRoot](#options-for-ngxsmoduleforroot)
-        1. [developmentMode](#developmentmode)
-        2. [selectorOptions](#selectoroptions)
-            1. [suppressErrors](#suppresserrors)
-            2. [injectContainerState](#injectcontainerstate)
-            3. [compatibility](#compatibility)
-                1. [strictContentSecurityPolicy](#strictcontentsecuritypolicy)
-            4. [executionStrategy](#executionstrategy)
-        3. [Example](#example)
-    2. [Development Tools & PlugIns](#development-tools-plugins)
-        1. [Package.json Dependencies](#packagejson-dependencies)
-    3. [Ivy Migration](#ivy-migration)
-        1. [Changes You Have To Do](#changes-you-have-to-do)
+   1. [Options for NgxsModule.forRoot](#options-for-ngxsmoduleforroot)
+      1. [Example before Explanation](#example-before-explanation)
+      2. [developmentMode](#developmentmode)
+      3. [selectorOptions](#selectoroptions)
+         1. [suppressErrors](#suppresserrors)
+         2. [injectContainerState](#injectcontainerstate)
+         3. [compatibility](#compatibility)
+            1. [strictContentSecurityPolicy](#strictcontentsecuritypolicy)
+         4. [executionStrategy](#executionstrategy)
+   2. [Development Tools & PlugIns](#development-tools-plugins)
+      1. [Package.json Dependencies](#packagejson-dependencies)
+   3. [Ivy Migration](#ivy-migration)
+      1. [Changes You Have To Do](#changes-you-have-to-do)
 3. [Concepts](#concepts)
-    1. [Store](#store)
-    2. [State](#state)
-    3. [Selects](#selects)
-    4. [Actions](#actions)
+   1. [Store](#store)
+   2. [State](#state)
+   3. [Selects](#selects)
+   4. [Actions](#actions)
 4. [Store](#store-1)
-    1. [Snapshots](#snapshots)
+   1. [Snapshots](#snapshots)
 5. [State](#state-1)
-    1. [(Optional) Defining State Token](#optional-defining-state-token)
-    2. [Provided State Operators](#provided-state-operators)
-        1. [patch](#patch)
-        2. [updateItem](#updateitem)
-        3. [removeItem](#removeitem)
-        4. [insertItem](#insertitem)
-        5. [append](#append)
-        6. [compose](#compose)
-        7. [iif](#iif)
-    3. [Reset](#reset)
+   1. [(Optional) Defining State Token](#optional-defining-state-token)
+   2. [Provided State Operators](#provided-state-operators)
+      1. [patch](#patch)
+      2. [updateItem](#updateitem)
+      3. [removeItem](#removeitem)
+      4. [insertItem](#insertitem)
+      5. [append](#append)
+      6. [compose](#compose)
+      7. [iif](#iif)
+   3. [Reset](#reset)
 6. [Select](#select)
-    1. [Select Decorators](#select-decorators)
-    2. [Store Select Function](#store-select-function)
-    3. [Snapshot Selects](#snapshot-selects)
-    4. [Memoized Selectors](#memoized-selectors)
-        1. [Selector Options](#selector-options)
-            1. [`suppressErrors`](#suppresserrors-1)
-            2. [`injectContainerState`](#injectcontainerstate-1)
-        2. [Memoized Selectors with Arguments](#memoized-selectors-with-arguments)
-            1. [Lazy Selectors](#lazy-selectors)
-            2. [Dynamic Selectors](#dynamic-selectors)
-        3. [Joining Selectors](#joining-selectors)
-        4. [Meta Selectors](#meta-selectors)
-        5. [The Order of Interacting Selectors](#the-order-of-interacting-selectors)
-        6. [Inheriting Selectors](#inheriting-selectors)
-    5. [Special Considerations](#special-considerations)
-        1. [Angular Libraries: Use of lambdas in static functions](#angular-libraries-use-of-lambdas-in-static-functions)
-        2. [Using Select Decorator with `strictPropertyInitialization`](#using-select-decorator-with-strictpropertyinitialization)
+   1. [Select Decorators](#select-decorators)
+   2. [Store Select Function](#store-select-function)
+   3. [Snapshot Selects](#snapshot-selects)
+   4. [Memoized Selectors](#memoized-selectors)
+      1. [Selector Options](#selector-options)
+         1. [`suppressErrors`](#suppresserrors-1)
+         2. [`injectContainerState`](#injectcontainerstate-1)
+      2. [Memoized Selectors with Arguments](#memoized-selectors-with-arguments)
+         1. [Lazy Selectors](#lazy-selectors)
+         2. [Dynamic Selectors](#dynamic-selectors)
+      3. [Joining Selectors](#joining-selectors)
+      4. [Meta Selectors](#meta-selectors)
+      5. [The Order of Interacting Selectors](#the-order-of-interacting-selectors)
+      6. [Inheriting Selectors](#inheriting-selectors)
+   5. [Special Considerations](#special-considerations)
+      1. [Angular Libraries: Use of lambdas in static functions](#angular-libraries-use-of-lambdas-in-static-functions)
+      2. [Using Select Decorator with `strictPropertyInitialization`](#using-select-decorator-with-strictpropertyinitialization)
 7. [Actions](#actions-1)
-    1. [Naming Conventions](#naming-conventions)
-        1. [Actions taking place in the future](#actions-taking-place-in-the-future)
-        2. [Actions as Reaction of Events (already triggered)](#actions-as-reaction-of-events-already-triggered)
-    2. [Internal Actions](#internal-actions)
-    3. [Creating/Defining Actions](#creatingdefining-actions)
-        1. [Quick Example](#quick-example)
-            1. [Actions with Metadata](#actions-with-metadata)
-        2. [Details](#details)
-            1. [Simple Actions](#simple-actions)
-            2. [Actions with a payload](#actions-with-a-payload)
-            3. [Async Actions](#async-actions)
-            4. [Dispatching Actions From Actions](#dispatching-actions-from-actions)
-    4. [Grouping Actions](#grouping-actions)
-    5. [Dispatching Actions](#dispatching-actions)
-    6. [Dispatching Multiple Actions](#dispatching-multiple-actions)
-    7. [Dispatching & Observables](#dispatching-observables)
-        1. [Reseting a form after dispatching - I](#reseting-a-form-after-dispatching-i)
-        2. [Reseting a form - II - getting state](#reseting-a-form-ii-getting-state)
+   1. [Naming Conventions](#naming-conventions)
+      1. [Actions taking place in the future](#actions-taking-place-in-the-future)
+      2. [Actions as Reaction of Events (already triggered)](#actions-as-reaction-of-events-already-triggered)
+   2. [Internal Actions](#internal-actions)
+   3. [Creating/Defining Actions](#creatingdefining-actions)
+      1. [Quick Example](#quick-example)
+         1. [Actions with Metadata](#actions-with-metadata)
+      2. [Details](#details)
+         1. [Simple Actions](#simple-actions)
+         2. [Actions with a payload](#actions-with-a-payload)
+         3. [Async Actions](#async-actions)
+         4. [Dispatching Actions From Actions](#dispatching-actions-from-actions)
+   4. [Grouping Actions](#grouping-actions)
+   5. [Dispatching Actions](#dispatching-actions)
+   6. [Dispatching Multiple Actions](#dispatching-multiple-actions)
+   7. [Dispatching & Observables](#dispatching-observables)
+      1. [Reseting a form after dispatching - I](#reseting-a-form-after-dispatching-i)
+      2. [Reseting a form - II - getting state](#reseting-a-form-ii-getting-state)
 8. [Advanced Topics](#advanced-topics)
-    1. [Actions Life Cycle](#actions-life-cycle)
-        1. [Theory](#theory)
-        2. [Asynchronous actions](#asynchronous-actions)
-        3. [Error life cycle](#error-life-cycle)
-        4. [Asynchronous Actions continued - "Fire and forget" vs "Fire and wait"](#asynchronous-actions-continued-fire-and-forget-vs-fire-and-wait)
-        5. [Summary](#summary)
-    2. [Action Handlers](#action-handlers)
-    3. [Canceling](#canceling)
-        1. [Basic](#basic)
-        2. [Advanced](#advanced)
-    4. [Composition](#composition)
-    5. [Error Handling](#error-handling)
-        1. [Handling errors within an `@Select`](#handling-errors-within-an-select)
-            1. [Why does RxJS unsubscribe on error?](#why-does-rxjs-unsubscribe-on-error)
-        2. [Handling errors within an `@Action`](#handling-errors-within-an-action)
-        3. [Handling errors after dispatching an action](#handling-errors-after-dispatching-an-action)
-    6. [Lazy Loaded Stores](#lazy-loaded-stores)
-    7. [Life-cycle](#life-cycle)
-        1. [`ngxsOnChanges`](#ngxsonchanges)
-        2. [`ngxsOnInit`](#ngxsoninit)
-        3. [`ngxsAfterBootstrap`](#ngxsafterbootstrap)
-        4. [Lifecycle sequence](#lifecycle-sequence)
-        5. [Feature Modules Order of Imports](#feature-modules-order-of-imports)
-        6. [APP_INITIALIZER Stage](#app_initializer-stage)
-            1. [Theoretical Introduction](#theoretical-introduction)
-            2. [APP_INITIALIZER and NGXS](#app_initializer-and-ngxs)
-            3. [Solution](#solution)
-            4. [Summary](#summary-1)
-    8. [Mapped Sub States](#mapped-sub-states)
-    9. [Meta Reducers](#meta-reducers)
-    10. [Optimizing Selectors](#optimizing-selectors)
-        1. [Memoization](#memoization)
-        2. [Implementation](#implementation)
-    11. [Shared State](#shared-state)
-    12. [State Operators](#state-operators)
-        1. [Why?](#why)
-        2. [Basic](#basic-1)
-        3. [Example](#example-1)
-            1. [Supplied State Operators](#supplied-state-operators)
-            2. [Advanced Example](#advanced-example)
-            3. [Custom Operators](#custom-operators)
-            4. [Relevant Articles](#relevant-articles)
-    13. [Sub States](#sub-states)
-        1. [Unidirectional Data Flow in NGXS](#unidirectional-data-flow-in-ngxs)
-        2. [Example](#example-2)
-        3. [Caveats](#caveats)
-        4. [Preventing sub-state erasure](#preventing-sub-state-erasure)
-    14. [Recipes](#recipes)
-        1. [Authentication](#authentication)
-        2. [Caching](#caching)
-        3. [Component Events from NGXS](#component-events-from-ngxs)
-        4. [Debouncing Actions](#debouncing-actions)
-        5. [Dynamic Plugins](#dynamic-plugins)
-        6. [Immutability Helpers](#immutability-helpers)
-        7. [Style Guide](#style-guide)
-        8. [Unit Testing](#unit-testing)
-        9. [RxAngular Integration](#rxangular-integration)
-    15. [Plugins](#plugins)
-        1. [Introduction](#introduction)
-        2. [cli](#cli)
-        3. [logger](#logger)
-        4. [devtools](#devtools)
-        5. [storage](#storage)
-        6. [form](#form)
-        7. [websocket](#websocket)
-        8. [router](#router)
-        9. [hmr](#hmr)
+   1. [Actions Life Cycle](#actions-life-cycle)
+      1. [Theory](#theory)
+      2. [Asynchronous actions](#asynchronous-actions)
+      3. [Error life cycle](#error-life-cycle)
+      4. [Asynchronous Actions continued - "Fire and forget" vs "Fire and wait"](#asynchronous-actions-continued-fire-and-forget-vs-fire-and-wait)
+      5. [Summary](#summary)
+   2. [Action Handlers](#action-handlers)
+   3. [Canceling](#canceling)
+      1. [Basic](#basic)
+      2. [Advanced](#advanced)
+   4. [Composition](#composition)
+   5. [Error Handling](#error-handling)
+      1. [Handling errors within an `@Select`](#handling-errors-within-an-select)
+         1. [Why does RxJS unsubscribe on error?](#why-does-rxjs-unsubscribe-on-error)
+      2. [Handling errors within an `@Action`](#handling-errors-within-an-action)
+      3. [Handling errors after dispatching an action](#handling-errors-after-dispatching-an-action)
+   6. [Lazy Loaded Stores](#lazy-loaded-stores)
+   7. [Life-cycle](#life-cycle)
+      1. [`ngxsOnChanges`](#ngxsonchanges)
+      2. [`ngxsOnInit`](#ngxsoninit)
+      3. [`ngxsAfterBootstrap`](#ngxsafterbootstrap)
+      4. [Lifecycle sequence](#lifecycle-sequence)
+      5. [Feature Modules Order of Imports](#feature-modules-order-of-imports)
+      6. [APP_INITIALIZER Stage](#app_initializer-stage)
+         1. [Theoretical Introduction](#theoretical-introduction)
+         2. [APP_INITIALIZER and NGXS](#app_initializer-and-ngxs)
+         3. [Solution](#solution)
+         4. [Summary](#summary-1)
+   8. [Mapped Sub States](#mapped-sub-states)
+   9. [Meta Reducers](#meta-reducers)
+   10. [Optimizing Selectors](#optimizing-selectors)
+       1. [Memoization](#memoization)
+       2. [Implementation](#implementation)
+   11. [Shared State](#shared-state)
+   12. [State Operators](#state-operators)
+       1. [Why?](#why)
+       2. [Basic](#basic-1)
+       3. [Example](#example)
+          1. [Supplied State Operators](#supplied-state-operators)
+          2. [Advanced Example](#advanced-example)
+          3. [Custom Operators](#custom-operators)
+          4. [Relevant Articles](#relevant-articles)
+   13. [Sub States](#sub-states)
+       1. [Unidirectional Data Flow in NGXS](#unidirectional-data-flow-in-ngxs)
+       2. [Example](#example-1)
+       3. [Caveats](#caveats)
+       4. [Preventing sub-state erasure](#preventing-sub-state-erasure)
+   14. [Recipes](#recipes)
+       1. [Authentication](#authentication)
+       2. [Caching](#caching)
+       3. [Component Events from NGXS](#component-events-from-ngxs)
+       4. [Debouncing Actions](#debouncing-actions)
+       5. [Dynamic Plugins](#dynamic-plugins)
+       6. [Immutability Helpers](#immutability-helpers)
+       7. [Style Guide](#style-guide)
+       8. [Unit Testing](#unit-testing)
+       9. [RxAngular Integration](#rxangular-integration)
+   15. [Plugins](#plugins)
+       1. [Introduction](#introduction)
+       2. [cli](#cli)
+       3. [logger](#logger)
+       4. [devtools](#devtools)
+       5. [storage](#storage)
+       6. [form](#form)
+       7. [websocket](#websocket)
+       8. [router](#router)
+       9. [hmr](#hmr)
 9. [Labs](#labs)
-    1. [Stable Packages](#stable-packages)
-        1. [@ngxs-labs/data](#ngxs-labsdata)
-        2. [@ngxs-labs/emitter](#ngxs-labsemitter)
-        3. [@ngxs-labs/immer-adapter](#ngxs-labsimmer-adapter)
-        4. [@ngxs-labs/dispatch-decorator](#ngxs-labsdispatch-decorator)
-        5. [@ngxs-labs/select-snapshot](#ngxs-labsselect-snapshot)
-    2. [Alpha or in Development](#alpha-or-in-development)
-        1. [@ngxs-labs/async-storage-plugin](#ngxs-labsasync-storage-plugin)
-        2. [@ngxs-labs/entity-state](#ngxs-labsentity-state)
-        3. [@ngxs-labs/actions-executing](#ngxs-labsactions-executing)
-        4. [@ngxs-labs/attach-action](#ngxs-labsattach-action)
-        5. [@ngxs-labs/firestore-plugin](#ngxs-labsfirestore-plugin)
+   1. [Stable Packages](#stable-packages)
+      1. [@ngxs-labs/data](#ngxs-labsdata)
+      2. [@ngxs-labs/emitter](#ngxs-labsemitter)
+      3. [@ngxs-labs/immer-adapter](#ngxs-labsimmer-adapter)
+      4. [@ngxs-labs/dispatch-decorator](#ngxs-labsdispatch-decorator)
+      5. [@ngxs-labs/select-snapshot](#ngxs-labsselect-snapshot)
+   2. [Alpha or in Development](#alpha-or-in-development)
+      1. [@ngxs-labs/async-storage-plugin](#ngxs-labsasync-storage-plugin)
+      2. [@ngxs-labs/entity-state](#ngxs-labsentity-state)
+      3. [@ngxs-labs/actions-executing](#ngxs-labsactions-executing)
+      4. [@ngxs-labs/attach-action](#ngxs-labsattach-action)
+      5. [@ngxs-labs/firestore-plugin](#ngxs-labsfirestore-plugin)
 
 <!-- /code_chunk_output -->
 
@@ -230,7 +230,55 @@ It's important that you add `NgxsModule.forRoot([])` at the root of your module 
 
 ### Options for NgxsModule.forRoot
 
+#### Example before Explanation
+
+ngxs.config.ts
+
+```ts
+import { NgxsModuleOptions } from '@ngxs/store';
+
+export const ngxsConfig: NgxsModuleOptions = {
+  developmentMode: !environment.production,
+  selectorOptions: {
+    // These Selector Settings are recommended in preparation for NGXS v4
+    // (See below for their effects)
+    suppressErrors: false,
+    injectContainerState: false,
+  },
+  compatibility: {
+    strictContentSecurityPolicy: true,
+  },
+  // Execution strategy overridden for illustrative purposes
+  // (only do this if you know what you are doing)
+  executionStrategy: NoopNgxsExecutionStrategy,
+};
+```
+
+app.module.ts
+
+```ts
+import { NgxsModule } from '@ngxs/store';
+import { ngxsConfig } from './ngxs.config';
+...
+
+@NgModule({
+  imports: [
+    NgxsModule.forRoot(states, ngxsConfig)
+  ],
+  ...
+})
+export class AppModule {}
+```
+
 You can provide an `NgxsModuleOptions` object as the second argument of your `NgxsModule.forRoot` call. The following options are available:
+
+- developmentMode
+- selectorOptions
+  - suppressErrors
+  - injectContainerState
+- compatibility
+  - strictContentSecurityPolicy
+- executionStrategy
 
 #### developmentMode
 
@@ -262,46 +310,6 @@ You can provide an `NgxsModuleOptions` object as the second argument of your `Ng
 - `executionStrategy` - An advanced option that is used to gain specific control over the way that NGXS executes code that is considered to be inside the NGXS context (ie. within `@Action` handlers) and the context under which the NGXS behaviours are observed (outside the NGXS context). These observable behaviours are: `@Select(...)`, `store.select(...)`, `actions.subscribe(...)` or `store.dispatch(...).subscribe(...)`
 
   Developers who prefer to manually control the change detection mechanism in their application may choose to use the `NoopNgxsExecutionStrategy` which does not interfere with zones and therefore relies on the external context to handle change detection (for example: `OnPush` or the Ivy rendering engine). Developers can also choose to implement their own strategy by providing an Angular service class that implements the `NgxsExecutionStrategy` interface. The default value of `null` will result in the default strategy being used. This default strategy runs NGXS operations outside Angular's zone but all observable behaviours of NGXS are run back inside Angular's zone. (The default value is `null`)
-
-#### Example
-
-ngxs.config.ts
-
-```ts
-import { NgxsModuleOptions } from '@ngxs/store';
-
-export const ngxsConfig: NgxsModuleOptions = {
-  developmentMode: !environment.production,
-  selectorOptions: {
-    // These Selector Settings are recommended in preparation for NGXS v4
-    // (See above for their effects)
-    suppressErrors: false,
-    injectContainerState: false,
-  },
-  compatibility: {
-    strictContentSecurityPolicy: true,
-  },
-  // Execution strategy overridden for illustrative purposes
-  // (only do this if you know what you are doing)
-  executionStrategy: NoopNgxsExecutionStrategy,
-};
-```
-
-app.module.ts
-
-```ts
-import { NgxsModule } from '@ngxs/store';
-import { ngxsConfig } from './ngxs.config';
-...
-
-@NgModule({
-  imports: [
-    NgxsModule.forRoot(states, ngxsConfig)
-  ],
-  ...
-})
-export class AppModule {}
-```
 
 ### Development Tools & PlugIns
 
