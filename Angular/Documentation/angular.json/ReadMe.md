@@ -11,10 +11,8 @@
 
 - [Nx generated "angular.json"](#nx-generated-angularjson)
   - [JSON Angular Workspace Schema](#json-angular-workspace-schema)
-  - [Main Structure](#main-structure)
+  - [Main Structure of `angular.json`](#main-structure-of-angularjson)
     - [version](#version)
-    - [newProjectRoot](#newprojectroot)
-    - [projects](#projects)
     - [cli](#cli)
       - [defaultCollection](#defaultcollection)
       - [packageManager](#packagemanager)
@@ -23,6 +21,9 @@
       - [analytics: boolean/string](#analytics-booleanstring)
       - [analyticsSharing](#analyticssharing)
     - [schematics](#schematics)
+    - [newProjectRoot](#newprojectroot)
+    - [defaultProject](#defaultproject)
+    - [projects](#projects)
   - [Projects](#projects-1)
     - [projectType](#projecttype)
     - [root](#root)
@@ -45,51 +46,143 @@ Based on JSON Angular Workspace Schema:
 "title": "Angular CLI Workspace Configuration",
 "type": "object",
 'properties':
-  '$schema',
-  'version',
-  'cli',
-  'schematics',
-  'newProjectRoot',
-  'defaultProject',
+  '$schema': { type: 'string' },
+  'version': { '$ref': '#/definitions/fileVersion' },
+  'cli': { '$ref': '#/definitions/cliOptions' },
+  'schematics': { '$ref': '#/definitions/schematicOptions' },
+  'newProjectRoot': { type: 'string' },
+  'defaultProject': { type: 'string' },
   'projects'
-'additionalProperties',
-'required',
+    type: 'object'
+    patternProperties:
+      '$ref': '#/definitions/project'
+
+'additionalProperties': false,
+ required: [ 'version' ]
 'definitions':
   'cliOptions',
-  'schematicOptions',
-  'fileVersion',
+    defaultCollection:
+    packageManager:
+    warnings:
+    analytics:
+    analyticsSharing:
+      tracking:
+      uuid:
+  'schematicOptions', -> @schematics/angular:
+    'application': -> '$ref': '.../application/schema.json'
+    'class': -> '$ref': '.../class/schema.json'
+    'component': -> '$ref': '.../component/schema.json'
+    'directive': -> '$ref': '.../directive/schema.json'
+    'enum': -> '$ref': '.../enum/schema.json'
+    'guard': -> '$ref': '.../guard/schema.json'
+    'interceptor': -> '$ref': '.../interceptor/schema.json'
+    'interface': -> '$ref': '.../interface/schema.json'
+    'library': -> '$ref': '.../library/schema.json'
+    'pipe': -> '$ref': '.../pipe/schema.json'
+    'ng-new': -> '$ref': '.../ng-new/schema.json'
+    'resolver': -> '$ref': '.../resolver/schema.json'
+    'service': -> '$ref': '.../service/schema.json'
+    'web-worker': -> '$ref': '.../web-worker/schema.json
+  'fileVersion': type: 'integer', minimum: 1,
   'project',
+    properties:
+      'prefix': type: 'string',
+      'root': type: 'string',
+      'i18n': '$ref': '#/definitions/project/definitions/i18n',
+      'sourceRoot': type: 'string',
+      'projectType': type: 'string', enum: [ 'application', 'library' ],
+      'architect': type: 'object',
+        type: 'object',
+        additionalProperties: { '$ref': '#/definitions/project/definitions/target' }
+          type: object
+          properties: oneOf
+            0:
+              '$comment': 'Extendable target with custom builder',
+              type: 'object',
+              properties:
+                'builder',
+                  type: string
+                  description: The builder used for this package.
+                  not:
+                    enum:
+                      '@angular-devkit/build-angular:app-shell',
+                      '@angular-devkit/build-angular:browser',
+                      '@angular-devkit/build-angular:dev-server',
+                      '@angular-devkit/build-angular:extract-i18n',
+                      '@angular-devkit/build-angular:karma',
+                      '@angular-devkit/build-angular:protractor',
+                      '@angular-devkit/build-angular:server',
+                      '@angular-devkit/build-angular:ng-packagr'
+                'defaultConfiguration',
+                  type: 'string',
+                  description: 'A default named configuration to use when a target configuration is not provided.'
+                'options',
+                'configurations
+
+      'targets': type: 'object'
+    required: [ 'root', 'projectType' ],
+    anyOf:
+      { required: [ 'architect' ], not: { required: [ 'targets' ] } },
+      { required: [ 'targets' ], not: { required: [ 'architect' ] } },
+      { not: { required: [ 'targets', 'architect' ] } }
+    definitions: [ 'i18n', 'target' ]
+      i18n:
+        type: object
+        properties:
+          sourceLocale:
+            oneOf:
+              0:
+                '$comment': 'IETF BCP 47 language tag (simplified)'
+                'type': 'string',
+                'default': 'en-US',
+              1:
+                type: 'object',
+                description: 'Localization options to use for the source locale',
+                properties:
+                  code:
+                    type: string,
+                    description: 'Specifies the locale code of the source locale',
+                    pattern: '^[a-zA-Z]{2,3}(-[a-zA-Z]{4})?(-([a-zA-Z]{2}|[0-9]{3}))?(-[a-zA-Z]{5,8})?(-x(-[a-zA-Z0-9]{1,8})+)?$' },
+                  baseHref:
+                    type: string,
+                    description: 'HTML base HREF to use for the locale (defaults to the locale code)' } },
+          locales:
+            type: object
+            patternProperties:
+              oneOf
+                0:
+                  type: string
+                1:
+                  type: array
+                  items: { type: 'string', uniqueItems: true }
+                2:
+                  type: object
+                  properties:
+                    translation: oneOf
+                      0: type: 'string'
+                      1: type: 'array'
+                        items: items: { type: 'string', uniqueItems: true }
+                    baseHref: string
+
   'global'
+    '$schema': { type: 'string', format: 'uri' }
+    'version': { '$ref': '#/definitions/fileVersion' }
+    'cli': { '$ref': '#/definitions/cliOptions' },
+    'schematics': { '$ref': '#/definitions/schematicOptions' }
+
 ```
 
-## Main Structure
+## Main Structure of `angular.json`
 
 ### version
 
 The configuration-file version.
 
-### newProjectRoot
-
-Default project name to use in commands, where not provided as an argument. When you use ng new to create a new application in a new workspace, that application is the default project for the workspace until you change it here.
-
-### projects
-
-An Objects of objects:
-
-```js
-"projects": {
-  "my_app_name": {
-    ...
-  }
-  ...
-}
-```
-
 ### cli
 
-Example: `"defaultCollection": "@nrwl/angular"`,
-
 #### defaultCollection
+
+Example: `"defaultCollection": "@nrwl/angular"`,
 
 #### packageManager
 
@@ -128,6 +221,27 @@ A set of schematics that customize the `ng generate` sub-command option defaults
 - `'@schematics/angular:service'`,
 - `'@schematics/angular:web-worker`'
 
+### newProjectRoot
+
+Path where new projects are created. Absolute or relative to the workspace folder.
+
+### defaultProject
+
+Default project name to use in commands, where not provided as an argument. When you use ng new to create a new application in a new workspace, that application is the default project for the workspace until you change it here.
+
+### projects
+
+An Objects of objects:
+
+```js
+"projects": {
+  "my_app_name": {
+    ...
+  }
+  ...
+}
+```
+
 ## Projects
 
 These are the all available project-properties (re-check) at time of writing (fished out from source files):
@@ -138,12 +252,6 @@ These are the all available project-properties (re-check) at time of writing (fi
 - 'prefix', &#10004;
 - 'schematics', &#10004;
 - 'architect', &#10004;
-
-**Not documented:**
-
-- 'cli', &rarr; &rarr;
-- 'i18n', &rarr; &rarr;
-- 'targets' &rarr; &rarr;
 
 ### projectType
 

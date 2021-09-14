@@ -907,4 +907,12 @@ let s = {
   },
 };
 
-Object.values(a.projects.edvs.sourceRoot); //?
+let keys = Object.values(
+  s.definitions.project.definitions.target.oneOf,
+);
+
+let currentyKey = keys[0].properties.defaultConfiguration;
+
+let kkeys = Object.keys(currentyKey); //?
+
+let kvalues = Object.values(currentyKey); //?
