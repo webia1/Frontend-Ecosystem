@@ -1,3 +1,3 @@
 import { serverSchema } from '../schemas/server_schema';
 
-const k = Object.keys(serverSchema);
+const k = Object.values(serverSchema.required); //?
