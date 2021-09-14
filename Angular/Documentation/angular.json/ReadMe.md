@@ -1,7 +1,9 @@
 # Nx generated "angular.json"
 
 > Last Update: September 2021
+
 > Similar Content: <https://nitayneeman.com/posts/understanding-the-angular-cli-workspace-file/>
+
 > See original files here: <https://github.com/angular/angular-cli/tree/master/packages/angular_devkit/build_angular/src/builders>
 
 <!-- prettier-ignore-start -->
