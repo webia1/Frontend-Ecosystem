@@ -11,26 +11,68 @@
 
 - [Nx generated "angular.json"](#nx-generated-angularjson)
   - [JSON Angular Workspace Schema](#json-angular-workspace-schema)
+    - [First Level - Overview](#first-level-overview)
+      - [$schema](#schema)
+      - [$id](#id)
+      - [title](#title)
+      - [type](#type)
+      - [additionalProperties](#additionalproperties)
+      - [required](#required)
+      - [properties](#properties)
+        - [properties.$schema](#propertiesschema)
+        - [properties.version](#propertiesversion)
+        - [properties.cli](#propertiescli)
+        - [properties.schematics](#propertiesschematics)
+        - [properties.newProjectRoot](#propertiesnewprojectroot)
+        - [properties.defaultProject](#propertiesdefaultproject)
+        - [properties.projects](#propertiesprojects)
+      - [definitions](#definitions)
+        - [definitions.cliOptions](#definitionsclioptions)
+        - [definitions.schematicOptions](#definitionsschematicoptions)
+        - [definitions.fileVersion](#definitionsfileversion)
+        - [definitions.project](#definitionsproject)
+          - [definitions.project.type](#definitionsprojecttype)
+          - [definitions.project.properties -> Important Details](#definitionsprojectproperties-important-details)
+          - [definitions.project.required](#definitionsprojectrequired)
+          - [definitions.project.anyOf](#definitionsprojectanyof)
+          - [definitions.project.additionalProperties](#definitionsprojectadditionalproperties)
+          - [definitions.project.patternProperties](#definitionsprojectpatternproperties)
+          - [definitions.project.definitions -> Important Details](#definitionsprojectdefinitions-important-details)
+        - [definitions.global](#definitionsglobal)
+  - [Important Details](#important-details)
+    - [`definitions.project.properties`](#definitionsprojectproperties)
+    - [`definitions.project.definitions`](#definitionsprojectdefinitions)
+      - [i18n](#i18n)
+      - [target](#target)
+      - [cli](#cli)
+      - [schematics](#schematics)
+      - [prefix](#prefix)
+      - [root](#root)
+      - [i18n](#i18n-1)
+      - [sourceRoot](#sourceroot)
+      - [projectType](#projecttype)
+      - [architect](#architect)
+      - [target](#target-1)
   - [Main Structure of `angular.json`](#main-structure-of-angularjson)
     - [version](#version)
-    - [cli](#cli)
+    - [cli](#cli-1)
       - [defaultCollection](#defaultcollection)
       - [packageManager](#packagemanager)
       - [warnings](#warnings)
         - [versionMismatch: true/false](#versionmismatch-truefalse)
       - [analytics: boolean/string](#analytics-booleanstring)
       - [analyticsSharing](#analyticssharing)
-    - [schematics](#schematics)
+    - [schematics](#schematics-1)
     - [newProjectRoot](#newprojectroot)
     - [defaultProject](#defaultproject)
     - [projects](#projects)
   - [Projects](#projects-1)
-    - [projectType](#projecttype)
-    - [root](#root)
-    - [sourceRoot](#sourceroot)
-    - [prefix](#prefix)
-    - [schematics](#schematics-1)
-    - [architect](#architect)
+    - [projectType](#projecttype-1)
+    - [root](#root-1)
+    - [sourceRoot](#sourceroot-1)
+    - [prefix](#prefix-1)
+    - [schematics](#schematics-2)
+    - [architect](#architect-1)
 
 <!-- /code_chunk_output -->
 
@@ -38,139 +80,314 @@
 
 ## JSON Angular Workspace Schema
 
-Based on JSON Angular Workspace Schema:
+### First Level - Overview
+
+Based on JSON Angular Workspace Schema (at the time of writing):
+
+```js
+'$schema',
+  '$id',
+  'title',
+  'type',
+  'properties',
+  'additionalProperties',
+  'required',
+  'definitions';
+```
+
+The following first-level properties have single line values:
 
 ```js
 "$schema": "http://json-schema.org/draft-07/schema",
 "$id": "ng-cli://config/schema.json",
 "title": "Angular CLI Workspace Configuration",
 "type": "object",
-'properties':
+...
+'additionalProperties': false,
+ required: [ 'version' ]
+```
+
+The properties `properties` and `definitons` are little bit complicated.
+
+#### $schema
+
+```js
+"$schema": "http://json-schema.org/draft-07/schema",
+```
+
+#### $id
+
+```js
+"$id": "ng-cli://config/schema.json",
+```
+
+#### title
+
+```js
+"title": "Angular CLI Workspace Configuration",
+```
+
+#### type
+
+```js
+"type": "object",
+```
+
+#### additionalProperties
+
+```js
+'additionalProperties': false,
+```
+
+#### required
+
+```js
+required: ['version'];
+```
+
+#### properties
+
+```js
+'$schema',
+  'version',
+  'cli',
+  'schematics',
+  'newProjectRoot',
+  'defaultProject',
+  'projects';
+```
+
+The following ones have single line values:
+
+```js
   '$schema': { type: 'string' },
   'version': { '$ref': '#/definitions/fileVersion' },
   'cli': { '$ref': '#/definitions/cliOptions' },
   'schematics': { '$ref': '#/definitions/schematicOptions' },
   'newProjectRoot': { type: 'string' },
   'defaultProject': { type: 'string' },
+```
+
+##### properties.$schema
+
+```js
+'$schema': { type: 'string' },
+```
+
+##### properties.version
+
+```js
+'version': { '$ref': '#/definitions/fileVersion' },
+```
+
+##### properties.cli
+
+```js
+'cli': { '$ref': '#/definitions/cliOptions' },
+```
+
+##### properties.schematics
+
+```js
+'schematics': { '$ref': '#/definitions/schematicOptions' },
+```
+
+##### properties.newProjectRoot
+
+```js
+'newProjectRoot': { type: 'string' },
+```
+
+##### properties.defaultProject
+
+```js
+'defaultProject': { type: 'string' },
+```
+
+##### properties.projects
+
+And the `projects` has a reference to definitions:
+
+```js
   'projects'
     type: 'object'
     patternProperties:
       '$ref': '#/definitions/project'
+```
 
-'additionalProperties': false,
- required: [ 'version' ]
-'definitions':
-  'cliOptions',
-    defaultCollection:
-    packageManager:
-    warnings:
-    analytics:
-    analyticsSharing:
-      tracking:
-      uuid:
-  'schematicOptions', -> @schematics/angular:
-    'application': -> '$ref': '.../application/schema.json'
-    'class': -> '$ref': '.../class/schema.json'
-    'component': -> '$ref': '.../component/schema.json'
-    'directive': -> '$ref': '.../directive/schema.json'
-    'enum': -> '$ref': '.../enum/schema.json'
-    'guard': -> '$ref': '.../guard/schema.json'
-    'interceptor': -> '$ref': '.../interceptor/schema.json'
-    'interface': -> '$ref': '.../interface/schema.json'
-    'library': -> '$ref': '.../library/schema.json'
-    'pipe': -> '$ref': '.../pipe/schema.json'
-    'ng-new': -> '$ref': '.../ng-new/schema.json'
-    'resolver': -> '$ref': '.../resolver/schema.json'
-    'service': -> '$ref': '.../service/schema.json'
-    'web-worker': -> '$ref': '.../web-worker/schema.json
-  'fileVersion': type: 'integer', minimum: 1,
-  'project',
-    properties:
-      'prefix': type: 'string',
-      'root': type: 'string',
-      'i18n': '$ref': '#/definitions/project/definitions/i18n',
-      'sourceRoot': type: 'string',
-      'projectType': type: 'string', enum: [ 'application', 'library' ],
-      'architect': type: 'object',
-        type: 'object',
-        additionalProperties: { '$ref': '#/definitions/project/definitions/target' }
-          type: object
-          properties: oneOf
-            0:
-              '$comment': 'Extendable target with custom builder',
-              type: 'object',
-              properties:
-                'builder',
-                  type: string
-                  description: The builder used for this package.
-                  not:
-                    enum:
-                      '@angular-devkit/build-angular:app-shell',
-                      '@angular-devkit/build-angular:browser',
-                      '@angular-devkit/build-angular:dev-server',
-                      '@angular-devkit/build-angular:extract-i18n',
-                      '@angular-devkit/build-angular:karma',
-                      '@angular-devkit/build-angular:protractor',
-                      '@angular-devkit/build-angular:server',
-                      '@angular-devkit/build-angular:ng-packagr'
-                'defaultConfiguration',
-                  type: 'string',
-                  description: 'A default named configuration to use when a target configuration is not provided.'
-                'options',
-                'configurations
+#### definitions
 
-      'targets': type: 'object'
-    required: [ 'root', 'projectType' ],
-    anyOf:
-      { required: [ 'architect' ], not: { required: [ 'targets' ] } },
-      { required: [ 'targets' ], not: { required: [ 'architect' ] } },
-      { not: { required: [ 'targets', 'architect' ] } }
-    definitions: [ 'i18n', 'target' ]
-      i18n:
-        type: object
-        properties:
-          sourceLocale:
-            oneOf:
-              0:
-                '$comment': 'IETF BCP 47 language tag (simplified)'
-                'type': 'string',
-                'default': 'en-US',
-              1:
-                type: 'object',
-                description: 'Localization options to use for the source locale',
-                properties:
-                  code:
-                    type: string,
-                    description: 'Specifies the locale code of the source locale',
-                    pattern: '^[a-zA-Z]{2,3}(-[a-zA-Z]{4})?(-([a-zA-Z]{2}|[0-9]{3}))?(-[a-zA-Z]{5,8})?(-x(-[a-zA-Z0-9]{1,8})+)?$' },
-                  baseHref:
-                    type: string,
-                    description: 'HTML base HREF to use for the locale (defaults to the locale code)' } },
-          locales:
-            type: object
-            patternProperties:
-              oneOf
-                0:
-                  type: string
-                1:
-                  type: array
-                  items: { type: 'string', uniqueItems: true }
-                2:
-                  type: object
-                  properties:
-                    translation: oneOf
-                      0: type: 'string'
-                      1: type: 'array'
-                        items: items: { type: 'string', uniqueItems: true }
-                    baseHref: string
+<!-- prettier-ignore-start -->
+```js
+'cliOptions', 
+'schematicOptions', 
+'fileVersion', 
+'project', 
+'global';
+```
+<!-- prettier-ignore-end -->
 
+Each of them (except `fileVersion`) has a complicated structure.
+
+The easiest one is `fileVersion`:
+
+```js
+'fileVersion': type: 'integer', minimum: 1,
+```
+
+##### definitions.cliOptions
+
+```js
+'cliOptions',
+  defaultCollection:
+  packageManager:
+  warnings:
+  analytics:
+  analyticsSharing:
+    tracking:
+    uuid:
+```
+
+##### definitions.schematicOptions
+
+The paths are simplified for reasons of clarity:
+
+```js
+'schematicOptions', -> @schematics/angular:
+  'application': -> '$ref': '.../application/schema.json'
+  'class': -> '$ref': '.../class/schema.json'
+  'component': -> '$ref': '.../component/schema.json'
+  'directive': -> '$ref': '.../directive/schema.json'
+  'enum': -> '$ref': '.../enum/schema.json'
+  'guard': -> '$ref': '.../guard/schema.json'
+  'interceptor': -> '$ref': '.../interceptor/schema.json'
+  'interface': -> '$ref': '.../interface/schema.json'
+  'library': -> '$ref': '.../library/schema.json'
+  'pipe': -> '$ref': '.../pipe/schema.json'
+  'ng-new': -> '$ref': '.../ng-new/schema.json'
+  'resolver': -> '$ref': '.../resolver/schema.json'
+  'service': -> '$ref': '.../service/schema.json'
+  'web-worker': -> '$ref': '.../web-worker/schema.json
+```
+
+##### definitions.fileVersion
+
+```js
+'fileVersion': type: 'integer', minimum: 1,
+```
+
+##### definitions.project
+
+```js
+'type',
+  'properties',
+  'required',
+  'anyOf',
+  'additionalProperties',
+  'patternProperties',
+  'definitions';
+```
+
+###### definitions.project.type
+
+```js
+type: string;
+```
+
+###### definitions.project.properties -> Important Details
+
+See section below -> `Important Details`
+
+###### definitions.project.required
+
+```js
+['root', 'projectType'];
+```
+
+###### definitions.project.anyOf
+
+```js
+ { required: [ 'architect' ], not: { required: [ 'targets' ] } },
+ { required: [ 'targets' ], not: { required: [ 'architect' ] } },
+ { not: { required: [ 'targets', 'architect' ] } }
+```
+
+###### definitions.project.additionalProperties
+
+```js
+additionalProperties: false,
+```
+
+###### definitions.project.patternProperties
+
+```js
+patternProperties: {
+      '^[a-z]{1,3}-.*': {},
+    },
+```
+
+###### definitions.project.definitions -> Important Details
+
+See section below -> `Important Details`
+
+##### definitions.global
+
+```js
   'global'
     '$schema': { type: 'string', format: 'uri' }
     'version': { '$ref': '#/definitions/fileVersion' }
     'cli': { '$ref': '#/definitions/cliOptions' },
     'schematics': { '$ref': '#/definitions/schematicOptions' }
-
 ```
+
+## Important Details
+
+### `definitions.project.properties`
+
+```js
+'cli',
+  'schematics',
+  'prefix',
+  'root',
+  'i18n',
+  'sourceRoot',
+  'projectType',
+  'architect',
+  'targets';
+```
+
+### `definitions.project.definitions`
+
+<!-- prettier-ignore-start -->
+```js
+[ 
+'i18n', 
+'target' 
+]
+```
+<!-- prettier-ignore-end -->
+
+#### i18n
+
+#### target
+
+#### cli
+
+#### schematics
+
+#### prefix
+
+#### root
+
+#### i18n
+
+#### sourceRoot
+
+#### projectType
+
+#### architect
+
+#### target
 
 ## Main Structure of `angular.json`
 
