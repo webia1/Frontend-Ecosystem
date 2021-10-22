@@ -140,6 +140,14 @@ The just-created branch can be renamed via this command:
     git config --list --show-origin | awk '{print $1}' | uniq       // show locations
     git config --list --local                                       // local config
 
+
+## Log only current branch
+  
+    git log develop..branchNow    // from develop till now  
+    git log develop..             // same as above
+    git cherry -v develop         // short list of commits (I'am at the "branchNow")
+      
+  
 ## Log pretty only commit hashes and titles and save in a file
 
     git log --pretty="%h %s" > commits.txt
