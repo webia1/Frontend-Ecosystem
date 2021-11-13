@@ -6,7 +6,7 @@
 
 <!-- code_chunk_output -->
 
-- [Angular.json](#angularjson)
+- [Angular.json (Workspace Configuration/Optimization)](#angularjson-workspace-configurationoptimization)
   - [Basic Structure](#basic-structure)
     - [Important Details](#important-details)
   - [`projects.project.architect` or `projects.project.targets`](#projectsprojectarchitect-or-projectsprojecttargets)
