@@ -1,0 +1,6 @@
+/*
+ Function.length
+ Function.name
+ Function.prototype.length
+ Function.prototype.name
+*/
