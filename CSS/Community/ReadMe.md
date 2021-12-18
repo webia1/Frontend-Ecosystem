@@ -93,7 +93,7 @@ Cypress.Commands.add('awaitPageLoad', () => {
 ### Check additionally for Location
 
 ```ts
-cy.location('search').should('equal', '/home');
+cy.location('search').should('equal', 'home');
 ```
 
 ### Get Settled
