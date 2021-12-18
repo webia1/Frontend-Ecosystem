@@ -10,7 +10,8 @@
   - [Wait for Window ready](#wait-for-window-ready)
   - [Get Settled](#get-settled)
   - [Further Assertions](#further-assertions)
-    - [Get Attached](#get-attached)
+  - [Get Attached](#get-attached)
+  - [Force Click](#force-click)
 
 <!-- /code_chunk_output -->
 
@@ -151,7 +152,7 @@ context('Navigation', () => {
 });
 ```
 
-#### Get Attached
+### Get Attached
 
 ```ts
 Cypress.Commands.add('getAttached', (selector) => {
@@ -171,4 +172,12 @@ Cypress.Commands.add('getAttached', (selector) => {
 });
 
 cy.getAttached(someSelector).type('some text');
+```
+
+### Force Click
+
+```ts
+cy.contains('a', /back to queries/i).click({ force: true });
+cy.findByText(/cypress test query/i).click({ force: true });
+cy.findByText(/edit & run query/i).should('exist');
 ```
