@@ -47,6 +47,8 @@ cy.waitUntilAngularStable();
 
 ## If Detached
 
+See also here: https://www.cypress.io/blog/2020/07/22/do-not-get-too-detached/
+
 [Source: GitHub Cypress Issues](https://github.com/cypress-io/cypress/issues/7306#issuecomment-723808720)
 
 ```ts
