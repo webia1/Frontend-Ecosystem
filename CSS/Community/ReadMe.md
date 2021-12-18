@@ -8,6 +8,7 @@
 - [Wait Until Angular is Stable](#wait-until-angular-is-stable)
 - [If Detached](#if-detached)
   - [Wait for Window ready](#wait-for-window-ready)
+  - [Check additionally for Location](#check-additionally-for-location)
   - [Get Settled](#get-settled)
   - [Further Assertions](#further-assertions)
   - [Get Attached](#get-attached)
@@ -87,6 +88,12 @@ Cypress.Commands.add('awaitPageLoad', () => {
   });
   cy.window().should('have.property', 'pageReady', true);
 });
+```
+
+### Check additionally for Location
+
+```ts
+cy.location('search').should('equal', '/home');
 ```
 
 ### Get Settled
