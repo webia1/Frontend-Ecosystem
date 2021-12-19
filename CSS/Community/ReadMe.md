@@ -6,6 +6,7 @@
 
 - [Data `cy` Attributes](#data-cy-attributes)
 - [Wait Until Angular is Stable](#wait-until-angular-is-stable)
+  - [If stable never resolves](#if-stable-never-resolves)
 - [If Detached](#if-detached)
   - [Wait for Window ready](#wait-for-window-ready)
   - [Check additionally for Location](#check-additionally-for-location)
@@ -43,6 +44,24 @@ Cypress.Commands.add('waitUntilAngularStable', () => {
 });
 
 cy.waitUntilAngularStable();
+```
+
+### If stable never resolves
+
+[Source: GitHub Cypress Issues](https://github.com/cypress-io/cypress/issues/7306#issuecomment-997378265)
+
+```ts
+/**
+ * Little hint for someone how is also trying to debug
+ * why whenStable is never resolving: You can add import
+ * 'zone.js/plugins/task-tracking';
+ * in your polyfills.ts and then you get a list of
+ * pending stuff with
+ * */
+
+window
+  .getAngularTestability(window.getAllAngularRootElements()[0])
+  .getPendingTask();
 ```
 
 ## If Detached
