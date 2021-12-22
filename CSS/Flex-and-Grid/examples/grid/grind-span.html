@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0"
+    />
+    <title>Grid Span</title>
+    <style>
+      .grid-container {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        grid-gap: 10px;
+      }
+
+      .box:nth-of-type(2) {
+        background-color: pink;
+        grid-row-start: span 2;
+      }
+
+      .box:nth-of-type(1) {
+        background-color: darkorange;
+        grid-column-start: span 2;
+      }
+
+      .box:nth-of-type(6) {
+        background-color: skyblue;
+        grid-column: 2 / span 2;
+
+        /* short hand for 
+        *  grid-column-start: 2
+        *  grid-column-end: span 2
+        *
+        */
+      }
+
+      .box {
+        padding: 20px;
+        border: 1px solid blue;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="grid-container">
+      <div class="box">box 1</div>
+      <div class="box">box 2</div>
+      <div class="box">
+        box 3 aalksdjlkas dlal skd lkasjd lkajsdl kasjdlkajsdlk asldkj
+        alskdj alksdj
+      </div>
+      <div class="box">
+        box 4 alkjd lkjaskdj hkja shd aslkdj laksdj las kdjl aksjd
+        lkasdlk asldk jaslkdj laksdjl aksdj lkasd kjha sdkj hkjsdfk
+        sdlfls dflsk sdfllsd sldfls dlfsd lalda ad a dla dkal ald lasd
+        laksdk la sdl asld a alkd lakd asdl alsdk
+      </div>
+      <div class="box">box 5</div>
+      <div class="box">box 6</div>
+      <div class="box">box 7</div>
+      <div class="box">box 8</div>
+      <div class="box">box 9</div>
+      <div class="box">box 10</div>
+      <div class="box">box 11</div>
+    </div>
+  </body>
+</html>

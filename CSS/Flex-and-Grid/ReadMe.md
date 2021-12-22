@@ -6,10 +6,12 @@
 
 - [Different Use Cases](#different-use-cases)
   - [Flexbox can optionally wrap](#flexbox-can-optionally-wrap)
+  - [Flex can "spacing between"](#flex-can-spacing-between)
   - [Grid can overlap](#grid-can-overlap)
   - [Grid has space features](#grid-has-space-features)
     - [Fractional Units](#fractional-units)
     - [Content to break grids](#content-to-break-grids)
+  - [Flex has a broader browser support](#flex-has-a-broader-browser-support)
 - [Examples](#examples)
   - [Simple Grid Layout](#simple-grid-layout)
   - [Asymetric Grids](#asymetric-grids)
@@ -33,6 +35,8 @@ Both can stretch, shrink and center but there are also differences.
 
 Grid can also optionally wrap (auto filling) but within the grid line. Flex is one dimensional, therefore we can otionally do things like **align elements along a baseline**. Grid cannot do that in this manner.
 
+### Flex can "spacing between"
+
 ### Grid can overlap
 
 ### Grid has space features
@@ -44,6 +48,8 @@ Grid can also optionally wrap (auto filling) but within the grid line. Flex is o
 #### Content to break grids
 
 <https://css-tricks.com/preventing-a-grid-blowout/>
+
+### Flex has a broader browser support
 
 ## Examples
 

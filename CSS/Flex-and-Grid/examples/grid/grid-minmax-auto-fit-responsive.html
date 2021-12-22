@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0"
+    />
+    <title>Grid Auto-Flow</title>
+    <style>
+      .html,
+      body {
+        margin: 0;
+        padding: 0;
+        height: 100vh;
+        box-sizing: border-box;
+      }
+
+      .grid-level-0 {
+        display: grid;
+        grid-template-columns: 1fr;
+        grid-template-rows: 1fr;
+        grid-gap: 10px;
+        grid-template-areas:
+          'header'
+          'content'
+          'footer';
+      }
+
+      .grid-navigation {
+        display: grid;
+        grid-auto-flow: column;
+        grid-template-columns: 1fr;
+        grid-gap: 10px;
+      }
+
+      .grid-content {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(480px, 1fr));
+        grid-gap: 10px;
+      }
+
+      .box {
+        padding: 20px;
+        border: 1px solid blue;
+      }
+
+      .box-no-padding {
+        border: 1px solid blue;
+      }
+
+      .navibox {
+        padding: 10px;
+        border: 1px solid rgb(208, 255, 0);
+        background-color: rgb(83, 66, 66);
+        color: white;
+      }
+
+      .header {
+        grid-area: header;
+      }
+
+      .content {
+        grid-area: content;
+      }
+
+      .footer {
+        grid-area: footer;
+      }
+
+      .bold {
+        font-weight: bold;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="grid-level-0">
+      <div class="box-no-padding header grid-navigation">
+        <div class="navibox">Logo</div>
+        <div class="navibox">Page 1</div>
+        <div class="navibox">Page 2</div>
+        <div class="navibox">Login</div>
+      </div>
+      <div class="box-no-padding content grid-content">
+        <div class="box">sub box</div>
+        <div class="box">sub box</div>
+        <div class="box">sub box</div>
+        <div class="box">sub box</div>
+        <div class="box">sub box</div>
+        <div class="box">sub box</div>
+        <div class="box">sub box</div>
+        <div class="box">sub box</div>
+      </div>
+      <div class="box footer">box</div>
+    </div>
+  </body>
+</html>
