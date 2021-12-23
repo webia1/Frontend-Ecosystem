@@ -61,6 +61,10 @@ Grid can also optionally wrap (auto filling) but within the grid line. Flex is o
 
 <https://codepen.io/webia1/pen/ZEXJvXz>
 
+### Responsive Grid
+
+<https://codepen.io/webia1/pen/eYGGyZX>
+
 ## Further Reading
 
 ### MDN: Relationship of grid layout to other layout methods

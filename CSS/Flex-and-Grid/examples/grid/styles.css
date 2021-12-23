@@ -9,7 +9,7 @@ body {
 .grid-level-0 {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  grid-template-rows: 1fr 4fr 1fr;
+  grid-template-rows: auto 1fr auto;
   grid-gap: 10px;
   grid-template-areas:
     'header header'
@@ -20,7 +20,7 @@ body {
 .grid-level-1 {
   display: grid;
   grid-template-columns: 1fr;
-  grid-template-rows: 1fr 1fr 4fr 1fr;
+  grid-template-rows: 1fr 1fr 2fr 1fr;
 }
 
 .box {
@@ -49,6 +49,10 @@ body {
   font-weight: bold;
 }
 
+.right {
+  text-align: right;
+}
+
 @media (max-width: 600px) {
   .grid-level-0 {
     grid-template-columns: 1fr;
@@ -57,7 +61,7 @@ body {
       'navigation'
       'content'
       'footer';
-    grid-template-rows: 1fr 1fr 1fr 1fr;
+    grid-template-rows: auto;
   }
 
   .grid-level-1 {
