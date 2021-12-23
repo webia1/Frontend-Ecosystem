@@ -191,3 +191,12 @@ Third element at the top:
   grid-row: 1  /* NOT BOTH , order OR grid-row */
 }
 ```
+
+# short hand start/end
+
+Short hand for `grid-column-start` and `grid-column-end`. (The samle
+applies `grid-row` too.)
+
+```css
+grid-column: 4 / span 2;
+```
