@@ -6,23 +6,44 @@
 
 - [Further Reading](#further-reading)
 - [Basic Principles](#basic-principles)
-  - [Properties for the Grid Container](#properties-for-the-grid-container)
-  - [Properties for Grid Items](#properties-for-grid-items)
-- [Grid template](#grid-template)
-  - [Columns/rows](#columnsrows)
-    - [repeat](#repeat)
-  - [Areas](#areas)
-    - [Example](#example)
-- [Gaps](#gaps)
-- [`justify-items` - row axis](#justify-items-row-axis)
-- [`align-items` - column axis](#align-items-column-axis)
-- [`place-items` shorthand](#place-items-shorthand)
-- [`justify-content` - Within the grid container](#justify-content-within-the-grid-container)
-- [`align-content` - Within the grid container](#align-content-within-the-grid-container)
-- [`place-content` shorthand](#place-content-shorthand)
-- [Auto Columns/Rows](#auto-columnsrows)
-  - [grid-auto-columns](#grid-auto-columns)
-  - [grid-auto-rows](#grid-auto-rows)
+  - [Properties for the Grid Container (Parent)](#properties-for-the-grid-container-parent)
+  - [Properties for Grid Items (Children)](#properties-for-grid-items-children)
+- [Parent Container](#parent-container)
+  - [Grid template](#grid-template)
+    - [Columns/rows](#columnsrows)
+      - [repeat](#repeat)
+    - [Areas](#areas)
+      - [Example](#example)
+  - [Gaps](#gaps)
+  - [`justify-items` - row axis](#justify-items-row-axis)
+  - [`align-items` - column axis](#align-items-column-axis)
+  - [`place-items` shorthand](#place-items-shorthand)
+  - [`justify-content` - Within the grid container](#justify-content-within-the-grid-container)
+  - [`align-content` - Within the grid container](#align-content-within-the-grid-container)
+  - [`place-content` shorthand](#place-content-shorthand)
+  - [Auto Columns/Rows](#auto-columnsrows)
+    - [grid-auto-columns](#grid-auto-columns)
+    - [grid-auto-rows](#grid-auto-rows)
+- [Items (Children)](#items-children)
+  - [Start/End](#startend)
+  - [Column/Row](#columnrow)
+  - [Grid Area](#grid-area)
+  - [Justify self (inside a cell - x axis)](#justify-self-inside-a-cell-x-axis)
+  - [Align self (inside a cell - y axis)](#align-self-inside-a-cell-y-axis)
+  - [Place self](#place-self)
+  - [Sizing Keywords](#sizing-keywords)
+    - [min-content (min word-length)](#min-content-min-word-length)
+    - [max-content (max line-length)](#max-content-max-line-length)
+    - [auto (like 1fr but fills the remaining space if available)](#auto-like-1fr-but-fills-the-remaining-space-if-available)
+    - [fit-content (between min and max)](#fit-content-between-min-and-max)
+    - [franctional units](#franctional-units)
+  - [Functions](#functions)
+    - [`minmax (100px, 1fr)`](#minmax-100px-1fr)
+    - [`repeat(4, 1fr)`, `repeat(4, minmax (100px, 1fr))`](#repeat4-1fr-repeat4-minmax-100px-1fr)
+      - [`auto-fill`, `auto-fit` &rarr; `repeat(auto-fit, minmax (100px, 1fr))`](#auto-fill-auto-fit-rarr-repeatauto-fit-minmax-100px-1fr)
+  - [Subgrid (supported only in Firefox at the time of writing)](#subgrid-supported-only-in-firefox-at-the-time-of-writing)
+    - [Interesting Topic: `display: content`within grids](#interesting-topic-display-contentwithin-grids)
+  - [Masonry (Hot topic)](#masonry-hot-topic)
 
 <!-- /code_chunk_output -->
 
@@ -49,7 +70,7 @@ Complete Guide Flex:
 - Child Element
   - grid-area -..
 
-### Properties for the Grid Container
+### Properties for the Grid Container (Parent)
 
 - display
   - grid | inline-grid
@@ -75,7 +96,7 @@ Complete Guide Flex:
 - grid-auto-flow
 - grid
 
-### Properties for Grid Items
+### Properties for Grid Items (Children)
 
 - grid-column-start
 - grid-column-end
@@ -88,7 +109,9 @@ Complete Guide Flex:
 - align-self
 - place-self
 
-## Grid template
+## Parent Container
+
+### Grid template
 
 Please notice `grid-template` is a shorthand for
 
@@ -104,7 +127,7 @@ and since it **does not reset** the implicit grid properties like
 
 better use the `grid` instead of `grid-template`.
 
-### Columns/rows
+#### Columns/rows
 
 ```css
 grid-template-columns:
@@ -113,13 +136,13 @@ grid template-rows:
   [row-or-columm1-name] track1-size [row-or-columm-n-name] track-n-size
 ```
 
-#### repeat
+##### repeat
 
 ```css
 grid-template-columns: repeat(3, 1f); // = 1f 1f 1f
 ```
 
-### Areas
+#### Areas
 
 ```css
 /* CONTAINER */
@@ -132,7 +155,7 @@ grid-template-areas:
 grid-area: <grid-area-name>;
 ```
 
-#### Example
+##### Example
 
 ```css
 .grid-level-0 {
@@ -163,13 +186,13 @@ grid-area: <grid-area-name>;
 }
 ```
 
-## Gaps
+### Gaps
 
 - `grid-gap` = `gap` = is a shorthand for:
   - `grid-row-gap` (OLD) = `row-gap` (NEW)
   - `grid-column-gap` (OLD) = `column-gap` (NEW)
 
-## `justify-items` - row axis
+### `justify-items` - row axis
 
 `stretch` is default
 
@@ -178,7 +201,7 @@ grid-area: <grid-area-name>;
 justify-items: start | end | center | stretch;
 ```
 
-## `align-items` - column axis
+### `align-items` - column axis
 
 `stretch` is default. See `baseline` example here:
 <https://codepen.io/chriscoyier/pen/NWvvPRj>
@@ -188,11 +211,11 @@ justify-items: start | end | center | stretch;
 align-items: start | end | center | baseline | stretch;
 ```
 
-## `place-items` shorthand
+### `place-items` shorthand
 
 is a shorthand for `<align-items>` / `<justify-items>`
 
-## `justify-content` - Within the grid container
+### `justify-content` - Within the grid container
 
 <!-- prettier-ignore-start -->
 ```css
@@ -208,7 +231,7 @@ justify-content:
 ```
 <!-- prettier-ignore-end -->
 
-## `align-content` - Within the grid container
+### `align-content` - Within the grid container
 
 <!-- prettier-ignore-start -->
 ```css
@@ -224,15 +247,173 @@ justify-content:
 ```
 <!-- prettier-ignore-end -->
 
-## `place-content` shorthand
+### `place-content` shorthand
 
 is a shorthand for `align-content` and `justify-content`.
 
-## Auto Columns/Rows
+### Auto Columns/Rows
+
+It Specifies the size of any auto-generated grid item (tracks or
+better said `implicit grid tracks`). These are automatically created
+tracks if there are more grid tracks than within the initial
+configuration/definition.
 
 See this article first:
 <https://css-tricks.com/difference-explicit-implicit-grids/>
 
-### grid-auto-columns
+#### grid-auto-columns
 
-### grid-auto-rows
+```css
+.container {
+  grid-auto-columns: <track-size>...;
+}
+```
+
+#### grid-auto-rows
+
+```css
+.container {
+  grid-auto-rows: <track-size>...;
+}
+```
+
+## Items (Children)
+
+### Start/End
+
+See overlapping example
+[here](../Flex-and-Grid/examples/grid/overlapping.html).
+
+```css
+.item {
+  /* Properties */
+  grid-column-start:
+  grid-column-end:
+  grid-row-start:
+  grid-row-end:
+  /* Values */
+  <line-number> | <name> | span <number> | span <name> | auto;
+}
+```
+
+### Column/Row
+
+`grid-column` and `grid-row` sind a shorthand for Start/End (see
+above).
+
+```css
+.item {
+  /* Properties */
+  grid-column:
+  grid-row:
+  /* Values */
+  <start-line> / <end-line> OR <start-line> / span <value>;
+}
+```
+
+### Grid Area
+
+A reference to grid-template-areas in Parent Container or given
+values:
+
+```css
+.item-xy {
+  /*
+   * grid-area-name defined within parent container:
+   * grid-template-areas
+   */
+  grid-area: header;
+}
+
+/* OR */
+
+.item-xy {
+  grid-area: <row-start> / <column-start> / <row-end> / <column-end>;
+  /* 5 columns and 3 rows -> last entire colum */
+  grid-area: 1/4/4/6;
+}
+```
+
+### Justify self (inside a cell - x axis)
+
+default: stretch
+
+```css
+.item-xy {
+  justify-self: start | end | center | stretch;
+}
+```
+
+### Align self (inside a cell - y axis)
+
+```css
+.item-xy {
+  align-self: start | end | center | stretch;
+}
+```
+
+### Place self
+
+shorhand for `align-self` and `justify-self` (see above):
+
+```css
+.item-xy {
+  place-self: center stretch;
+}
+```
+
+**Important:** All major browsers except **Edge** support the
+place-self shorthand property.
+
+### Sizing Keywords
+
+#### min-content (min word-length)
+
+#### max-content (max line-length)
+
+#### auto (like 1fr but fills the remaining space if available)
+
+#### fit-content (between min and max)
+
+#### franctional units
+
+### Functions
+
+Further reading:
+[Flexible Grids](https://css-tricks.com/books/greatest-css-tricks/flexible-grids/),
+[auto fit vs fill](https://css-tricks.com/auto-sizing-columns-css-grid-auto-fill-vs-auto-fit/)
+
+#### `minmax (100px, 1fr)`
+
+#### `repeat(4, 1fr)`, `repeat(4, minmax (100px, 1fr))`
+
+##### `auto-fill`, `auto-fit` &rarr; `repeat(auto-fit, minmax (100px, 1fr))`
+
+### Subgrid (supported only in Firefox at the time of writing)
+
+&rarr; see here:
+<https://css-tricks.com/snippets/css/complete-guide-grid/#subgrid>
+
+#### Interesting Topic: `display: content`within grids
+
+&rarr; see here: Section further below
+<https://css-tricks.com/snippets/css/complete-guide-grid/#subgrid>
+
+### Masonry (Hot topic)
+
+Experimental but interesting:
+
+Further reading:
+
+- <https://css-tricks.com/piecing-together-approaches-for-a-css-masonry-layout/>
+- <https://drafts.csswg.org/css-grid-3/#masonry-layout>
+- <https://www.smashingmagazine.com/native-css-masonry-layout-css-grid/>
+
+```css
+.container {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  grid-template-rows: masonry;
+}
+``
+```
