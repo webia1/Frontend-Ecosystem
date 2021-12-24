@@ -24,6 +24,7 @@
   - [Auto Columns/Rows](#auto-columnsrows)
     - [grid-auto-columns](#grid-auto-columns)
     - [grid-auto-rows](#grid-auto-rows)
+  - [`grid-auto-flow`](#grid-auto-flow)
 - [Items (Children)](#items-children)
   - [Start/End](#startend)
   - [Column/Row](#columnrow)
@@ -274,6 +275,29 @@ See this article first:
 ```css
 .container {
   grid-auto-rows: <track-size>...;
+}
+```
+
+### `grid-auto-flow`
+
+excerpt from the source:
+<https://css-tricks.com/snippets/css/complete-guide-grid/#grid-auto-flow>
+(I could not describe it better)
+
+- row – tells the auto-placement algorithm to fill in each row in
+  turn, adding new rows as necessary (default)
+- column – tells the auto-placement algorithm to fill in each column
+  in turn, adding new columns as necessary
+- dense – tells the auto-placement algorithm to attempt to fill in
+  holes earlier in the grid if smaller items come up later
+
+> Note that **dense** only changes the visual order of your items
+> and might cause them to appear out of order, which is **bad for
+> accessibility**.
+
+```css
+.container {
+  grid-auto-flow: row | column | row dense | column dense;
 }
 ```
 
