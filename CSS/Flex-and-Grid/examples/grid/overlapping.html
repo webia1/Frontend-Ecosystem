@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0"
+    />
+    <title>Grid: Overlapping Elements</title>
+    <style>
+      .container {
+        display: grid;
+        gap: 10px;
+        grid-template-columns: repeat(6, 1fr);
+      }
+
+      .item {
+        border: 1px solid blue;
+        padding: 10px;
+      }
+
+      .item-5 {
+        grid-column-start: 2;
+        grid-column-end: 5;
+        grid-row-start: 1;
+        grid-row-end: 4;
+        background-color: burlywood;
+        opacity: 0.7;
+      }
+
+      .item-9 {
+        grid-column-start: 3;
+        grid-column-end: 6;
+        grid-row-start: 2;
+        grid-row-end: 5;
+        background-color: darkkhaki;
+        opacity: 0.7;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="item">item 1</div>
+      <div class="item">item 2</div>
+      <div class="item">item 3</div>
+      <div class="item">item 4</div>
+      <div class="item item-5">item 5</div>
+      <div class="item">item 6</div>
+      <div class="item">item 7</div>
+      <div class="item">item 8</div>
+      <div class="item item-9">item 9</div>
+      <div class="item">item 10</div>
+      <div class="item">item 11</div>
+      <div class="item">item 12</div>
+      <div class="item">item 13</div>
+      <div class="item">item 14</div>
+      <div class="item">item 15</div>
+      <div class="item">item 16</div>
+      <div class="item">item 17</div>
+      <div class="item">item 18</div>
+      <div class="item">item 19</div>
+    </div>
+  </body>
+</html>

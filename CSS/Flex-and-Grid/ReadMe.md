@@ -6,7 +6,6 @@
 
 - [Different Use Cases](#different-use-cases)
   - [Flexbox can optionally wrap](#flexbox-can-optionally-wrap)
-  - [Flexbox can "spacing between"](#flexbox-can-spacing-between)
   - [Grid can overlap](#grid-can-overlap)
   - [Grid has space features](#grid-has-space-features)
     - [Fractional Units](#fractional-units)
@@ -25,7 +24,6 @@
   - [Robin Rendle: Does CSS Grid Replace Flexbox?](#robin-rendle-does-css-grid-replace-flexbox)
   - [Ayush Gupta: Beginner’s Guide To CSS Grid And Flexbox](#ayush-gupta-beginners-guide-to-css-grid-and-flexbox)
   - [Jen Simmons: Flexbox vs. CSS Grid — Which is Better?](#jen-simmons-flexbox-vs-css-grid-which-is-better)
-- [Grid Keywords](#grid-keywords)
 
 <!-- /code_chunk_output -->
 
@@ -39,8 +37,6 @@ Grid can also optionally wrap (auto filling) but within the grid
 line. Flex is one dimensional, therefore we can otionally do things
 like **align elements along a baseline**. Grid cannot do that in
 this manner.
-
-### Flexbox can "spacing between"
 
 ### Grid can overlap
 
