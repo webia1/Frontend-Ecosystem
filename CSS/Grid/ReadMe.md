@@ -301,6 +301,11 @@ excerpt from the source:
 }
 ```
 
+### `grid` a great shorthand
+
+See more about it here:
+<https://css-tricks.com/snippets/css/complete-guide-grid/#grid>
+
 ## Items (Children)
 
 ### Start/End
