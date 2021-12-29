@@ -25,6 +25,7 @@
     - [grid-auto-columns](#grid-auto-columns)
     - [grid-auto-rows](#grid-auto-rows)
   - [`grid-auto-flow`](#grid-auto-flow)
+  - [`grid` a great shorthand](#grid-a-great-shorthand)
 - [Items (Children)](#items-children)
   - [Start/End](#startend)
   - [Column/Row](#columnrow)
