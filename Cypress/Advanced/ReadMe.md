@@ -13,6 +13,7 @@
 - [Other Library Utilities](#other-library-utilities)
 - [Add Custom Library to Cypress](#add-custom-library-to-cypress)
 - [Cypress Examples Page](#cypress-examples-page)
+- [Cypress API Documentation Page](#cypress-api-documentation-page)
 - [Cypress.json](#cypressjson)
 - [Store Keys/Tokens/.. to reuse](#store-keystokens-to-reuse)
 - [Set a custom Header while intercepting](#set-a-custom-header-while-intercepting)
@@ -119,6 +120,10 @@ Check it here: <https://cypresstips.substack.com/p/cypressramda>
 ## Cypress Examples Page
 
 Check it here: <https://example.cypress.io/>
+
+## Cypress API Documentation Page
+
+Check it here: <https://docs.cypress.io/api/table-of-contents>
 
 ## Cypress.json
 
