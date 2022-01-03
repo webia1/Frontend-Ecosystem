@@ -22,6 +22,9 @@
 - [Scroll](#scroll)
 - [Type](#type)
 - [Upload a File](#upload-a-file)
+- [Sharing Context (~ Global Variables)](#sharing-context-~-global-variables)
+- [Test an HTTPS site locally](#test-an-https-site-locally)
+- [Conditional Testing](#conditional-testing)
 
 <!-- /code_chunk_output -->
 
@@ -223,3 +226,61 @@ cy.fixture('foo.pdf', 'binary')
     });
   });
 ```
+
+## Sharing Context (~ Global Variables)
+
+<!-- prettier-ignore-start -->
+>**Notice: Arrow Functions**
+
+>Accessing aliases as properties with `this.*` will not work if you use [arrow functions](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Arrow_functions) for your tests or hooks. This is why all of our examples use the regular `function () {}` syntax as opposed to the lambda "fat arrow" syntax `() => {}`.
+<!-- prettier-ignore-end -->
+
+```ts
+beforeEach(() => {
+  // alias the $btn.text() as 'text'
+  cy.get('button').invoke('text').as('text');
+});
+
+it('has access to text', function () {
+  this.text; // is now available
+});
+```
+
+Instead of using the `this.*` syntax, there is another way to access aliases. The [`cy.get()`](/api/commands/get) command is capable of accessing aliases with a special syntax using the `@` character:
+
+```ts
+beforeEach(() => {
+  // alias the users fixtures
+  cy.fixture('users.json').as('users');
+});
+
+it('utilize users in some way', function () {
+  // use the special '@' syntax to access aliases
+  // which avoids the use of 'this'
+  cy.get('@users').then((users) => {
+    // access the users argument
+    const user = users[0];
+
+    // make sure the header contains the first
+    // user's name
+    cy.get('header').should('contain', user.name);
+  });
+});
+```
+
+_Usually_, replaying previous commands will return what you expect, but not always. It is recommended that you **alias elements as soon as possible** instead of further down a chain of commands.
+
+- `cy.get('#nav header .user').as('user')` (good)
+- `cy.get('#nav').find('header').find('.user').as('user')` (bad)
+
+When in doubt, you can _always_ issue a regular [`cy.get()`](/api/commands/get) to query for the elements again.
+
+See: <https://glebbahmutov.com/blog/fixtures-in-custom-commands/>
+
+## Test an HTTPS site locally
+
+Check it here: <https://glebbahmutov.com/blog/cypress-hosts-option/>
+
+## Conditional Testing
+
+Check it here: <https://docs.cypress.io/guides/core-concepts/conditional-testing#Definition>
