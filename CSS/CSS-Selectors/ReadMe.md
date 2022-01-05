@@ -51,17 +51,17 @@
 
 Latest Specification: <https://drafts.csswg.org/selectors-4/>
 
-- [Adjacent sibling combinator](/en-US/docs/Web/CSS/Adjacent_sibling_combinator)
-- [Attribute selectors](/en-US/docs/Web/CSS/Attribute_selectors)
-- [Child combinator](/en-US/docs/Web/CSS/Child_combinator)
-- [Class selectors](/en-US/docs/Web/CSS/Class_selectors)
-- [Column combinator](/en-US/docs/Web/CSS/Column_combinator)
-- [Descendant combinator](/en-US/docs/Web/CSS/Descendant_combinator)
-- [General sibling combinator](/en-US/docs/Web/CSS/General_sibling_combinator)
-- [ID selectors](/en-US/docs/Web/CSS/ID_selectors)
-- [Selector list](/en-US/docs/Web/CSS/Selector_list)
-- [Type selectors](/en-US/docs/Web/CSS/Type_selectors)
-- [Universal selectors](/en-US/docs/Web/CSS/Universal_selectors)
+- [Adjacent sibling combinator](https://developer.mozilla.org/en-US/docs/Web/CSS/Adjacent_sibling_combinator)
+- [Attribute selectors](https://developer.mozilla.org/en-US/docs/Web/CSS/Attribute_selectors)
+- [Child combinator](https://developer.mozilla.org/en-US/docs/Web/CSS/Child_combinator)
+- [Class selectors](https://developer.mozilla.org/en-US/docs/Web/CSS/Class_selectors)
+- [Column combinator](https://developer.mozilla.org/en-US/docs/Web/CSS/Column_combinator)
+- [Descendant combinator](https://developer.mozilla.org/en-US/docs/Web/CSS/Descendant_combinator)
+- [General sibling combinator](https://developer.mozilla.org/en-US/docs/Web/CSS/General_sibling_combinator)
+- [ID selectors](https://developer.mozilla.org/en-US/docs/Web/CSS/ID_selectors)
+- [Selector list](https://developer.mozilla.org/en-US/docs/Web/CSS/Selector_list)
+- [Type selectors](https://developer.mozilla.org/en-US/docs/Web/CSS/Type_selectors)
+- [Universal selectors](https://developer.mozilla.org/en-US/docs/Web/CSS/Universal_selectors)
 
 ## `:is() (:matches(), :any())`
 
