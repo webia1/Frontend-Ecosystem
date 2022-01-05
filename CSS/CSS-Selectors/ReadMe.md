@@ -49,6 +49,8 @@
 
 ## Further Reading
 
+Latest Specification: <https://drafts.csswg.org/selectors-4/>
+
 - [Adjacent sibling combinator](/en-US/docs/Web/CSS/Adjacent_sibling_combinator)
 - [Attribute selectors](/en-US/docs/Web/CSS/Attribute_selectors)
 - [Child combinator](/en-US/docs/Web/CSS/Child_combinator)
