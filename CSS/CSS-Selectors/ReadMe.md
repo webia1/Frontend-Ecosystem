@@ -5,6 +5,10 @@
 <!-- code_chunk_output -->
 
 - [Further Reading](#further-reading)
+- [`:is() (:matches(), :any())`](#is-matches-any)
+  - [Specificity of `:is()`](#specificity-of-is)
+  - [Forgiving Selectors](#forgiving-selectors)
+  - [Difference between :is() and :where()](#difference-between-is-and-where)
 - [All elements](#all-elements)
 - [All children](#all-children)
 - [ALL a IN each li](#all-a-in-each-li)
@@ -56,6 +60,73 @@
 - [Selector list](/en-US/docs/Web/CSS/Selector_list)
 - [Type selectors](/en-US/docs/Web/CSS/Type_selectors)
 - [Universal selectors](/en-US/docs/Web/CSS/Universal_selectors)
+
+## `:is() (:matches(), :any())`
+
+```css
+/* Selects any paragraph inside a header, main
+   or footer element that is being hovered */
+:is(header, main, footer) p:hover {
+  color: red;
+  cursor: pointer;
+}
+
+/* The above is equivalent to the following */
+header p:hover,
+main p:hover,
+footer p:hover {
+  color: red;
+  cursor: pointer;
+}
+```
+
+### Specificity of `:is()`
+
+Source: <https://css-tricks.com/almanac/selectors/i/is/#specificity-of-is>
+
+```css
+/* This has higher precedence... */
+:is(ol, .list, ul) li {
+  /* ... */
+}
+
+/* ...than this, even though this is later... */
+ol li {
+  /* ... */
+}
+
+/* ...because :is() has the weight of
+* it's heaviest selector, which is `.list`!
+*/
+```
+
+### Forgiving Selectors
+
+The specification defines `:is()` and `:where()` as accepting a [forgiving selector list](https://drafts.csswg.org/selectors-4/#typedef-forgiving-selector-list).
+
+Explanation: Normally if any part of a selector is invalid, the entire block is thrown out: (Source: https://css-tricks.com/almanac/selectors/i/is/ Below an excerpt)
+
+```css
+p,
+p::not-real {
+  color: red; /* nothing will be red, as ::not-real is an invalid selector */
+}
+```
+
+`:is()` can help because it’s “forgiving”:
+
+```css
+:is(p, p::not-real) {
+  /* this is fine */
+  color: red;
+}
+```
+
+### Difference between :is() and :where()
+
+The difference between the two is that `:is()` counts towards the specificity of the overall selector (it takes the specificity of its most specific argument), whereas [`:where()`](/en-US/docs/Web/CSS/:where) has a specificity value of 0\. This is demonstrated by the [example on the `:where()` reference page](/en-US/docs/Web/CSS/:where#examples).
+
+See here: <https://developer.mozilla.org/en-US/docs/Web/CSS/:where#comparing_where_and_is>
 
 ## All elements
 
