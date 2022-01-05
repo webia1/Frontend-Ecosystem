@@ -63,6 +63,8 @@
 
 ## `:is() (:matches(), :any())`
 
+Latest Specification: <https://drafts.csswg.org/selectors-4/#is>
+
 ```css
 /* Selects any paragraph inside a header, main
    or footer element that is being hovered */
