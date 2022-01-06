@@ -25,6 +25,15 @@
 - [Sharing Context (~ Global Variables)](#sharing-context-~-global-variables)
 - [Test an HTTPS site locally](#test-an-https-site-locally)
 - [Conditional Testing](#conditional-testing)
+- [Actions](#actions)
+- [Querying](#querying)
+  - [within()](#within)
+  - [root()](#root)
+- [Traversing DOM Elements](#traversing-dom-elements)
+  - [`.children(), .closest(), .eq(), .filter(), .find()`](#children-closest-eq-filter-find)
+  - [`.first(), .last(), .next(), .nextAll(), .nextUntil(), .not()`](#first-last-next-nextall-nextuntil-not)
+  - [`.parent(), .parents(), .parentsUntil()`](#parent-parents-parentsuntil)
+  - [`.prev(), .prevAll(), .prevUntil(), .siblings()`](#prev-prevall-prevuntil-siblings)
 
 <!-- /code_chunk_output -->
 
@@ -284,3 +293,38 @@ Check it here: <https://glebbahmutov.com/blog/cypress-hosts-option/>
 ## Conditional Testing
 
 Check it here: <https://docs.cypress.io/guides/core-concepts/conditional-testing#Definition>
+
+## Actions
+
+Examples: <https://example.cypress.io/commands/actions>
+
+### `.trigger`
+
+```ts
+cy.get('.my-input-range')
+  .invoke('val', 25)
+  .trigger('change')
+  .get('input[type=range]')
+  .siblings('p')
+  .should('have.text', '25');
+```
+
+## Querying
+
+Examples: <https://example.cypress.io/commands/querying>
+
+### within()
+
+### root()
+
+## Traversing DOM Elements
+
+Examples here <https://example.cypress.io/commands/traversal>
+
+### `.children(), .closest(), .eq(), .filter(), .find()`
+
+### `.first(), .last(), .next(), .nextAll(), .nextUntil(), .not()`
+
+### `.parent(), .parents(), .parentsUntil()`
+
+### `.prev(), .prevAll(), .prevUntil(), .siblings()`

@@ -6,6 +6,7 @@
 
 - [`info`](#info)
 - [`run --browser`](#run-browser)
+- [Check a certain checkbox](#check-a-certain-checkbox)
 
 <!-- /code_chunk_output -->
 
@@ -21,4 +22,13 @@ cypress info
 - cypress run --browser chrome
 - cypress run --browser firefox:dev
 - cypress run --browser edge
+```
+
+## Check a certain checkbox
+
+```ts
+cy.contains('Pay electric bill')
+  .parent()
+  .find('input[type=checkbox]')
+  .check();
 ```
