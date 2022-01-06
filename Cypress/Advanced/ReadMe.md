@@ -26,6 +26,7 @@
 - [Test an HTTPS site locally](#test-an-https-site-locally)
 - [Conditional Testing](#conditional-testing)
 - [Actions](#actions)
+  - [`.trigger`](#trigger)
 - [Querying](#querying)
   - [within()](#within)
   - [root()](#root)
