@@ -22,6 +22,7 @@ For a complete overview, see the [references page](https://rxjs.dev/api/).
     - [Mathematical and Aggregate Operators](#mathematical-and-aggregate-operators)
   - [Creating custom operators](#creating-custom-operators)
     - [Use the `pipe()` function to make new operators](#use-the-pipe-function-to-make-new-operators)
+    - [Creating new operators from scratch](#creating-new-operators-from-scratch)
 
 <!-- /code_chunk_output -->
 
