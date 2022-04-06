@@ -34,13 +34,15 @@ sudo security add-generic-password -s \
 
 ### Spaces
 
-`$ cf spaces`
+```shell
+$ cf spaces
+$ cf t -s <egMYSPACE>    # changes the space (target set space <egMYSPACE>)
+```
 
 ### Target
 
 ```shell
 $ cf t                # shows current target
-$ cf t <egMYSPACE>    # sets the target
 ```
 
 ### Apps
