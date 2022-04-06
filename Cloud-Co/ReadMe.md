@@ -36,18 +36,26 @@ sudo security add-generic-password -s \
 
 ```shell
 $ cf spaces
-$ cf t -s <egMYSPACE>    # changes the space (target set space <egMYSPACE>)
+$ cf t -s <egMYSPACE>          # changes the space (target set space <egMYSPACE>)
 ```
 
 ### Target
 
 ```shell
-$ cf t                # shows current target
+$ cf t                         # shows current target
 ```
 
 ### Apps
 
 ```shell
-$ cf apps             # shows the apps in the current space
-$ cf delete <APPNAME> # deletes the app
+$ cf apps                      # shows the apps in the current space
+$ cf delete <APPNAME>          # deletes the app
 ```
+
+### Logs
+
+```shell
+$ cf logs <APPNAME>            # shows logs for <APPNAME>
+$ cf logs <APPNAME> --recent   # shows recent logs for <APPNAME>
+```
+
