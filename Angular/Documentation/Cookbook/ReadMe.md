@@ -1,28 +1,43 @@
 # Angular Cookbook
 
-<!-- @import "[TOC]" {cmd="toc" depthFrom=1 depthTo=6 orderedList=false} -->
+<!-- @import "[TOC]" {cmd="toc" depthFrom=2 depthTo=6 orderedList=false} -->
 
 <!-- code_chunk_output -->
 
-- [Angular Cookbook](#angular-cookbook)
-  - [Dividing a Form into multiple components](#dividing-a-form-into-multiple-components)
-    - [PARENT](#parent)
-      - [Passing nested FormGroup](#passing-nested-formgroup)
-    - [CHILD](#child)
-      - [TS](#ts)
-      - [HTML](#html)
-  - [Customizing Angular-Flex-Layout Breakpoints](#customizing-angular-flex-layout-breakpoints)
-  - [Working with DateFns](#working-with-datefns)
-    - [Installing (also pipes &rarr; ngx-date-fns)](#installing-also-pipes-rarr-ngx-date-fns)
-    - [Format Dates with DateFns (date-fns)](#format-dates-with-datefns-date-fns)
-    - [Time Distance with DateFns (date-fns)](#time-distance-with-datefns-date-fns)
-  - [Injecting Window Object](#injecting-window-object)
-    - [Provide it](#provide-it)
-    - [Create a Service](#create-a-service)
-    - [Inject and use it in your Component](#inject-and-use-it-in-your-component)
-    - [Or Inject it directly without Service](#or-inject-it-directly-without-service)
+- [Route/Routing Issues on Server (useHash)](#routerouting-issues-on-server-usehash)
+- [Dividing a Form into multiple components](#dividing-a-form-into-multiple-components)
+  - [PARENT](#parent)
+    - [Passing nested FormGroup](#passing-nested-formgroup)
+  - [CHILD](#child)
+    - [TS](#ts)
+    - [HTML](#html)
+- [Customizing Angular-Flex-Layout Breakpoints](#customizing-angular-flex-layout-breakpoints)
+- [Working with DateFns](#working-with-datefns)
+  - [Installing (also pipes &rarr; ngx-date-fns)](#installing-also-pipes-rarr-ngx-date-fns)
+  - [Format Dates with DateFns (date-fns)](#format-dates-with-datefns-date-fns)
+  - [Time Distance with DateFns (date-fns)](#time-distance-with-datefns-date-fns)
+- [Injecting Window Object](#injecting-window-object)
+  - [Provide it](#provide-it)
+  - [Create a Service](#create-a-service)
+  - [Inject and use it in your Component](#inject-and-use-it-in-your-component)
+  - [Or Inject it directly without Service](#or-inject-it-directly-without-service)
 
 <!-- /code_chunk_output -->
+
+## Route/Routing Issues on Server (useHash)
+
+Using hashes allows you to update query params manually without reloading the page.
+
+```ts
+RouterModule.forRoot(routes, {
+      useHash: true,
+}),
+```
+
+Details here:
+
+https://angular.io/api/common/HashLocationStrategy
+https://angular.io/api/common/upgrade/LocationUpgradeConfig
 
 ## Dividing a Form into multiple components
 
