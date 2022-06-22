@@ -310,6 +310,11 @@ then use it:
 
     git fetch . dev:master // from dev -> into -> master
 
+### Try merge to see if everything ok, do not commit, do not merge yet:
+    
+    git merge develop --no-commit --no-ff
+    // Automatic merge went well; stopped before committing as requested
+
 ### Merge: Abort if conflicts (1)
 
     git merge --no-commit branch2
