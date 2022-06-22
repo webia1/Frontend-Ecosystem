@@ -314,6 +314,12 @@ then use it:
     
     git merge develop --no-commit --no-ff
     // Automatic merge went well; stopped before committing as requested
+  
+### Test merge without merge with git alias
+  
+    See -> https://stackoverflow.com/a/23148424/3025289
+    git config --global alias.mergetest '!f(){ git merge --no-commit --no-ff "$1"; git merge --abort; echo "Merge aborted"; };f '
+    git mergetest <branch>
 
 ### Merge: Abort if conflicts (1)
 
