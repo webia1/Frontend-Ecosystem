@@ -10,7 +10,10 @@
   - [Promises](#promises)
     - [Basics](#basics)
     - [Chaining](#chaining)
-    - [Concurent Promises](#concurent-promises)
+  - [Concurent Promises](#concurent-promises)
+    - [Overview: Existing methods](#overview-existing-methods)
+    - [Promise.all(iterable)](#promisealliterable)
+    - [Promise.allSettled()](#promiseallsettled)
 
 <!-- /code_chunk_output -->
 
@@ -78,20 +81,24 @@ p2.then(null, (err) => console.log(err)); // Michael Mayr
 // Basic construction: promise.then(fulfillment_handler, reject_handler);
 ```
 
-better use `catch`. In the following example `then()` would not work and would output `Uncaught (in promise) Error`:
+**Better use `catch`. **
+
+Study the following example:
 
 ```ts
-const promise = Promise.resolve();
+const successHandlerX = () => {
+  throw new Error('just throwing an error');
+};
 
-promise
-  .then(() => {
-    throw new Error('just throwing an error');
-  })
-  .catch((error) => {
-    console.error(error);
-  });
+const errorHandlerX = (err: any) => console.log('Error: ', err);
 
-// [Error: just throwing an error]
+// Error handler won't be executed
+const p3 = Promise.resolve();
+p3.then(successHandlerX, errorHandlerX);
+
+// That will catch the error
+const p4 = Promise.resolve();
+p4.then(successHandlerX).catch(errorHandlerX);
 ```
 
 #### Chaining
@@ -115,19 +122,95 @@ const promise2 = promise.then(successCallback, failureCallback);
 promise2.then((some) => console.log(some)); // I do something
 ```
 
-#### Concurent Promises
+### Concurent Promises
 
-An overview: Existing methods.
+#### Overview: Existing methods
 
+```shell
 - ES2015
-  - Promise.all()
-  - Promise.race()
+  - Promise.all()                   // one rejects, or all fullfills
+  - Promise.race()                  // one of: rejects or fullfills
 - ES2020/21
-  - Promise.allSettled()
-  - Promise.any()
+  - Promise.allSettled()            // all fulfills or rejects
+  - Promise.any()                   // one of: fullfills
 - Since existing
   - Promise.reject()
   - Promise.resolve()
   - Promise.prototype.catch()
   - Promise.prototype.finally()
   - Promise.prototype.then()
+```
+
+#### Promise.all(iterable)
+
+```ts
+const promise1 = Promise.resolve(3);
+const promise2 = 42;
+const promise3 = new Promise((resolve, reject) => {
+  setTimeout(resolve, 100, 'foo');
+});
+
+Promise.all([promise1, promise2, promise3]).then((values) => {
+  console.log(values);
+});
+// expected output: Array [3, 42, "foo"]
+```
+
+Please study the following example: If one of them rejects:
+
+```ts
+const errorHandler = (err: any) => console.log('Error: ', err);
+
+const promise1 = Promise.resolve(3);
+const promise2 = 42;
+const promise3 = new Promise((resolve, _reject) => {
+  setTimeout(resolve, 100, 'foo');
+});
+const p4 = Promise.reject(3);
+
+Promise.all([promise1, promise2, promise3, p4])
+  .then((values) => {
+    console.log(values);
+  })
+  .catch(errorHandler);
+
+// Error: 3
+```
+
+If you want to get all results, whether they resolve or reject, use `Promise.allSettled`. See next chapter below.
+
+#### Promise.allSettled()
+
+The **`Promise.allSettled()`** method returns a promise that resolves after all of the given promises have either fulfilled or rejected, with an array of objects that each describes the outcome of each promise.
+
+It is typically used when you have multiple asynchronous tasks that are not dependent on one another to complete successfully, or you'd always like to know the result of each promise.
+
+```ts
+namespace PromiseAllSettled {
+  const errorHandler = (err: any) => console.log('Error: ', err);
+
+  const promise1 = Promise.resolve(3);
+  const promise2 = 42;
+  const promise3 = new Promise((resolve, _reject) => {
+    setTimeout(resolve, 100, 'foo');
+  });
+  const p4 = Promise.reject(3);
+
+  Promise.allSettled([promise1, promise2, promise3, p4])
+    .then((values) => {
+      console.log(values);
+    })
+    .catch(errorHandler);
+}
+```
+
+Outputs:
+
+```json
+[
+  { "status": "fulfilled", "value": 3 },
+  { "status": "fulfilled", "value": 42 },
+  { "status": "fulfilled", "value": "foo" },
+  { "status": "rejected", "reason": 3 }
+]
+```
