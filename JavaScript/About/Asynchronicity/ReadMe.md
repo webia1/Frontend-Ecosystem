@@ -12,7 +12,7 @@
     - [Chaining](#chaining)
   - [Concurent Promises](#concurent-promises)
     - [Overview: Existing methods](#overview-existing-methods)
-    - [Promise.all(iterable)](#promisealliterable)
+    - [Promise.all()](#promiseall)
     - [Promise.allSettled()](#promiseallsettled)
     - [Promise.race()](#promiserace)
     - [Promise.any](#promiseany)
@@ -144,7 +144,7 @@ promise2.then((some) => console.log(some)); // I do something
   - Promise.prototype.then()
 ```
 
-#### Promise.all(iterable)
+#### Promise.all()
 
 ```ts
 const promise1 = Promise.resolve(3);
