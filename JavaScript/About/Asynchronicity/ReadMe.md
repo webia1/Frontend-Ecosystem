@@ -7,15 +7,22 @@
 - [About](#about)
 - [Callbacks](#callbacks)
   - [Basics with an example](#basics-with-an-example)
-  - [Promises](#promises)
-    - [Basics](#basics)
-    - [Chaining](#chaining)
-  - [Concurent Promises](#concurent-promises)
-    - [Overview: Existing methods](#overview-existing-methods)
-    - [Promise.all()](#promiseall)
-    - [Promise.allSettled()](#promiseallsettled)
-    - [Promise.race()](#promiserace)
-    - [Promise.any](#promiseany)
+- [Promises](#promises)
+  - [Basics](#basics)
+  - [Chaining](#chaining)
+- [Concurent Promises](#concurent-promises)
+  - [Overview: Existing methods](#overview-existing-methods)
+  - [Promise.all()](#promiseall)
+  - [Promise.allSettled()](#promiseallsettled)
+  - [Promise.race()](#promiserace)
+  - [Promise.any](#promiseany)
+- [Custom Asynchronous Iterators](#custom-asynchronous-iterators)
+  - [Custom Iterators](#custom-iterators)
+  - [Custom Iterator (Asynchronous)](#custom-iterator-asynchronous)
+    - [Multiple Urls](#multiple-urls)
+    - [Multiple with `for await of``](#multiple-with-for-await-of)
+      - [Adding: Try/Catch](#adding-trycatch)
+      - [Checking if iterable](#checking-if-iterable)
 
 <!-- /code_chunk_output -->
 
@@ -63,13 +70,13 @@ function greetJohnCallback(msg: string) {
  */
 ```
 
-### Promises
+## Promises
 
 [Source: Excerpt from MozillaDev.](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Using_promises)
 
 A [`Promise`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise) is an object representing the eventual completion or failure of an asynchronous operation. Essentially, a promise is a returned object to which you attach callbacks, instead of passing callbacks into a function. One of the great things about using promises is **chaining**.
 
-#### Basics
+### Basics
 
 The static `Promise.resolve()` and `Promise.reject()` methods allow you to rapidly create settled promises and evaluate how the function behaves when a different value is passed in.
 
@@ -103,7 +110,7 @@ const p4 = Promise.resolve();
 p4.then(successHandlerX).catch(errorHandlerX);
 ```
 
-#### Chaining
+### Chaining
 
 ```ts
 function doSomething(): Promise<string> {
@@ -124,9 +131,9 @@ const promise2 = promise.then(successCallback, failureCallback);
 promise2.then((some) => console.log(some)); // I do something
 ```
 
-### Concurent Promises
+## Concurent Promises
 
-#### Overview: Existing methods
+### Overview: Existing methods
 
 ```shell
 - ES2015
@@ -144,7 +151,7 @@ promise2.then((some) => console.log(some)); // I do something
   - Promise.prototype.then()
 ```
 
-#### Promise.all()
+### Promise.all()
 
 ```ts
 const promise1 = Promise.resolve(3);
@@ -182,7 +189,7 @@ Promise.all([promise1, promise2, promise3, p4])
 
 If you want to get all results, whether they resolve or reject, use `Promise.allSettled`. See next chapter below.
 
-#### Promise.allSettled()
+### Promise.allSettled()
 
 The **`Promise.allSettled()`** method returns a promise that resolves after all of the given promises have either fulfilled or rejected, with an array of objects that each describes the outcome of each promise.
 
@@ -218,7 +225,7 @@ Outputs:
 ]
 ```
 
-#### Promise.race()
+### Promise.race()
 
 The **`Promise.race()`** method returns a promise that fulfills or rejects as soon as one of the promises in an iterable fulfills or rejects, with the value or reason from that promise.
 
@@ -262,7 +269,7 @@ namespace PromiseRace2 {
 // Error:  P2 reject
 ```
 
-#### Promise.any
+### Promise.any
 
 `Promise.any()` takes an iterable of [`Promise`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise) objects. It returns a single promise that resolves as soon as any of the promises in the iterable fulfills, with the value of the fulfilled promise. If no promises in the iterable fulfill (if all of the given promises are rejected), then the returned promise is rejected with an [`AggregateError`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/AggregateError), a new subclass of [`Error`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error) that groups together individual errors.
 
@@ -345,4 +352,271 @@ namespace PromiseAny4 {
 
 // outputs:
 // P4 resolve
+```
+
+## Custom Asynchronous Iterators
+
+### Custom Iterators
+
+Built-in collections (including Array, Set, and Map) have their standard iterators, but we can customize their behaviour with our own defined `Symbol.iterator`.
+
+That's the principle:
+
+```ts
+namespace CustomIterators {
+  const someCollection: any = {
+    one: 'First value',
+    two: 'Second value',
+    three: 'Third value',
+    [Symbol.iterator]() {
+      let i = 0;
+      const values = Object.keys(this);
+      return {
+        next: () => {
+          return {
+            value: this[values[i++]],
+            done: i > values.length,
+          };
+        },
+      };
+    },
+  };
+
+  const iterator = someCollection[Symbol.iterator]();
+
+  console.log(
+    iterator.next(),
+    iterator.next(),
+    iterator.next(),
+    iterator.next(),
+    iterator.next(),
+    iterator.next(),
+  );
+
+  // outputs:
+
+  /**
+  { value: 'First value', done: false }
+  { value: 'Second value', done: false }
+  { value: 'Third value', done: false }
+  { value: undefined, done: true }
+  { value: undefined, done: true }
+  { value: undefined, done: true }
+ */
+
+  for (let s of someCollection) {
+    console.log('Next: ', s);
+  }
+
+  // outputs:
+  /**
+  Next:  First value
+  Next:  Second value
+  Next:  Third value
+  */
+}
+```
+
+### Custom Iterator (Asynchronous)
+
+Similar to the example above, this time with `Symbol.asyncIterator`:
+
+```ts
+namespace CustomAsyncIterators {
+  const someCollection: any = {
+    one: 'First value',
+    two: 'Second value',
+    three: 'Third value',
+    [Symbol.asyncIterator]() {
+      let i = 0;
+      const values = Object.keys(this);
+      return {
+        next: () => {
+          return new Promise((resolve, _reject) => {
+            setTimeout(() => {
+              resolve({
+                value: this[values[i++]],
+                done: i > values.length,
+              });
+            }, 1000);
+          });
+        },
+      };
+    },
+  };
+
+  const iterator = someCollection[Symbol.asyncIterator]();
+
+  iterator.next().then((result: any) => {
+    console.log('Result: ', result);
+  });
+  iterator.next().then((result: any) => {
+    console.log('Result: ', result);
+  });
+  iterator.next().then((result: any) => {
+    console.log('Result: ', result);
+  });
+  iterator.next().then((result: any) => {
+    console.log('Result: ', result);
+  });
+  iterator.next().then((result: any) => {
+    console.log('Result: ', result);
+  });
+  iterator.next().then((result: any) => {
+    console.log('Result: ', result);
+  });
+
+  // outputs after 1 second (= 1000ms)
+  /**
+  Result:  { value: 'First value', done: false }
+  Result:  { value: 'Second value', done: false }
+  Result:  { value: 'Third value', done: false }
+  Result:  { value: undefined, done: true }
+  Result:  { value: undefined, done: true }
+  Result:  { value: undefined, done: true }
+  */
+}
+```
+
+#### Multiple Urls
+
+Small changes (using `async await`):
+
+```ts
+namespace Multiple {
+  const starWarsPeople: any = [
+    'https://swapi.dev/api/people/1/',
+    'https://swapi.dev/api/people/2/',
+    'https://swapi.dev/api/people/3/',
+  ];
+
+  starWarsPeople[Symbol.asyncIterator] = () => {
+    let index = 0;
+
+    return {
+      async next() {
+        if (index === starWarsPeople.length) {
+          return { done: true };
+        }
+
+        const url = starWarsPeople[index];
+        index++;
+        const response = await fetch(url);
+
+        if (!response.ok) {
+          throw new Error('Cannot retrieve Url: ' + url);
+        }
+
+        return {
+          value: await response.json(),
+          done: false,
+        };
+      },
+    };
+  };
+
+  const iterator = starWarsPeople[Symbol.asyncIterator]();
+
+  iterator.next().then((res: any) => {
+    console.log('Response 1: ', res.value.name);
+  });
+
+  iterator.next().then((res: any) => {
+    console.log('Response 2: ', res.value?.name);
+  });
+  iterator.next().then((res: any) => {
+    console.log('Response 3: ', res.value?.name);
+  });
+  iterator.next().then((res: any) => {
+    console.log('Response 4: ', res.value?.name);
+  });
+}
+
+// outputs (always in different order, except 4 (allways first))
+
+/**
+Response 4:  undefined
+Response 2:  C-3PO
+Response 1:  Luke Skywalker
+Response 3:  R2-D2
+ */
+```
+
+#### Multiple with `for await of``
+
+```ts
+namespace Multiple {
+  const starWarsPeople: any = [
+    'https://swapi.dev/api/people/1/',
+    'https://swapi.dev/api/people/2/',
+    'https://swapi.dev/api/people/3/',
+  ];
+
+  starWarsPeople[Symbol.asyncIterator] = () => {
+    let index = 0;
+
+    return {
+      async next() {
+        if (index === starWarsPeople.length) {
+          return { done: true };
+        }
+
+        const url = starWarsPeople[index];
+        index++;
+        const response = await fetch(url);
+
+        if (!response.ok) {
+          throw new Error('Cannot retrieve Url: ' + url);
+        }
+
+        return {
+          value: await response.json(),
+          done: false,
+        };
+      },
+    };
+  };
+
+  async function getNames() {
+    for await (const person of starWarsPeople) {
+      console.log('Person: ', person?.name);
+    }
+  }
+
+  getNames();
+}
+
+// outputs in exact order this time
+
+/**
+Person:  Luke Skywalker
+Person:  C-3PO
+Person:  R2-D2
+ */
+```
+
+##### Adding: Try/Catch
+
+```ts
+async function getNames() {
+  try {
+    for await (const person of starWarsPeople) {
+      console.log('Person: ', person?.name);
+    }
+  } catch (err) {
+    console.error('Error: ', err);
+  }
+}
+```
+
+##### Checking if iterable
+
+```ts
+function isIterable(whatEver: any) {
+  return typeof object[Symbol.iterator] === 'function';
+}
+
+function isAsyncIterable(whatEver: any) {
+  return typeof object[Symbol.asyncIterator] === 'function';
+}
 ```
