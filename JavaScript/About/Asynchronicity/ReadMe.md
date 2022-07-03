@@ -14,6 +14,8 @@
     - [Overview: Existing methods](#overview-existing-methods)
     - [Promise.all(iterable)](#promisealliterable)
     - [Promise.allSettled()](#promiseallsettled)
+    - [Promise.race()](#promiserace)
+    - [Promise.any](#promiseany)
 
 <!-- /code_chunk_output -->
 
@@ -128,11 +130,12 @@ promise2.then((some) => console.log(some)); // I do something
 
 ```shell
 - ES2015
-  - Promise.all()                   // one rejects, or all fullfills
-  - Promise.race()                  // one of: rejects or fullfills
+  - Promise.all()             # one rejects, or all fullfills
+  - Promise.race()            # one of: rejects or fullfills
 - ES2020/21
-  - Promise.allSettled()            // all fulfills or rejects
-  - Promise.any()                   // one of: fullfills
+  - Promise.allSettled()      # all fulfills or rejects
+  - Promise.any()             # one of: fullfills, but
+                                # if all rejects: AggregateError
 - Since existing
   - Promise.reject()
   - Promise.resolve()
@@ -213,4 +216,133 @@ Outputs:
   { "status": "fulfilled", "value": "foo" },
   { "status": "rejected", "reason": 3 }
 ]
+```
+
+#### Promise.race()
+
+The **`Promise.race()`** method returns a promise that fulfills or rejects as soon as one of the promises in an iterable fulfills or rejects, with the value or reason from that promise.
+
+```ts
+namespace PromiseRace1 {
+  const errorHandler = (err: any) => console.log('Error: ', err);
+
+  const promise1 = new Promise((resolve, _reject) => {
+    setTimeout(resolve, 100, 'P1 resolve');
+  });
+  const promise2 = Promise.resolve('P2 resolve');
+  const promise3 = Promise.reject('P3 reject');
+
+  Promise.race([promise1, promise2, promise3])
+    .then((values) => {
+      console.log(values);
+    })
+    .catch(errorHandler);
+}
+
+// outputs:
+// P2 resolve
+
+namespace PromiseRace2 {
+  const errorHandler = (err: any) => console.log('Error: ', err);
+
+  const promise1 = new Promise((resolve, _reject) => {
+    setTimeout(resolve, 100, 'P1 resolve');
+  });
+  const promise2 = Promise.reject('P2 reject');
+  const promise3 = Promise.resolve('P3 resolve');
+
+  Promise.race([promise1, promise2, promise3])
+    .then((values) => {
+      console.log(values);
+    })
+    .catch(errorHandler);
+}
+
+// outputs:
+// Error:  P2 reject
+```
+
+#### Promise.any
+
+`Promise.any()` takes an iterable of [`Promise`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise) objects. It returns a single promise that resolves as soon as any of the promises in the iterable fulfills, with the value of the fulfilled promise. If no promises in the iterable fulfill (if all of the given promises are rejected), then the returned promise is rejected with an [`AggregateError`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/AggregateError), a new subclass of [`Error`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error) that groups together individual errors.
+
+```ts
+namespace PromiseAny1 {
+  const errorHandler = (err: any) => console.log('Error: ', err);
+
+  const promise1 = Promise.resolve('P1 resolve');
+  const promise2 = new Promise((resolve, _reject) => {
+    setTimeout(resolve, 100, 'P2 Foo');
+  });
+  const promise3 = Promise.reject('P3 reject');
+
+  Promise.any([promise1, promise2, promise3])
+    .then((values) => {
+      console.log(values);
+    })
+    .catch(errorHandler);
+}
+
+// outputs:
+// P1 resolve
+
+namespace PromiseAny2 {
+  const errorHandler = (err: any) => console.log('Error: ', err);
+
+  const promise1 = Promise.reject('P1 reject');
+  const promise2 = Promise.resolve('P2 resolve');
+  const promise3 = new Promise((resolve, _reject) => {
+    setTimeout(resolve, 100, 'P3 Foo');
+  });
+
+  Promise.any([promise1, promise2, promise3])
+    .then((values) => {
+      console.log(values);
+    })
+    .catch(errorHandler);
+}
+
+// outputs:
+// P2 resolve
+
+namespace PromiseAny3 {
+  const errorHandler = (err: any) => console.log('Error: ', err);
+
+  const promise1 = Promise.reject('P1 reject');
+  const promise2 = Promise.reject('P2 reject');
+  const promise3 = new Promise((_resolve, reject) => {
+    setTimeout(reject, 100, 'P3 reject');
+  });
+
+  Promise.any([promise1, promise2, promise3])
+    .then((values) => {
+      console.log(values);
+    })
+    .catch(errorHandler);
+}
+
+// outputs:
+// Error:  [AggregateError: All promises were rejected]
+
+namespace PromiseAny4 {
+  const errorHandler = (err: any) => console.log('Error: ', err);
+
+  const promise1 = Promise.reject('P1 reject');
+  const promise2 = Promise.reject('P2 reject');
+  const promise3 = new Promise((_resolve, reject) => {
+    setTimeout(reject, 100, 'P3 reject');
+  });
+  const promise4 = new Promise((resolve, _reject) => {
+    setTimeout(resolve, 200, 'P4 resolve');
+  });
+
+  Promise.any([promise1, promise2, promise3, promise4])
+    .then((values) => {
+      console.log(values);
+    })
+    .catch(errorHandler);
+}
+
+// outputs:
+// P4 resolve
 ```
