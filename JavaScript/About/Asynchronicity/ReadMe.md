@@ -23,6 +23,10 @@
     - [Multiple with `for await of``](#multiple-with-for-await-of)
       - [Adding: Try/Catch](#adding-trycatch)
       - [Checking if iterable](#checking-if-iterable)
+- [Generators](#generators)
+  - [Basics](#basics-1)
+  - [Synchronous](#synchronous)
+  - [Asynchronous](#asynchronous)
 
 <!-- /code_chunk_output -->
 
@@ -620,3 +624,16 @@ function isAsyncIterable(whatEver: any) {
   return typeof object[Symbol.asyncIterator] === 'function';
 }
 ```
+
+## Generators
+
+### Basics
+
+Every generator function is an iterator.
+[>> Exploring JS](https://exploringjs.com/es6/ch_generators.html#sec_iteration-api-inheritance)
+
+### Synchronous
+
+### Asynchronous
+
+@import "./Examples/Generators_Async.ts"
