@@ -1,14 +1,13 @@
 namespace example1 {
-  const starWarsPeople: any = [
-    'https://swapi.dev/api/people/1/',
-    'https://swapi.dev/api/people/2/',
-    'https://swapi.dev/api/people/3/',
-    // 'https://swapi.dev/api/people/none-existing/',
-  ];
+  const starWarsPeople: any = {
+    one: 'First value',
+    two: 'Second value',
+    three: 'Third value',
+  };
 
   starWarsPeople[Symbol.iterator] = function* () {
-    for (let url of this) {
-      yield this[url];
+    for (let key in this) {
+      yield this[key];
     }
   };
 
