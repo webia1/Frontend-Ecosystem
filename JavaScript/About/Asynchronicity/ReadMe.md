@@ -636,6 +636,8 @@ Specialized function or method definitions known as synchronous generators alway
 
 ### Basic Examples
 
+@import "./Examples/Generators-Basic-Examples.ts"
+
 ### Synchronous
 
 @import "./Examples/Generators_Sync.ts"
@@ -643,3 +645,5 @@ Specialized function or method definitions known as synchronous generators alway
 ### Asynchronous
 
 @import "./Examples/Generators_Async.ts"
+
+## Time Limit for Async Tasks
