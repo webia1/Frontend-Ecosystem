@@ -2,8 +2,9 @@
   "compilerOptions": {
     "target": "esnext",
     "lib": ["ESNext", "DOM"],
-    "module": "esnext",
+    "module": "commonjs",
     "esModuleInterop": true,
+    "moduleResolution": "Node",
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
     "forceConsistentCasingInFileNames": true,
@@ -12,5 +13,9 @@
     "skipLibCheck": true,
     "sourceMap": true,
     "noImplicitThis": false
+  },
+  "ts-node": {
+    "esm": true,
+    "experimentalSpecifierResolution": "node"
   }
 }

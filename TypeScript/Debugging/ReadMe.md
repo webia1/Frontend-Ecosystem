@@ -34,6 +34,20 @@
     "skipDefaultLibCheck": true,
     "skipLibCheck": true,
     "sourceMap": true
+  },
+  "ts-node": {
+    "esm": true,
+    "experimentalSpecifierResolution": "node"
+  }
+}
+```
+
+## package.json
+
+```json
+{
+  "devDependencies": {
+    "@types/node": "^18.0.3"
   }
 }
 ```

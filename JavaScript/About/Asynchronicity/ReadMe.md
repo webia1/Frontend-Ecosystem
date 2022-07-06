@@ -25,6 +25,7 @@
       - [Checking if iterable](#checking-if-iterable)
 - [Generators](#generators)
   - [Basics](#basics-1)
+  - [Basic Examples](#basic-examples)
   - [Synchronous](#synchronous)
   - [Asynchronous](#asynchronous)
 
@@ -629,10 +630,15 @@ function isAsyncIterable(whatEver: any) {
 
 ### Basics
 
-Every generator function is an iterator.
+Specialized function or method definitions known as synchronous generators always produce synchronous iterables (actually an iterator that is iterable).
+
 [>> Exploring JS](https://exploringjs.com/es6/ch_generators.html#sec_iteration-api-inheritance)
 
+### Basic Examples
+
 ### Synchronous
+
+@import "./Examples/Generators_Sync.ts"
 
 ### Asynchronous
 
