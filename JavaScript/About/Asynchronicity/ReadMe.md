@@ -28,6 +28,11 @@
   - [Basic Examples](#basic-examples)
   - [Synchronous](#synchronous)
   - [Asynchronous](#asynchronous)
+- [Time Limit for Async Tasks](#time-limit-for-async-tasks)
+  - [Promise.race() versus Promice.any()](#promiserace-versus-promiceany)
+    - [Important Difference](#important-difference)
+  - [Implementation of Timeout](#implementation-of-timeout)
+  - [AbortController](#abortcontroller)
 
 <!-- /code_chunk_output -->
 
@@ -647,3 +652,27 @@ Specialized function or method definitions known as synchronous generators alway
 @import "./Examples/Generators_Async.ts"
 
 ## Time Limit for Async Tasks
+
+### Promise.race() versus Promice.any()
+
+@import "./Examples/PromiseRaceVersusAny.ts"
+
+#### Important Difference
+
+Empty iterables (e.g. `[]` or `''`) -> remains in pending state
+
+```ts
+Promise.race([])
+  .then((res) => console.log('will never run', res))
+  .catch((err) => console.log('this either', err));
+
+Promise.race('')
+  .then((res) => console.log('will never run', res))
+  .catch((err) => console.log('this either', err));
+```
+
+### Implementation of Timeout
+
+@import "./Examples/timeout.ts"
+
+### AbortController
