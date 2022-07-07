@@ -1,5 +1,5 @@
 namespace AbortControllerExample {
-  const timeout = 220; // ms
+  const timeout = 200; // ms
   const controller = new AbortController();
   const signal = controller.signal;
   const url = 'https://swapi.dev/api/people/1/';
@@ -10,7 +10,13 @@ namespace AbortControllerExample {
         ?.json()
         .then((res: any) => console.log('Luke: ', res?.name)),
     )
-    .catch((err) => console.log('Error: ', err));
+    .catch((err) => {
+      if (err?.name === 'AbortError') {
+        console.log('Successfully Aborted');
+      } else {
+        console.log('Error: ', err);
+      }
+    });
 
   setTimeout(() => {
     controller.abort();
