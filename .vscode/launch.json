@@ -2,12 +2,20 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "name": "TypeScript Debugging",
+      "name": "TS Debugging",
       "type": "node",
       "request": "launch",
       "args": ["${relativeFile}"],
       "cwd": "${workspaceRoot}",
       "runtimeExecutable": "/opt/homebrew/bin/ts-node"
+    },
+    {
+      "name": "JS Debugging",
+      "type": "node",
+      "request": "launch",
+      "args": ["${relativeFile}"],
+      "cwd": "${workspaceRoot}",
+      "runtimeExecutable": "/usr/local/bin/node"
     }
   ]
 }

@@ -1,5 +1,7 @@
 function greeting() {
-  console.log("Welcome!");
+  setTimeout(() => {
+    console.log('Welcome!');
+  }, 1000);
 }
 
 function doWhateverItIs(callback) {
@@ -9,3 +11,10 @@ function doWhateverItIs(callback) {
 }
 
 doWhateverItIs(greeting);
+console.log('Hi');
+
+// outputs
+/**
+ * Hi
+ * Welcome!
+ */
