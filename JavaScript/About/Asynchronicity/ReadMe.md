@@ -676,3 +676,5 @@ Promise.race('')
 @import "./Examples/timeout.ts"
 
 ### AbortController
+
+@import "./Examples/AbortController.ts"
