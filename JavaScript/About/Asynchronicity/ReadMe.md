@@ -25,6 +25,11 @@
       - [Checking if iterable](#checking-if-iterable)
 - [Generators](#generators)
   - [Basics](#basics-1)
+  - [Ways to create generators](#ways-to-create-generators)
+    - [Function Declaration](#function-declaration)
+    - [Function Expressions](#function-expressions)
+    - [Within Object Literals](#within-object-literals)
+    - [Within Classes](#within-classes)
   - [Basic Examples](#basic-examples)
   - [Synchronous](#synchronous)
   - [Asynchronous](#asynchronous)
@@ -638,6 +643,44 @@ function isAsyncIterable(whatEver: any) {
 Specialized function or method definitions known as synchronous generators always produce synchronous iterables (actually an iterator that is iterable).
 
 [>> Exploring JS](https://exploringjs.com/es6/ch_generators.html#sec_iteration-api-inheritance)
+
+### Ways to create generators
+
+#### Function Declaration
+
+```js
+function* myGenFunction () {...}
+const myGenObject = myGenFunction();
+```
+
+#### Function Expressions
+
+```js
+const myGenFunction = function* () {...}
+const myGenObject = myGenFunction();
+```
+
+#### Within Object Literals
+
+```js
+
+const myObject = {
+  * myGenMethod () {...}
+};
+const myGenObject = obj.myGenMethod();
+```
+
+#### Within Classes
+
+```js
+class MyClass {
+  * myGenMethod () {...}
+}
+
+const myClass = new MyClass();
+const myGenObj = myClass.myGenMethod();
+
+```
 
 ### Basic Examples
 
