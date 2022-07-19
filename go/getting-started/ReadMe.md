@@ -248,6 +248,7 @@ func main() {
 ```
 
 ```shell
+go run main.go    # Runs directly without building
 go build          # Works if there is a module
 go build main.go  # or so
 ./main.go         # prints Hello World or
@@ -269,4 +270,10 @@ That's the `go.mod`
 module MyProJName
 
 go 1.17
+```
+
+You can also use your GitHub repo as a module like:
+
+```shell
+go mod init github.com/webia1/my-go-project
 ```
