@@ -22,6 +22,9 @@
     - [Go Delve](#go-delve)
     - [Go Tools from Dominik Honnef: Go `staticcheck`](#go-tools-from-dominik-honnef-go-staticcheck)
     - [gopls, the Go Language Server](#gopls-the-go-language-server)
+- [Basics](#basics)
+  - [Pre-Conditions](#pre-conditions)
+  - [Hello World](#hello-world)
 
 <!-- /code_chunk_output -->
 
@@ -197,3 +200,73 @@ You should not need to interact with gopls directly--it will be automatically in
 <https://www.golang.org/x/tools/gopls>
 
 ## Basics
+
+### Pre-Conditions
+
+1. You have installed go and registered necessary PATHs in your shell configuration, e.g:
+
+```shell
+export PATH="/usr/local/sbin:$PATH"
+export PATH="$HOME/.gobrew/current/bin:$HOME/.gobrew/bin:$PATH"
+export GOPATH=$HOME/go
+```
+
+If you want to use private packages and bypass proxy & co:
+
+```shell
+export GOPRIVATE=example.com/*,example2.com/*,ex3.com/whatever
+export GONOSUMDB=example.com/*,example2.com/*,ex3.com/whatever
+export GONOPROXY=example.com/*,example2.com/*,ex3.com/whatever
+```
+
+2. Choose your workspace within your path, e.g:
+
+```shell
+mkdir $GOPATH/src/MyProJName/
+cd    $GOPATH/src/MyProJName/
+```
+
+3. Initialise Module and Create a Main File
+
+```shell
+go mod init
+touch main.go
+```
+
+### Hello World
+
+```go
+// main.go
+
+package main
+
+import "fmt"
+
+func main() {
+  fmt.Println(("Hello World"))
+}
+```
+
+```shell
+go build          # Works if there is a module
+go build main.go  # or so
+./main.go         # prints Hello World or
+./MyProJName      # the same like above
+```
+
+At this time you have the following files in your workspace:
+
+```shell
+MyProJName       # Executable (created by `go build` without file name)
+go.mod           # Text File, e.g. ModuleName and used Go Version etc.
+main             # Executable (created by `go build main.go`)
+main.go          # Source File
+```
+
+That's the `go.mod`
+
+```go
+module MyProJName
+
+go 1.17
+```
