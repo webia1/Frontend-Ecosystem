@@ -1,5 +1,7 @@
 # GoLang
 
+> **Proceeding here: <https://github.com/webia1/MyGoProject>**
+
 <!-- @import "[TOC]" {cmd="toc" depthFrom=2 depthTo=6 orderedList=false} -->
 
 <!-- code_chunk_output -->
