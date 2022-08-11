@@ -15,10 +15,12 @@
 - [Update Index](#update-index)
 - [Git Alias](#git-alias)
 - [Show Configration Paths](#show-configration-paths)
+- [Log only current branch](#log-only-current-branch)
 - [Log pretty only commit hashes and titles and save in a file](#log-pretty-only-commit-hashes-and-titles-and-save-in-a-file)
 - [Log all modified changes by a certain user](#log-all-modified-changes-by-a-certain-user)
   - [Short version](#short-version)
   - [Long Version](#long-version)
+- [Git Search Strings in Code (added)](#git-search-strings-in-code-added)
 - [Remove ignored files from remote repository](#remove-ignored-files-from-remote-repository)
 - [Undo add](#undo-add)
 - [Restore deleted file](#restore-deleted-file)
@@ -44,6 +46,8 @@
 - [Create Branch from Commit Hash](#create-branch-from-commit-hash)
 - [Merge](#merge)
   - [Merge without checkout](#merge-without-checkout)
+  - [Try merge to see if everything ok, do not commit, do not merge yet:](#try-merge-to-see-if-everything-ok-do-not-commit-do-not-merge-yet)
+  - [Test merge without merge with git alias](#test-merge-without-merge-with-git-alias)
   - [Merge: Abort if conflicts (1)](#merge-abort-if-conflicts-1)
   - [Merge: Abort if conflicts (2)](#merge-abort-if-conflicts-2)
   - [Make a branch master or replace/overwrite master with an old branch](#make-a-branch-master-or-replaceoverwrite-master-with-an-old-branch)
@@ -140,14 +144,12 @@ The just-created branch can be renamed via this command:
     git config --list --show-origin | awk '{print $1}' | uniq       // show locations
     git config --list --local                                       // local config
 
-
 ## Log only current branch
-  
-    git log develop..branchNow    // from develop till now  
+
+    git log develop..branchNow    // from develop till now
     git log develop..             // same as above
     git cherry -v develop         // short list of commits (I'am at the "branchNow")
-      
-  
+
 ## Log pretty only commit hashes and titles and save in a file
 
     git log --pretty="%h %s" > commits.txt
@@ -168,6 +170,12 @@ git log --pretty="%H" --author="authorname" |
     do
         git show --oneline --name-only $commit_hash | tail -n+2
     done | sort | uniq
+```
+
+## Git Search Strings in Code (added)
+
+```shell
+git log --format="%H" -S"mySearchString"   # give me the commit IDs (added)
 ```
 
 ## Remove ignored files from remote repository
@@ -311,12 +319,12 @@ then use it:
     git fetch . dev:master // from dev -> into -> master
 
 ### Try merge to see if everything ok, do not commit, do not merge yet:
-    
+
     git merge develop --no-commit --no-ff
     // Automatic merge went well; stopped before committing as requested
-  
+
 ### Test merge without merge with git alias
-  
+
     See -> https://stackoverflow.com/a/23148424/3025289
     git config --global alias.mergetest '!f(){ git merge --no-commit --no-ff "$1"; git merge --abort; echo "Merge aborted"; };f '
     git mergetest <branch>
