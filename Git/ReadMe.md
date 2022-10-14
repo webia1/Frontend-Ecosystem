@@ -244,10 +244,16 @@ then use it:
 
     git config --global credential.helper osxkeychain
 
-## Rename local branch
+## Rename local and remote branch
+
+Local:
 
     git branch -m old_name new_name
     git branch -m new_name // if current branch
+
+Remote:
+
+    git push origin :old_name new_name
 
 ## Delete local branch
 
