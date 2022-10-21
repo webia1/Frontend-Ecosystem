@@ -32,7 +32,7 @@
 - [Set autocrlf to false](#set-autocrlf-to-false)
 - [Store Git Credentials on Mac in Key permanently](#store-git-credentials-on-mac-in-key-permanently)
 - [Set MacOs KeyChain as Git credential store](#set-macos-keychain-as-git-credential-store)
-- [Rename local branch](#rename-local-branch)
+- [Rename local and remote branch](#rename-local-and-remote-branch)
 - [Delete local branch](#delete-local-branch)
 - [Delete remote branch](#delete-remote-branch)
 - [stash](#stash)
@@ -78,6 +78,10 @@ To configure the initial branch name to use in all of your new repositories call
 The just-created branch can be renamed via this command:
 
     git branch -m <name>
+
+Auto push of new branches
+
+    git config --global --add --bool push.autoSetupRemote true
 
 ## .gitignore
 
