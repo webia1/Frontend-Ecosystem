@@ -12,6 +12,7 @@
 - [Git Show Remote Git Repository Url](#git-show-remote-git-repository-url)
 - [Sort remote branched by up-to-dateness (committer date)](#sort-remote-branched-by-up-to-dateness-committer-date)
 - [Git Diff](#git-diff)
+- [Checkout a single file from another branch](#checkout-a-single-file-from-another-branch)
 - [Update Index](#update-index)
 - [Git Alias](#git-alias)
 - [Show Configration Paths](#show-configration-paths)
@@ -132,6 +133,10 @@ Auto push of new branches
     git diff master --name-status   // and what kind of differences
     git diff master --stat          // my favorite
     git diff master --shortstat
+
+## Checkout a single file from another branch
+
+    git restore --source <other-branch> -- readMe.md
 
 ## Update Index
 
