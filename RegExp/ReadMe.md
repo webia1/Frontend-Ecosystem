@@ -5,6 +5,9 @@
     background-color: #EBEBEB;
     color: black;
     border: 1px dotted black;
+    font-size: 18px !important;
+    font-family: "JetBrains Mono";
+
   }
 
   html body blockquote  {
