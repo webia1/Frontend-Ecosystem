@@ -10,6 +10,25 @@
 
   }
 
+  .token.regex {
+    background: yellow;
+  }
+  .token .regex-flags {
+    font-weight: bold;
+    font-size: 120%;
+    color: red;
+    border-bottom: 4px solid red;
+  }
+
+  .token .regex-delimiter {
+    color: blue;
+    font-size: 150%;
+  }
+
+  .token.function {
+    color: #ff35cb;
+  }
+
   html body blockquote  {
     border: 1px solid;
     border-left: 6px solid black;
@@ -50,6 +69,13 @@
 - [Besondere Zeichen](#besondere-zeichen)
 - [Optional, Min, Max,..](#optional-min-max)
 - [Zeichenklasse](#zeichenklasse)
+- [Flags](#flags)
+  - [Unicode](#unicode)
+- [Methoden (test, exec,..)](#methoden-test-exec)
+  - [`test` outputs true or false](#test-outputs-true-or-false)
+  - [`exec` outputs a weird array or null if nothing found:](#exec-outputs-a-weird-array-or-null-if-nothing-found)
+  - [`exec` outputs first index first](#exec-outputs-first-index-first)
+  - [`exec` use sticky flag to set lastIndex manually](#exec-use-sticky-flag-to-set-lastindex-manually)
 - [Beispiele](#beispiele)
   - [Zeichenklassen & Wiederholungen](#zeichenklassen-wiederholungen)
   - [Wordboundary](#wordboundary)
@@ -60,6 +86,8 @@
     - [Within single qutoes](#within-single-qutoes)
     - [n'te Gruppe (naive Annahme: Zwischen Quotes)](#nte-gruppe-naive-annahme-zwischen-quotes)
     - [n'te Gruppe (besser)](#nte-gruppe-besser)
+    - [Benannte Gruppen `(?<name>X)` &centerdot;&centerdot;&centerdot; `\k<name>`](#benannte-gruppen-namex-centerdotcenterdotcenterdot-kname)
+    - [Keine Gruppe trotz `(` `)` &rarr; `(?:` &centerdot;&centerdot;&centerdot; `)`](#keine-gruppe-trotz-rarr-centerdotcenterdotcenterdot)
 
 <!-- /code_chunk_output -->
 
@@ -78,6 +106,7 @@
     \b \B                 word boundary, non word boundary
 
     \cI                   horizontal tab
+    \cH                   STRG + H
     \p{L}                 any kind of letter from any language
 
 ## Optional, Min, Max,..
@@ -94,16 +123,127 @@ X is a placeholder for any regular expression (own notation)
 ## Zeichenklasse
 
     [abc]                 Zeichenklasse: eines davon
+    [^abc]                Keines davon
 
 <div style="page-break-before:always"></div>
+
+## Flags
+
+    i       ignoreCase
+    m       multiline     ^ und $ &rarr; Anfang/Ende der Zeile
+    s       dotAll        . steht nun auch für \n
+    u       unicode
+    g       global
+    y       sticky        beginnt bei lastIndex
+
+### Unicode
+
+    L                     Buchstabe
+    Lu                    Großbuchstabe
+    Ll                    Kleinbuchstabe
+    Nd                    Dezimalzahl
+    P                     Satzzeichen
+    S                     Symbol
+    White_Space           identisch mit \s
+    Emoji                 Emoji & Co.
+
+## Methoden (test, exec,..)
+
+### `test` outputs true or false
+
+```js
+const res = /[0-9]+/.test('Bond 007 is active!');
+
+console.log(res); // true
+```
+
+### `exec` outputs a weird array or null if nothing found:
+
+```js
+const res = /[0-9]+/.exec('Bond 007 is active!');
+```
+
+```json
+[
+  '007',
+  index: 5,
+  input: 'Bond 007 is active!',
+  groups: undefined
+]
+```
+
+```js
+console.log(res?.[0]); // 007
+console.log(res?.index); // 5
+console.log(res?.input); // Bond 007 is active!
+console.log(res?.groups); // undefined
+```
+
+### `exec` outputs first index first
+
+To find all results use `g` flag.
+
+```js
+const someRegExp = /[0-9]+/g;
+const someText = 'Agents 007 and 009 active!';
+let res: RegExpExecArray | null;
+res = someRegExp.exec(someText);
+console.log(res);
+res = someRegExp.exec(someText);
+console.log(res);
+res = someRegExp.exec(someText);
+console.log(res);
+```
+
+outputs:
+
+```json
+[
+  '007',
+  index: 7,
+  input: 'Agents 007 and 009 active!',
+  groups: undefined
+]
+[
+  '009',
+  index: 15,
+  input: 'Agents 007 and 009 active!',
+  groups: undefined
+]
+null
+```
+
+### `exec` use sticky flag to set lastIndex manually
+
+```js
+const someRegExp = /[0-9]+/y;
+someRegExp.lastIndex = 15;
+const someText = 'Agents 007 and 009 active!';
+let res: RegExpExecArray | null;
+res = someRegExp.exec(someText);
+console.log(res);
+
+/** outputs:
+[
+  '009',
+  index: 15,
+  input: 'Agents 007 and 009 active!',
+  groups: undefined
+]
+*/
+```
 
 ## Beispiele
 
 ### Zeichenklassen & Wiederholungen
 
-    [^0-9]                Keine Ziffern
-    [^0-9]+$              Am Ende keine Ziffern
-    [0-9]{4,6}            Vier bis sechs Stellen
+```js
+let a: RegExp;
+
+a = /[^0-9]/; // Keine Ziffern
+a = /[^0-9]+$/; // Am Ende keine Ziffern
+a = /[0-9]{4,6}/; // Vier bis sechs Stellen
+```
 
 ### Wordboundary
 
@@ -149,3 +289,20 @@ Alles zwischen double- or single quotes. (Korrigierte Version des obigen Beispie
     (['"])[^'"]*\1
 
 > Was heißt **"hot"**, ist es **'heiß'** oder **'kalt'**?
+
+#### Benannte Gruppen `(?<name>X)` &centerdot;&centerdot;&centerdot; `\k<name>`
+
+    (?<q>['"])[^'"]*\k<q>             Gruppe heißt q (same above)
+
+> Was heißt **"hot"**, ist es **'heiß'** oder **'kalt'**?
+
+#### Keine Gruppe trotz `(` `)` &rarr; `(?:` &centerdot;&centerdot;&centerdot; `)`
+
+    /(?:http|ftp):\/\/(.*)/gm       // wurde maskiert mit \/\/
+
+<!-- prettier-ignore-start -->
+> **http://example.com**
+> https://example.com
+> **ftp://example.com**
+> dns://something.wrong
+<!-- prettier-ignore-end -->
