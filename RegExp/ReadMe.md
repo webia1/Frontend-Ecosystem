@@ -76,6 +76,7 @@
   - [`exec` outputs a weird array or null if nothing found:](#exec-outputs-a-weird-array-or-null-if-nothing-found)
   - [`exec` outputs first index first](#exec-outputs-first-index-first)
   - [`exec` use sticky flag to set lastIndex manually](#exec-use-sticky-flag-to-set-lastindex-manually)
+  - [`match` (do not forget to use `g` flag)](#match-do-not-forget-to-use-g-flag)
 - [Beispiele](#beispiele)
   - [Zeichenklassen & Wiederholungen](#zeichenklassen-wiederholungen)
   - [Wordboundary](#wordboundary)
@@ -230,6 +231,24 @@ console.log(res);
   input: 'Agents 007 and 009 active!',
   groups: undefined
 ]
+*/
+```
+
+### `match` (do not forget to use `g` flag)
+
+Without `g`-flag similar result like `exec`.
+
+**Important:** The order is changed: `Text.match(regExp)`
+
+```js
+const someRegExp = /[0-9]+/g;
+const someText = 'Agents 007 and 009 active!';
+let res;
+res = someText.match(someRegExp);
+console.log(res);
+
+/** outputs:
+[ '007', '009' ]
 */
 ```
 
