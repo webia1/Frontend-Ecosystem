@@ -1,5 +1,16 @@
 <style>
 
+@media screen {
+  body {
+    background-color: #bbb !important;
+
+  }
+  a {
+     color: rgb(0, 100, 143) !important;
+  }
+}
+
+
 @media print, screen {
   pre[class*="language-"] {
     background-color: #EBEBEB;
@@ -21,7 +32,7 @@
   }
 
   .token .regex-delimiter {
-    color: blue;
+    color: rgb(0, 100, 143) !important;
     font-size: 150%;
   }
 
@@ -89,6 +100,11 @@
     - [n'te Gruppe (besser)](#nte-gruppe-besser)
     - [Benannte Gruppen `(?<name>X)` &centerdot;&centerdot;&centerdot; `\k<name>`](#benannte-gruppen-namex-centerdotcenterdotcenterdot-kname)
     - [Keine Gruppe trotz `(` `)` &rarr; `(?:` &centerdot;&centerdot;&centerdot; `)`](#keine-gruppe-trotz-rarr-centerdotcenterdotcenterdot)
+    - [Simple Gruppen (weitere Beispiele)](#simple-gruppen-weitere-beispiele)
+      - [With `exec` 1](#with-exec-1)
+      - [With `exec` 2](#with-exec-2)
+      - [With `match` (Notice the changed order)](#with-match-notice-the-changed-order)
+      - [With `match` ohne result](#with-match-ohne-result)
 
 <!-- /code_chunk_output -->
 
@@ -285,8 +301,6 @@ a = /[0-9]{4,6}/; // Vier bis sechs Stellen
 
     http|ftp            http oder ftp
 
-<div style="page-break-before:always"></div>
-
 #### Within single qutoes
 
     '([^']*)'
@@ -325,3 +339,86 @@ Alles zwischen double- or single quotes. (Korrigierte Version des obigen Beispie
 > **ftp://example.com**
 > dns://something.wrong
 <!-- prettier-ignore-end -->
+
+#### Simple Gruppen (weitere Beispiele)
+
+##### With `exec` 1
+
+```js
+const timeRegExp = /([1-9]|1[0-2]):([0-5][0-9])([ap]m)/;
+let timeResult: RegExpExecArray | null;
+timeResult = timeRegExp.exec('Lunch at 11:45am or 12:45pm?');
+console.log(timeResult);
+
+/**
+ * outputs:
+ [
+  '11:45am',
+  '11',
+  '45',
+  'am',
+  index: 9,
+  input: 'Lunch at 11:45am or 12:45pm?',
+  groups: undefined
+]
+ */
+```
+
+##### With `exec` 2
+
+```js
+const regex = /(?:http|ftp):\/\/(.*)/gm;
+
+// Alternative syntax using RegExp constructor (no need to escape /)
+// const regex = new RegExp('(?:http|ftp)://(.*)', 'gm')
+
+const str = `http://example.com
+https://example.com
+ftp://example.com
+dns://something.wrong`;
+let m;
+const result = [];
+
+while ((m = regex.exec(str)) !== null) {
+  // This is necessary to avoid infinite
+  // loops with zero-width matches
+
+  if (m.index === regex.lastIndex) {
+    regex.lastIndex++;
+  }
+
+  result.push(m[0]);
+}
+
+console.log(result);
+
+/** outputs
+[ 'http://example.com ', 'ftp://example.com' ]
+ */
+```
+
+##### With `match` (Notice the changed order)
+
+```js
+const timeRegExp = /([1-9]|1[0-2]):([0-5][0-9])([ap]m)/g;
+let timeResult;
+timeResult = 'Lunch at 11:45am or 12:45pm?'.match(timeRegExp);
+console.log(timeResult);
+
+/** outputs:
+[ '11:45am', '12:45pm' ]
+*/
+```
+
+##### With `match` ohne result
+
+```js
+const timeRegExp = /([1-9]|1[0-2]):([0-5][0-9])([ap]m)/g;
+let timeResult;
+timeResult = 'Lunch at 11:45 or 12:45?'.match(timeRegExp);
+console.log(timeResult);
+
+/** outputs:
+null
+*/
+```
