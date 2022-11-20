@@ -102,9 +102,10 @@
     - [Keine Gruppe trotz `(` `)` &rarr; `(?:` &centerdot;&centerdot;&centerdot; `)`](#keine-gruppe-trotz-rarr-centerdotcenterdotcenterdot)
     - [Simple Gruppen (weitere Beispiele)](#simple-gruppen-weitere-beispiele)
       - [With `exec` 1](#with-exec-1)
-      - [With `exec` 2](#with-exec-2)
+      - [With `exec` 2 - while loop](#with-exec-2-while-loop)
       - [With `match` (Notice the changed order)](#with-match-notice-the-changed-order)
       - [With `match` ohne result](#with-match-ohne-result)
+      - [With `match` mit result (am/pm optional)](#with-match-mit-result-ampm-optional)
 
 <!-- /code_chunk_output -->
 
@@ -364,7 +365,7 @@ console.log(timeResult);
  */
 ```
 
-##### With `exec` 2
+##### With `exec` 2 - while loop
 
 ```js
 const regex = /(?:http|ftp):\/\/(.*)/gm;
@@ -420,5 +421,18 @@ console.log(timeResult);
 
 /** outputs:
 null
+*/
+```
+
+##### With `match` mit result (am/pm optional)
+
+```js
+const timeRegExp = /([1-9]|1[0-2]):([0-5][0-9])([ap]m)?/g;
+let timeResult;
+timeResult = 'Lunch at 11:45 or 12:45?'.match(timeRegExp);
+console.log(timeResult);
+
+/** outputs
+[ '11:45', '12:45' ]
 */
 ```
