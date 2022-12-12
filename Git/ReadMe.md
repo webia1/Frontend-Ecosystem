@@ -283,9 +283,11 @@ Remote:
 
 ## tag
 
-    git tag -a v0.1.0 -m "My Message"
-    git push origin <tag_name> // or push all tags with the following command:
+    git tag -a v0.1.0 -m "My Message" // Message optional
+    git push origin <tag>   // or push all tags with the following command:
     git push --tags
+    git tag -d <tag>        // Delete Tag Locally
+    git push origin :<tag>  // Delete Remote Tag
 
 ## Correct last commit
 
