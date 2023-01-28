@@ -1,4 +1,4 @@
-# HTTP Timeouts (& HTTP499 Handling)
+# Handling HTTP 499 and Timeouts
 
 In Go, the best way to handle timeouts when making HTTP requests is to use the `http.Client` struct and set a timeout value on it and there are additionally several other ways described below.
 
