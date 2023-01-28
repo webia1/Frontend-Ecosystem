@@ -181,10 +181,11 @@ git log --pretty="%H" --author="authorname" |
     done | sort | uniq
 ```
 
-## Git Search Strings in Code (added)
+## Git Search Strings in Code
 
 ```shell
-git log --format="%H" -S"mySearchString"   # give me the commit IDs (added)
+git log --format="%H" -S"mySearchString"   # give me the commit IDs (last time added)
+git --no-pager grep "mySearchString" $(git rev-list --all) # checking
 ```
 
 ## Remove ignored files from remote repository
@@ -283,9 +284,11 @@ Remote:
 
 ## tag
 
-    git tag -a v0.1.0 -m "My Message"
-    git push origin <tag_name> // or push all tags with the following command:
+    git tag -a v0.1.0 -m "My Message" // Message optional
+    git push origin <tag>   // or push all tags with the following command:
     git push --tags
+    git tag -d <tag>        // Delete Tag Locally
+    git push origin :<tag>  // Delete Remote Tag
 
 ## Correct last commit
 
