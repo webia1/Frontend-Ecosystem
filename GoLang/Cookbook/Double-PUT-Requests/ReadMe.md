@@ -601,3 +601,5 @@ export class RabbitmqService {
   }
 }
 ```
+
+The backend will remain the same as previous example, you should have your RabbitMQ and Redis instances running and connected to your Angular application to work properly.
