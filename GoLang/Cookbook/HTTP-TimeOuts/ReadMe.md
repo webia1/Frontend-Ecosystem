@@ -417,7 +417,7 @@ func main() {
 
 ```
 
-n this example, the backend creates a new websocket connection when a client navigates to the `/ws` endpoint. It uses the `Upgrader` from the `gorilla/websocket` package to handle the websocket connection.
+In this example, the backend creates a new websocket connection when a client navigates to the `/ws` endpoint. It uses the `Upgrader` from the `gorilla/websocket` package to handle the websocket connection.
 
 When the connection is established, the server starts listening for messages from the client. The example code I provided uses a map to store the request ID and the corresponding context for each request that is made over the websocket connection.
 
