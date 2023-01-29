@@ -106,7 +106,7 @@ func main() {
 
 ```
 
-sudokugo.html
+sudoku.gohtml
 
 ```html
 <form method="post">
