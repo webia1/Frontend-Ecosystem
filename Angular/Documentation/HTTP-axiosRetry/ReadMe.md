@@ -11,6 +11,7 @@ import {
 import { Observable, throwError, TimeoutError } from "rxjs";
 import { catchError, retry, timeout } from "rxjs/operators";
 import axiosRetry from "axios-retry";
+import axios from 'axios';
 
 @Injectable()
 export class RetryInterceptor implements HttpInterceptor {
@@ -19,7 +20,8 @@ export class RetryInterceptor implements HttpInterceptor {
     next: HttpHandler
   ): Observable<HttpEvent<any>> {
     // Configure axiosRetry to retry failed requests up to 3 times
-    axiosRetry(axios, { retries: 3 });
+    const instance = axios.create();
+    axiosRetry(instance, { retries: 3 });
     // Use the retry operator to retry failed requests
     return next.handle(req).pipe(
       retry(3), // retry up to 3 times
