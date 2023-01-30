@@ -34,7 +34,7 @@ export class RetryInterceptor implements HttpInterceptor {
 
 with timeout
 
-´´´ts
+```ts
 import { Injectable } from '@angular/core';
 import { HttpInterceptor, HttpRequest, HttpHandler, HttpEvent, HttpResponse, HttpErrorResponse } from '@angular/common/http';
 import { Observable, throwError, TimeoutError } from 'rxjs';
