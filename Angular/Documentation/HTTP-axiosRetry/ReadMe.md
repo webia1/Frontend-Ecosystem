@@ -69,7 +69,7 @@ export class RetryInterceptor implements HttpInterceptor {
   }
 }
 
-´´´
+```
 
 whole Example
 
@@ -107,5 +107,4 @@ export class RetryInterceptor implements HttpInterceptor {
     );
   }
 }
-
-´´´
+```
