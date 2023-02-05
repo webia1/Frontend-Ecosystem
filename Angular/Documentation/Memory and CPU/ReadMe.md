@@ -22,9 +22,12 @@ To integrate Memory Leak Hunter in your Angular application and run it only in d
 
 3. Start the memory leak hunter: Start the memory leak hunter in your code by calling the `enable` function. You can also specify the interval at which heap snapshots should be taken, for example:
 
-`if (!environment.production) {
+```ts
+if (!environment.production) {
   enable({ interval: 5000 });
-}`
+  leakHunter();
+}
+```
 
 Note that in this example, the memory leak hunter is only started if the environment is not in production mode.
 
