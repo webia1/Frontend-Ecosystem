@@ -1,6 +1,17 @@
 # High Number Precision in JavaScript Applications
 
-## Vanilla Approach
+<!-- @import "[TOC]" {cmd="toc" depthFrom=2 depthTo=6 orderedList=false} -->
+
+<!-- code_chunk_output -->
+
+- [Introduction](#-introduction)
+- [Vanilla Approach](#-vanilla-approach)
+- [Thirdpary Libraries](#-thirdpary-libraries)
+- [Benchmarks](#-benchmarks)
+
+<!-- /code_chunk_output -->
+
+## Introduction
 
 To achieve the highest possible precision when performing arithmetic operations with large floating-point numbers in JavaScript, you can use the `BigInt` data type which provides arbitrary precision integer arithmetic.
 
@@ -57,7 +68,64 @@ const resultRounded = Math.round(result * 10 ** 7) / 10 ** 7;
 console.log(resultRounded); // Output: 8.5397332
 ```
 
-## Libraries
+## Vanilla Approach
+
+```js
+// Returns the sum of two floating point numbers with a specified number of decimal places
+function add(a, b, decimalPlaces) {
+  const factor = Math.pow(10, decimalPlaces);
+  return Math.round((a + b) * factor) / factor;
+}
+
+// Returns the difference of two floating point numbers with a specified number of decimal places
+function subtract(a, b, decimalPlaces) {
+  const factor = Math.pow(10, decimalPlaces);
+  return Math.round((a - b) * factor) / factor;
+}
+
+// Returns the product of two floating point numbers with a specified number of decimal places
+function multiply(a, b, decimalPlaces) {
+  const factor = Math.pow(10, decimalPlaces);
+  return Math.round(a * b * factor) / factor;
+}
+
+// Returns the quotient of two floating point numbers with a specified number of decimal places
+function divide(a, b, decimalPlaces) {
+  const factor = Math.pow(10, decimalPlaces);
+  return Math.round((a / b) * factor) / factor;
+}
+
+// Rounds a floating point number to a specified number of decimal places
+function round(number, decimalPlaces) {
+  const factor = Math.pow(10, decimalPlaces);
+  return Math.round(number * factor) / factor;
+}
+```
+
+The `add` function takes two arguments: the two floating point numbers to be added, and the number of decimal places to include in the result. The function first calculates a scaling factor based on the number of decimal places, then adds the two numbers and rounds the result using the `Math.round` function. Finally, the function divides the result by the scaling factor to return the final result with the desired number of decimal places.
+
+The `subtract` function works similarly to the `add` function, but subtracts the second number from the first.
+
+The `divide` function takes two arguments: the two floating point numbers to be divided, and the number of decimal places to include in the result. The function works similarly to the `multiply` function, but divides the two numbers instead of multiplying them.
+
+Here's an example usage that demonstrates each of these functions:
+
+```js
+const a = 0.1;
+const b = 0.2;
+
+const sum = add(a, b, 2);
+const difference = subtract(a, b, 2);
+const product = multiply(a, b, 7);
+const quotient = divide(a, b, 4);
+
+console.log(`Sum: ${sum}`); // 0.3
+console.log(`Difference: ${difference}`); // -0.1
+console.log(`Product: ${product}`); // 0.0200000
+console.log(`Quotient: ${quotient}`); // 0.5000
+```
+
+## Thirdpary Libraries
 
 There are several libraries available that can help you perform high-precision arithmetic operations in JavaScript. One popular library is `big.js`, which provides a simple API for working with decimal numbers of arbitrary precision.
 
