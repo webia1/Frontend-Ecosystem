@@ -289,6 +289,7 @@ Remote:
     git push --tags
     git tag -d <tag>        // Delete Tag Locally
     git push origin :<tag>  // Delete Remote Tag
+    git describe --tags --abbrev=0  // show latest tag in current branch
 
 ## Correct last commit
 
