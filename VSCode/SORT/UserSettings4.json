@@ -253,14 +253,14 @@
           "string.quoted.double.json.comments"
         ],
         "settings": {
-          "foreground": "#b9cfc8",
+          "foreground": "#e6fa98c0",
           "fontStyle": ""
         }
       },
       {
         "scope": ["support.type.property-name.json.comments"],
         "settings": {
-          "foreground": "#fdece4",
+          "foreground": "#95ecf7c4",
           "fontStyle": "bold"
         }
       },
