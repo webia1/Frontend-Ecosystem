@@ -3,9 +3,6 @@
   "workbench.fontAliasing": "default",
   "mergeEditor.diffAlgorithm": "experimental",
   "terminal.integrated.smoothScrolling": true,
-  "liveFrame.url": "http://localdev.com:4200",
-  "liveFrame.title": "WHATEVER",
-  "liveFrame.pane": "Beside",
   "auto-close-tag.disableOnLanguage": ["typescript"],
   "editor.fontFamily": "JetBrains Mono",
   "editor.fontLigatures": true,
@@ -432,6 +429,13 @@
           "foreground": "#ffaa00",
           "fontStyle": "bold"
         }
+      },
+      {
+        "scope": ["punctuation.definition.comment.ts"],
+        "settings": {
+          "foreground": "#6E7179",
+          "fontStyle": "italic"
+        }
       }
     ]
   },
@@ -492,11 +496,11 @@
     "editor.wordHighlightStrongBorder": "#FFBBEA",
     "editor.lineHighlightBorder": "#9fced11f",
     "editor.selectionBackground": "#007bff",
-    "activityBar.activeBackground": "#ffc400",
+    "activityBar.activeBackground": "#ffc40044",
     "activityBar.activeBorder": "#26ff00",
-    "activityBar.background": "#ffc4002a",
-    "activityBar.foreground": "#ffffff",
-    "activityBar.inactiveForeground": "#ffffff5a",
+    "activityBar.background": "#ffc40000",
+    "activityBar.foreground": "#78b3ee",
+    "activityBar.inactiveForeground": "#3f6081",
     "activityBarBadge.background": "#3d76ae",
     "activityBarBadge.foreground": "#ffffff",
     "commandCenter.border": "#2b152699",
@@ -510,8 +514,8 @@
     "titleBar.activeBackground": "#ffc4002a",
     "titleBar.activeForeground": "#ffffff",
     "titleBar.inactiveForeground": "#15202b99",
-    "statusBar.background": "#ffc4002a",
-    "statusBar.foreground": "#15202b",
+    "statusBar.background": "#ffc40000",
+    "statusBar.foreground": "#3f6081",
     "statusBarItem.hoverBackground": "#ffc4006a",
     "statusBarItem.remoteBackground": "#ffc4006a",
     "statusBarItem.remoteForeground": "#15202b"
