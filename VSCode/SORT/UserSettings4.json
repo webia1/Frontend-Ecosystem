@@ -3,11 +3,10 @@
   "workbench.fontAliasing": "default",
   "mergeEditor.diffAlgorithm": "experimental",
   "terminal.integrated.smoothScrolling": true,
-
-  "jest.autoRun": "false",
   "auto-close-tag.disableOnLanguage": ["typescript"],
   "editor.fontFamily": "JetBrains Mono",
-  "editor.fontLigatures": true,  "editor.tokenColorCustomizations": {
+  "editor.fontLigatures": true,
+  "editor.tokenColorCustomizations": {
     "textMateRules": [
       {
         "scope": [
@@ -254,14 +253,14 @@
           "string.quoted.double.json.comments"
         ],
         "settings": {
-          "foreground": "#b9cfc8",
+          "foreground": "#e6fa98c0",
           "fontStyle": ""
         }
       },
       {
         "scope": ["support.type.property-name.json.comments"],
         "settings": {
-          "foreground": "#fdece4",
+          "foreground": "#95ecf7c4",
           "fontStyle": "bold"
         }
       },
@@ -420,6 +419,23 @@
           "foreground": "#ffd000",
           "fontStyle": "italic bold"
         }
+      },
+      {
+        "scope": [
+          "variable.other.constant.ts",
+          "variable.other.constant.object.ts"
+        ],
+        "settings": {
+          "foreground": "#ffaa00",
+          "fontStyle": "bold"
+        }
+      },
+      {
+        "scope": ["punctuation.definition.comment.ts"],
+        "settings": {
+          "foreground": "#6E7179",
+          "fontStyle": "italic"
+        }
       }
     ]
   },
@@ -462,7 +478,6 @@
   "markdown-preview-enhanced.enableTypographer": true,
   "markdown-preview-enhanced.revealjsTheme": "moon.css",
   "editor.tabSize": 2,
-  "diffEditor.ignoreTrimWhitespace": false,
   "diffEditor.maxComputationTime": 0,
   "redhat.telemetry.enabled": false,
   "git.autofetch": true,
@@ -472,24 +487,22 @@
   "editor.codeLensFontFamily": "Jetbrains Mono",
   "editor.lineHeight": 1.6,
   "js/ts.implicitProjectConfig.checkJs": true,
-
   "workbench.colorCustomizations": {
     "editor.background": "#1B262C",
     "editorUnnecessaryCode.border": "#fd7403dc",
-    "editor.lineHighlightBackground": "#1073cf2d",
+    "editor.lineHighlightBackground": "#83cf102d",
+    "editor.wordHighlightBackground": "#d902c377",
+    "editor.wordHighlightStrongBackground": "#fc00e338",
+    "editor.wordHighlightStrongBorder": "#FFBBEA",
     "editor.lineHighlightBorder": "#9fced11f",
-    "activityBar.activeBackground": "#ffc400",
+    "editor.selectionBackground": "#007bff",
+    "activityBar.activeBackground": "#ffc40044",
     "activityBar.activeBorder": "#26ff00",
-    "activityBar.background": "#ffc4006a",
-    "activityBar.foreground": "#ffffff",
-    "activityBar.inactiveForeground": "#ffffff5a",
+    "activityBar.background": "#ffc40000",
+    "activityBar.foreground": "#78b3ee",
+    "activityBar.inactiveForeground": "#3f6081",
     "activityBarBadge.background": "#3d76ae",
     "activityBarBadge.foreground": "#ffffff",
-    "statusBarItem.hoverBackground": "#ffc4006a",
-    "statusBarItem.remoteBackground": "#ffc4006a",
-    "statusBarItem.remoteForeground": "#15202b",
-    "titleBar.inactiveBackground": "#7ee6b7",
-    "titleBar.inactiveForeground": "#15202b99",
     "commandCenter.border": "#2b152699",
     "tab.activeBorder": "#ffc4006a",
     "tab.activeBorderTop": "#ffc400",
@@ -498,11 +511,14 @@
     "tab.border": "#ffc4006a",
     "tab.inactiveForeground": "#f8c829f2",
     "tab.unfocusedInactiveForeground": "#f8c829f2",
-    "editor.selectionBackground": "#d902c377",
-    "titleBar.activeBackground": "#ffc4006a",
+    "titleBar.activeBackground": "#ffc4002a",
     "titleBar.activeForeground": "#ffffff",
-    "statusBar.background": "#ffc4006a",
-    "statusBar.foreground": "#15202b"
+    "titleBar.inactiveForeground": "#15202b99",
+    "statusBar.background": "#ffc40000",
+    "statusBar.foreground": "#3f6081",
+    "statusBarItem.hoverBackground": "#ffc4006a",
+    "statusBarItem.remoteBackground": "#ffc4006a",
+    "statusBarItem.remoteForeground": "#15202b"
   },
   "terminal.integrated.gpuAcceleration": "off",
   "workbench.colorTheme": "Gitkraken Dark",
@@ -518,25 +534,21 @@
   "[groovy]": {
     "editor.defaultFormatter": "NicolasVuillamy.vscode-groovy-lint"
   },
-  "turboConsoleLog.delimiterInsideMessage": "->",
-  "turboConsoleLog.logMessagePrefix": "",
-  "turboConsoleLog.quote": "`",
-  "turboConsoleLog.insertEnclosingClass": false,
-  "turboConsoleLog.insertEnclosingFunction": false,
   "[go]": {
     "editor.defaultFormatter": "golang.go"
   },
-  "editor.inlayHints.enabled": "on",
-  "typescript.inlayHints.variableTypes.enabled": true,
-  "typescript.inlayHints.propertyDeclarationTypes.enabled": true,
-  "typescript.inlayHints.parameterTypes.enabled": true,
-  "typescript.inlayHints.functionLikeReturnTypes.enabled": true,
+  "editor.inlayHints.enabled": "offUnlessPressed",
+  "typescript.inlayHints.variableTypes.enabled": false,
+  "typescript.inlayHints.propertyDeclarationTypes.enabled": false,
+  "typescript.inlayHints.parameterTypes.enabled": false,
+  "typescript.inlayHints.functionLikeReturnTypes.enabled": false,
   "markdown-preview-enhanced.automaticallyShowPreviewOfMarkdownBeingEdited": true,
   "markdown-preview-enhanced.previewTheme": "one-dark.css",
   "editor.stickyScroll.enabled": false,
   "explorer.confirmDelete": false,
-  "workbench.startupEditor": "none",
+  "workbench.startupEditor": "welcomePage",
   "workbench.productIconTheme": "fluent-icons",
   "editor.inlineSuggest.enabled": true,
-  "window.commandCenter": false
+  "window.commandCenter": false,
+  "workbench.activityBar.visible": true
 }
