@@ -9,6 +9,7 @@
   - [Vanilla Approach](#vanilla-approach)
   - [Thirdpary Libraries](#thirdpary-libraries)
   - [Benchmarks](#benchmarks)
+- [Recursive Search and Sum Up](#recursive-search-and-sum-up)
 
 <!-- /code_chunk_output -->
 
