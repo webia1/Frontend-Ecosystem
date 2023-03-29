@@ -9,6 +9,7 @@
   - [Vanilla Approach](#vanilla-approach)
   - [Thirdpary Libraries](#thirdpary-libraries)
   - [Benchmarks](#benchmarks)
+- [Is it a real object?](#is-it-a-real-object)
 - [Recursive Search and Sum Up](#recursive-search-and-sum-up)
   - [With Lodash](#with-lodash)
 
@@ -165,6 +166,27 @@ There have been several benchmarks comparing the performance of various librarie
 One such benchmark can be found at [https://github.com/peterolson/BigInteger.js#performance](https://github.com/peterolson/BigInteger.js#performance), which compares the performance of several libraries including `big.js`, `bignumber.js`, `decimal.js`, and `mathjs`.
 
 Another benchmark can be found at [https://jsperf.com/big-number-addition/3](https://jsperf.com/big-number-addition/3), which focuses specifically on addition operations and compares the performance of `big.js`, `bignumber.js`, and `decimal.js` on a range of number sizes. This benchmark suggests that `decimal.js` is generally the fastest library for addition operations, but again, the results may vary depending on the specific use case.
+
+## Is it a real object?
+
+```js
+const isRealObject = (variable) => {
+  return (
+    typeof variable === 'object' &&
+    variable !== null &&
+    Object.prototype.toString.call(variable) === '[object Object]'
+  );
+};
+
+// Example usage:
+console.log(isRealObject({})); // true
+console.log(isRealObject([])); // false
+console.log(isRealObject(null)); // false
+console.log(isRealObject(undefined)); // false
+console.log(isRealObject('hello')); // false
+console.log(isRealObject(new Date())); // false
+console.log(isRealObject(function () {})); // false
+```
 
 ## Recursive Search and Sum Up
 
