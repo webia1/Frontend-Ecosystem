@@ -10,6 +10,7 @@
   - [Thirdpary Libraries](#thirdpary-libraries)
   - [Benchmarks](#benchmarks)
 - [Recursive Search and Sum Up](#recursive-search-and-sum-up)
+  - [With Lodash](#with-lodash)
 
 <!-- /code_chunk_output -->
 
@@ -188,4 +189,38 @@ function sumFileSizes(obj) {
   }
   return sum;
 }
+```
+
+### With Lodash
+
+```js
+const _ = require('lodash');
+
+const obj = {
+  files: [
+    { name: 'file1', fileSize: 100 },
+    { name: 'file2', fileSize: 200 },
+  ],
+  nestedObj: {
+    files: [
+      { name: 'file3', fileSize: 300 },
+      { name: 'file4', fileSize: 400 },
+    ],
+    otherProp: 'someValue',
+  },
+  otherProp: 'someValue',
+};
+
+const totalFileSize = _.sumBy(
+  _.flatMapDeep(obj, function (value, key) {
+    if (key === 'files' && _.isArray(value)) {
+      return value;
+    } else {
+      return [];
+    }
+  }),
+  'fileSize',
+);
+
+console.log(totalFileSize); // Output: 1000
 ```
