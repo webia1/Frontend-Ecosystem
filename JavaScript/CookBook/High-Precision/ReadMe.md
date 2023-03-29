@@ -1,17 +1,20 @@
-# High Number Precision in JavaScript Applications
+# Cook Book
 
 <!-- @import "[TOC]" {cmd="toc" depthFrom=2 depthTo=6 orderedList=false} -->
 
 <!-- code_chunk_output -->
 
-- [Introduction](#-introduction)
-- [Vanilla Approach](#-vanilla-approach)
-- [Thirdpary Libraries](#-thirdpary-libraries)
-- [Benchmarks](#-benchmarks)
+- [High Number Precision in JavaScript Applications](#high-number-precision-in-javascript-applications)
+  - [Introduction](#introduction)
+  - [Vanilla Approach](#vanilla-approach)
+  - [Thirdpary Libraries](#thirdpary-libraries)
+  - [Benchmarks](#benchmarks)
 
 <!-- /code_chunk_output -->
 
-## Introduction
+## High Number Precision in JavaScript Applications
+
+### Introduction
 
 To achieve the highest possible precision when performing arithmetic operations with large floating-point numbers in JavaScript, you can use the `BigInt` data type which provides arbitrary precision integer arithmetic.
 
@@ -68,7 +71,7 @@ const resultRounded = Math.round(result * 10 ** 7) / 10 ** 7;
 console.log(resultRounded); // Output: 8.5397332
 ```
 
-## Vanilla Approach
+### Vanilla Approach
 
 ```js
 // Returns the sum of two floating point numbers with a specified number of decimal places
@@ -125,7 +128,7 @@ console.log(`Product: ${product}`); // 0.0200000
 console.log(`Quotient: ${quotient}`); // 0.5000
 ```
 
-## Thirdpary Libraries
+### Thirdpary Libraries
 
 There are several libraries available that can help you perform high-precision arithmetic operations in JavaScript. One popular library is `big.js`, which provides a simple API for working with decimal numbers of arbitrary precision.
 
@@ -151,7 +154,7 @@ console.log(resultBig); // Output: 8.5397332
 
 `big.js` is a popular and widely-used library for high-precision arithmetic in JavaScript, and is generally considered to be a well-performing and reliable solution. Other libraries you might consider include `bignumber.js`, `decimal.js`, and `mathjs`.
 
-## Benchmarks
+### Benchmarks
 
 There have been several benchmarks comparing the performance of various libraries for high-precision arithmetic in JavaScript.
 
@@ -160,3 +163,28 @@ There have been several benchmarks comparing the performance of various librarie
 One such benchmark can be found at [https://github.com/peterolson/BigInteger.js#performance](https://github.com/peterolson/BigInteger.js#performance), which compares the performance of several libraries including `big.js`, `bignumber.js`, `decimal.js`, and `mathjs`.
 
 Another benchmark can be found at [https://jsperf.com/big-number-addition/3](https://jsperf.com/big-number-addition/3), which focuses specifically on addition operations and compares the performance of `big.js`, `bignumber.js`, and `decimal.js` on a range of number sizes. This benchmark suggests that `decimal.js` is generally the fastest library for addition operations, but again, the results may vary depending on the specific use case.
+
+## Recursive Search and Sum Up
+
+```js
+function sumFileSizes(obj) {
+  let sum = 0;
+  for (let key in obj) {
+    if (obj.hasOwnProperty(key)) {
+      if (key === 'files') {
+        // if the current property is "files", loop through each object in the array and sum up the "fileSize" property
+        obj[key].forEach(function (file) {
+          sum += file.fileSize || 0;
+        });
+      } else if (
+        typeof obj[key] === 'object' &&
+        obj[key] !== null
+      ) {
+        // if the current property is an object (and not null), recursively call this function on the object
+        sum += sumFileSizes(obj[key]);
+      }
+    }
+  }
+  return sum;
+}
+```
