@@ -13,6 +13,9 @@
 - [Recursive Search and Sum Up](#recursive-search-and-sum-up)
   - [With Lodash](#with-lodash)
 - [Map - Storing of unique objects](#map---storing-of-unique-objects)
+- [Traversal and serialization of cyclic objects](#traversal-and-serialization-of-cyclic-objects)
+- [Simple](#simple)
+- [Advanced](#advanced)
 
 <!-- /code_chunk_output -->
 
@@ -271,3 +274,102 @@ console.log(uniquePeopleMap.size); // 4, since the duplicate was removed
 const alice = uniquePeopleMap.get(1);
 console.log(alice); // { id: 1, name: 'Alice' }
 ```
+
+## Traversal and serialization of cyclic objects
+
+## Simple
+
+Traversal and serialization of cyclic objects can be challenging because it can be difficult to resolve the cyclic references to avoid infinite loops.
+
+A common method for traversing and serializing cyclic objects is to use a depth-first search (DFS) or breadth-first search (BFS) algorithm to find all reachable nodes in the graph, storing already visited nodes to avoid infinite loops.
+
+An example of a DFS algorithm could look like this:
+
+```js
+function serialize(obj) {
+  const visited = new Set();
+  const stack = [obj];
+  while (stack.length > 0) {
+    const node = stack.pop();
+    if (
+      typeof node === 'object' &&
+      node !== null &&
+      !visited.has(node)
+    ) {
+      visited.add(node);
+      for (const key in node) {
+        stack.push(node[key]);
+      }
+    }
+  }
+  return JSON.stringify(obj);
+}
+
+const a = {
+  b: {
+    c: 'Hi',
+  },
+};
+a.b.d = a;
+
+const serialized = serialize(a);
+console.log(serialized);
+```
+
+The output of the `console.log` statement will be a JSON-like string representation of the `a` object, with the circular reference represented as `{"b":{"c":"Hi","d":"[Circular]"}}`. The full output will depend on the structure of your original object.
+
+This algorithm uses a stack data structure to traverse all reachable nodes in the object. The already visited nodes are stored in a set to avoid infinite loops. The JSON.stringify method can then be used to serialize the entire object into a JSON-like string.
+
+There are also libraries like "circular-json" specifically designed for serialization and deserialization of cyclic objects, providing a simpler and safer way to deal with such data structures.
+
+## Advanced
+
+If you want to log the original structure of the object and not just a JSON representation that includes a `"[Circular]"` string, you can modify the `serialize` function to replace the circular reference with a reference to the original object, as follows:
+
+```js
+function serialize(obj) {
+  const visited = new Set();
+  const stack = [obj];
+  while (stack.length > 0) {
+    const node = stack.pop();
+    if (
+      typeof node === 'object' &&
+      node !== null &&
+      !visited.has(node)
+    ) {
+      visited.add(node);
+      for (const key in node) {
+        stack.push(node[key]);
+      }
+    }
+  }
+  visited.clear();
+  return JSON.stringify(obj, (key, value) => {
+    if (typeof value === 'object' && value !== null) {
+      if (visited.has(value)) {
+        return '[Circular]';
+      }
+      visited.add(value);
+    }
+    return value;
+  });
+}
+```
+
+This version of `serialize` uses a second argument to the `JSON.stringify` method, which is a replacer function that is called for each property of the object being serialized. The replacer function checks if a property value is a circular reference (by checking if it is an object that has already been visited), and replaces it with a reference to the original object instead of the `"[Circular]"` string.
+
+With this modification, you can apply the `serialize` function to your object `a` and log the result to the console, as follows:
+
+```js
+const a = {
+  b: {
+    c: 'Hi',
+  },
+};
+a.b.d = a;
+
+const serialized = serialize(a);
+console.log(serialized);
+```
+
+The output of the `console.log` statement will be the original structure of the `a` object, with the circular reference represented as `{ "b": { "c": "Hi", "d": [Circular] } }`.
