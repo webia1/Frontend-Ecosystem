@@ -12,6 +12,7 @@
 - [Is it a real object?](#is-it-a-real-object)
 - [Recursive Search and Sum Up](#recursive-search-and-sum-up)
   - [With Lodash](#with-lodash)
+- [Map - Storing of unique objects](#map---storing-of-unique-objects)
 
 <!-- /code_chunk_output -->
 
@@ -245,4 +246,28 @@ const totalFileSize = _.sumBy(
 );
 
 console.log(totalFileSize); // Output: 1000
+```
+
+## Map - Storing of unique objects
+
+```js
+const people = [
+  { id: 1, name: 'Alice' },
+  { id: 2, name: 'Bob' },
+  { id: 3, name: 'Charlie' },
+  { id: 2, name: 'David' }, // duplicate ID
+  { id: 4, name: 'Eve' },
+];
+
+const uniquePeopleMap = new Map();
+
+people.forEach((person) => {
+  uniquePeopleMap.set(person.id, person);
+});
+
+console.log(uniquePeopleMap.size); // 4, since the duplicate was removed
+
+// Accessing a person by their ID:
+const alice = uniquePeopleMap.get(1);
+console.log(alice); // { id: 1, name: 'Alice' }
 ```
