@@ -15,10 +15,11 @@
     - [stackTraceFilter()](#stacktracefilter)
     - [Error.captureStackTrace - Example 1](#errorcapturestacktrace---example-1)
     - [Error.captureStackTrace - Example 2](#errorcapturestacktrace---example-2)
+    - [stacktrace-gps-Library](#stacktrace-gps-library)
   - [Browser Umgebungen](#browser-umgebungen)
     - [Error.captureStackTrace in Browser-Umgebungen verfügbar machen](#errorcapturestacktrace-in-browser-umgebungen-verfügbar-machen)
     - [stacktrace-js-Library](#stacktrace-js-library)
-    - [stacktrace-gps-Library](#stacktrace-gps-library)
+  - [`stacktrace-gps` vs. `stacktrace-js``](#stacktrace-gps-vs-stacktrace-js)
 - [Miscellaneaus](#miscellaneaus)
   - [Error Object](#error-object)
   - [Simple Error Instanzen](#simple-error-instanzen)
@@ -194,48 +195,6 @@ function myFunction() {
 myFunction();
 ```
 
-### Browser Umgebungen
-
-#### Error.captureStackTrace in Browser-Umgebungen verfügbar machen
-
-```js
-if (!Error.captureStackTrace) {
-  Error.captureStackTrace = function (
-    targetObject,
-    constructorOpt,
-  ) {
-    var stack = new Error().stack;
-    if (stack) {
-      Object.defineProperty(targetObject, 'stack', {
-        value: stack,
-      });
-    }
-  };
-}
-```
-
-#### stacktrace-js-Library
-
-`stacktrace-js`\-Library ermöglicht einen Error-Stack-Trace in einer browserfreundlichen Umgebung zu generieren.
-
-```js
-const StackTrace = require('stacktrace-js');
-
-function getErrorWithStackTrace() {
-  const error = new Error('Something went wrong!');
-  return StackTrace.fromError(error).then((stackTrace) => {
-    error.stack = stackTrace;
-    return error;
-  });
-}
-
-getErrorWithStackTrace().then((error) => {
-  console.error(error);
-});
-```
-
-In diesem Beispiel wird die `stacktrace-js`\-Library verwendet, um den Error-Stack-Trace zu generieren und ihn an die `stack`\-Eigenschaft des `Error`\-Objekts anzuhängen. Beachten Sie jedoch, dass das Hinzufügen einer benutzerdefinierten `stack`\-Eigenschaft zu einem `Error`\-Objekt nicht spezifiziert ist und in verschiedenen Browsern unterschiedlich behandelt werden kann.
-
 #### stacktrace-gps-Library
 
 `stacktrace-gps`-Library ermöglicht einen Error-Stack-Trace in eine formatierte Form umzuwandeln:
@@ -307,6 +266,58 @@ getErrorWithStackTrace().then((error) => {
 ```
 
 Zunächst wird `stacktrace-gps` verwendet, um den ursprünglichen Quellcode für jeden Frame im Stack-Trace zu ermitteln. Anschließend werden die Formatierungsinformationen für jeden Frame extrahiert und in ein neues Array eingefügt. Schließlich wird das neue Array der `stack`-Eigenschaft des `Error`-Objekts zugewiesen.
+
+### Browser Umgebungen
+
+#### Error.captureStackTrace in Browser-Umgebungen verfügbar machen
+
+```js
+if (!Error.captureStackTrace) {
+  Error.captureStackTrace = function (
+    targetObject,
+    constructorOpt,
+  ) {
+    var stack = new Error().stack;
+    if (stack) {
+      Object.defineProperty(targetObject, 'stack', {
+        value: stack,
+      });
+    }
+  };
+}
+```
+
+#### stacktrace-js-Library
+
+`stacktrace-js`\-Library ermöglicht einen Error-Stack-Trace in einer browserfreundlichen Umgebung zu generieren.
+
+```js
+const StackTrace = require('stacktrace-js');
+
+function getErrorWithStackTrace() {
+  const error = new Error('Something went wrong!');
+  return StackTrace.fromError(error).then((stackTrace) => {
+    error.stack = stackTrace;
+    return error;
+  });
+}
+
+getErrorWithStackTrace().then((error) => {
+  console.error(error);
+});
+```
+
+In diesem Beispiel wird die `stacktrace-js`\-Library verwendet, um den Error-Stack-Trace zu generieren und ihn an die `stack`\-Eigenschaft des `Error`\-Objekts anzuhängen. Beachten Sie jedoch, dass das Hinzufügen einer benutzerdefinierten `stack`\-Eigenschaft zu einem `Error`\-Objekt nicht spezifiziert ist und in verschiedenen Browsern unterschiedlich behandelt werden kann.
+
+### `stacktrace-gps` vs. `stacktrace-js``
+
+Beide Libraries sind in der Lage, die Informationen des Stack-Traces zu verarbeiten und zu formatieren, um eine genauere Darstellung der Fehlerursache bereitzustellen. Allerdings gibt es Unterschiede in der Funktionsweise und Verwendung der beiden Libraries.
+
+`stacktrace-gps` ist eine Library, die speziell für Node.js entwickelt wurde. Sie nutzt die Source-Map-Informationen, um den ursprünglichen Quellcode der Anwendung zu finden und den Stack-Trace mit genauen Informationen über die Funktionen, Dateien und Zeilennummern zu versehen. Dadurch können Entwickler den Fehlerort leichter erkennen und beheben.
+
+Auf der anderen Seite ist `stacktrace-js` eine Library, die in Browser-Umgebungen eingesetzt wird und den Zugriff auf den Stack-Trace ermöglicht. Sie nutzt ähnliche Techniken wie `stacktrace-gps`, um den Stack-Trace zu formatieren und genauere Informationen zur Fehlerursache bereitzustellen. `stacktrace-js` kann jedoch die Source-Map-Informationen nicht direkt nutzen, um den ursprünglichen Quellcode zu finden. Stattdessen müssen Entwickler die `source-map`\-Library verwenden, um die Source-Map-Informationen manuell zu verarbeiten.
+
+Insgesamt sind beide Libraries sehr nützlich und können Entwicklern dabei helfen, Probleme in ihren Anwendungen schneller zu erkennen und zu beheben. Die Wahl zwischen den beiden Libraries hängt von der Umgebung ab, in der die Anwendung ausgeführt wird, und von den spezifischen Anforderungen an die Stack-Trace-Verarbeitung.
 
 ## Miscellaneaus
 
