@@ -55,6 +55,12 @@ It's worth noting that time zone abbreviations like EST and PDT can be ambiguous
 - PDT (Pacific Daylight Time) - UTC-7 offset
 - PT (Pacific Time) - UTC-8 offset (used during the winter months when daylight saving time is not in effect)
 
+The information about time zones and daylight saving time rules that are used by JavaScript's `Date()` object comes from the operating system that the JavaScript runtime is running on.
+
+In the case of browser-based JavaScript, the time zone information is usually obtained from the user's operating system or device settings. The browser then provides this information to JavaScript via the **`Intl`** object's `DateTimeFormat()` method.
+
+In the case of Node.js, the time zone information is obtained from the underlying operating system on which Node.js is running.
+
 ### Time Zones
 
 ## Examples
