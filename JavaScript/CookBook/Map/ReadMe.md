@@ -1,5 +1,14 @@
 # Map
 
+<!-- @import "[TOC]" {cmd="toc" depthFrom=2 depthTo=6 orderedList=false} -->
+
+<!-- code_chunk_output -->
+
+- [Storing an array of unique objects](#storing-an-array-of-unique-objects)
+- [Fixing double and corrupt data](#fixing-double-and-corrupt-data)
+
+<!-- /code_chunk_output -->
+
 ## Storing an array of unique objects
 
 ```ts
