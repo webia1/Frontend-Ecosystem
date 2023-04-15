@@ -56,3 +56,35 @@ console.log(Array.from(uniquePlanetsMap.values()));
 ]
 */
 ```
+
+## Fixing double and corrupt data
+
+```js
+const planets = [
+  { id: 1, name: 'Merkur' },
+  { id: 4, name: 'Mars' }, // <- double entry
+  { id: 2, name: 'Venus' },
+  { id: 3, name: 'Earth' }, // <- double & corrupt entry
+  { id: 33, name: 'Earth' }, // <- double & corrupt entry
+  { id: 333, name: 'Earth' }, // <- double & corrupt entry
+  { id: 4, name: 'Mars' }, // <- double entry
+];
+
+const correctIds = {
+  Earth: 3, // <- correct id for Earth
+};
+
+const uniquePlanetsMap = new Map();
+
+planets.forEach((planet) => {
+  if (
+    planet.name === 'Earth' &&
+    planet.id !== correctIds['Earth']
+  ) {
+    planet.id = correctIds['Earth'];
+  }
+  uniquePlanetsMap.set(planet.id, planet);
+});
+
+console.log(Array.from(uniquePlanetsMap.values()));
+```
