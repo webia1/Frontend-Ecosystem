@@ -1,0 +1,22 @@
+/**
+ * Webia1 Standard TsConfig.json.
+ * To learn more about this file see: https://www.typescriptlang.org/docs/handbook/tsconfig-json.html
+ */
+
+{
+  "compilerOptions": {
+    "allowSyntheticDefaultImports": true,
+    "emitDecoratorMetadata": true,
+    "esModuleInterop": true, // <- Important
+    "experimentalDecorators": true,
+    "forceConsistentCasingInFileNames": true,
+    "lib": ["ESNext", "DOM", "DOM.Iterable", "ScriptHost"], // <- Important
+    "module": "NodeNext", // <- Important
+    "moduleResolution": "Node", // <- Important
+    "outDir": "./dist",
+    "skipLibCheck": true,
+    "sourceMap": true,
+    "strict": true,
+    "target": "ESNext" // <- Important
+  }
+}

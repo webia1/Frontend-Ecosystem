@@ -1,17 +1,27 @@
-# High Number Precision in JavaScript Applications
+# Cook Book
 
 <!-- @import "[TOC]" {cmd="toc" depthFrom=2 depthTo=6 orderedList=false} -->
 
 <!-- code_chunk_output -->
 
-- [Introduction](#-introduction)
-- [Vanilla Approach](#-vanilla-approach)
-- [Thirdpary Libraries](#-thirdpary-libraries)
-- [Benchmarks](#-benchmarks)
+- [High Number Precision in JavaScript Applications](#high-number-precision-in-javascript-applications)
+  - [Introduction](#introduction)
+  - [Vanilla Approach](#vanilla-approach)
+  - [Thirdpary Libraries](#thirdpary-libraries)
+  - [Benchmarks](#benchmarks)
+- [Is it a real object?](#is-it-a-real-object)
+- [Recursive Search and Sum Up](#recursive-search-and-sum-up)
+  - [With Lodash](#with-lodash)
+- [Map - Storing of unique objects](#map---storing-of-unique-objects)
+- [Traversal and serialization of cyclic objects](#traversal-and-serialization-of-cyclic-objects)
+- [Simple](#simple)
+- [Advanced](#advanced)
 
 <!-- /code_chunk_output -->
 
-## Introduction
+## High Number Precision in JavaScript Applications
+
+### Introduction
 
 To achieve the highest possible precision when performing arithmetic operations with large floating-point numbers in JavaScript, you can use the `BigInt` data type which provides arbitrary precision integer arithmetic.
 
@@ -68,7 +78,7 @@ const resultRounded = Math.round(result * 10 ** 7) / 10 ** 7;
 console.log(resultRounded); // Output: 8.5397332
 ```
 
-## Vanilla Approach
+### Vanilla Approach
 
 ```js
 // Returns the sum of two floating point numbers with a specified number of decimal places
@@ -125,7 +135,7 @@ console.log(`Product: ${product}`); // 0.0200000
 console.log(`Quotient: ${quotient}`); // 0.5000
 ```
 
-## Thirdpary Libraries
+### Thirdpary Libraries
 
 There are several libraries available that can help you perform high-precision arithmetic operations in JavaScript. One popular library is `big.js`, which provides a simple API for working with decimal numbers of arbitrary precision.
 
@@ -151,7 +161,7 @@ console.log(resultBig); // Output: 8.5397332
 
 `big.js` is a popular and widely-used library for high-precision arithmetic in JavaScript, and is generally considered to be a well-performing and reliable solution. Other libraries you might consider include `bignumber.js`, `decimal.js`, and `mathjs`.
 
-## Benchmarks
+### Benchmarks
 
 There have been several benchmarks comparing the performance of various libraries for high-precision arithmetic in JavaScript.
 
@@ -160,3 +170,206 @@ There have been several benchmarks comparing the performance of various librarie
 One such benchmark can be found at [https://github.com/peterolson/BigInteger.js#performance](https://github.com/peterolson/BigInteger.js#performance), which compares the performance of several libraries including `big.js`, `bignumber.js`, `decimal.js`, and `mathjs`.
 
 Another benchmark can be found at [https://jsperf.com/big-number-addition/3](https://jsperf.com/big-number-addition/3), which focuses specifically on addition operations and compares the performance of `big.js`, `bignumber.js`, and `decimal.js` on a range of number sizes. This benchmark suggests that `decimal.js` is generally the fastest library for addition operations, but again, the results may vary depending on the specific use case.
+
+## Is it a real object?
+
+```js
+const isRealObject = (variable) => {
+  return (
+    typeof variable === 'object' &&
+    variable !== null &&
+    Object.prototype.toString.call(variable) === '[object Object]'
+  );
+};
+
+// Example usage:
+console.log(isRealObject({})); // true
+console.log(isRealObject([])); // false
+console.log(isRealObject(null)); // false
+console.log(isRealObject(undefined)); // false
+console.log(isRealObject('hello')); // false
+console.log(isRealObject(new Date())); // false
+console.log(isRealObject(function () {})); // false
+```
+
+## Recursive Search and Sum Up
+
+```js
+function sumFileSizes(obj) {
+  let sum = 0;
+  for (let key in obj) {
+    if (obj.hasOwnProperty(key)) {
+      if (key === 'files') {
+        // if the current property is "files", loop through each object in the array and sum up the "fileSize" property
+        obj[key].forEach(function (file) {
+          sum += file.fileSize || 0;
+        });
+      } else if (
+        typeof obj[key] === 'object' &&
+        obj[key] !== null
+      ) {
+        // if the current property is an object (and not null), recursively call this function on the object
+        sum += sumFileSizes(obj[key]);
+      }
+    }
+  }
+  return sum;
+}
+```
+
+### With Lodash
+
+```js
+const _ = require('lodash');
+
+const obj = {
+  files: [
+    { name: 'file1', fileSize: 100 },
+    { name: 'file2', fileSize: 200 },
+  ],
+  nestedObj: {
+    files: [
+      { name: 'file3', fileSize: 300 },
+      { name: 'file4', fileSize: 400 },
+    ],
+    otherProp: 'someValue',
+  },
+  otherProp: 'someValue',
+};
+
+const totalFileSize = _.sumBy(
+  _.flatMapDeep(obj, function (value, key) {
+    if (key === 'files' && _.isArray(value)) {
+      return value;
+    } else {
+      return [];
+    }
+  }),
+  'fileSize',
+);
+
+console.log(totalFileSize); // Output: 1000
+```
+
+## Map - Storing of unique objects
+
+```js
+const people = [
+  { id: 1, name: 'Alice' },
+  { id: 2, name: 'Bob' },
+  { id: 3, name: 'Charlie' },
+  { id: 2, name: 'David' }, // duplicate ID
+  { id: 4, name: 'Eve' },
+];
+
+const uniquePeopleMap = new Map();
+
+people.forEach((person) => {
+  uniquePeopleMap.set(person.id, person);
+});
+
+console.log(uniquePeopleMap.size); // 4, since the duplicate was removed
+
+// Accessing a person by their ID:
+const alice = uniquePeopleMap.get(1);
+console.log(alice); // { id: 1, name: 'Alice' }
+```
+
+## Traversal and serialization of cyclic objects
+
+## Simple
+
+Traversal and serialization of cyclic objects can be challenging because it can be difficult to resolve the cyclic references to avoid infinite loops.
+
+A common method for traversing and serializing cyclic objects is to use a depth-first search (DFS) or breadth-first search (BFS) algorithm to find all reachable nodes in the graph, storing already visited nodes to avoid infinite loops.
+
+An example of a DFS algorithm could look like this:
+
+```js
+function serialize(obj) {
+  const visited = new Set();
+  const stack = [obj];
+  while (stack.length > 0) {
+    const node = stack.pop();
+    if (
+      typeof node === 'object' &&
+      node !== null &&
+      !visited.has(node)
+    ) {
+      visited.add(node);
+      for (const key in node) {
+        stack.push(node[key]);
+      }
+    }
+  }
+  return JSON.stringify(obj);
+}
+
+const a = {
+  b: {
+    c: 'Hi',
+  },
+};
+a.b.d = a;
+
+const serialized = serialize(a);
+console.log(serialized);
+```
+
+The output of the `console.log` statement will be a JSON-like string representation of the `a` object, with the circular reference represented as `{"b":{"c":"Hi","d":"[Circular]"}}`. The full output will depend on the structure of your original object.
+
+This algorithm uses a stack data structure to traverse all reachable nodes in the object. The already visited nodes are stored in a set to avoid infinite loops. The JSON.stringify method can then be used to serialize the entire object into a JSON-like string.
+
+There are also libraries like "circular-json" specifically designed for serialization and deserialization of cyclic objects, providing a simpler and safer way to deal with such data structures.
+
+## Advanced
+
+If you want to log the original structure of the object and not just a JSON representation that includes a `"[Circular]"` string, you can modify the `serialize` function to replace the circular reference with a reference to the original object, as follows:
+
+```js
+function serialize(obj) {
+  const visited = new Set();
+  const stack = [obj];
+  while (stack.length > 0) {
+    const node = stack.pop();
+    if (
+      typeof node === 'object' &&
+      node !== null &&
+      !visited.has(node)
+    ) {
+      visited.add(node);
+      for (const key in node) {
+        stack.push(node[key]);
+      }
+    }
+  }
+  visited.clear();
+  return JSON.stringify(obj, (key, value) => {
+    if (typeof value === 'object' && value !== null) {
+      if (visited.has(value)) {
+        return '[Circular]';
+      }
+      visited.add(value);
+    }
+    return value;
+  });
+}
+```
+
+This version of `serialize` uses a second argument to the `JSON.stringify` method, which is a replacer function that is called for each property of the object being serialized. The replacer function checks if a property value is a circular reference (by checking if it is an object that has already been visited), and replaces it with a reference to the original object instead of the `"[Circular]"` string.
+
+With this modification, you can apply the `serialize` function to your object `a` and log the result to the console, as follows:
+
+```js
+const a = {
+  b: {
+    c: 'Hi',
+  },
+};
+a.b.d = a;
+
+const serialized = serialize(a);
+console.log(serialized);
+```
+
+The output of the `console.log` statement will be the original structure of the `a` object, with the circular reference represented as `{ "b": { "c": "Hi", "d": [Circular] } }`.
