@@ -13,9 +13,6 @@
 - [Sort remote branched by up-to-dateness (committer date)](#sort-remote-branched-by-up-to-dateness-committer-date)
 - [Git Diff](#git-diff)
 - [Find](#find)
-  - [Find occurence (oldest first)](#find-occurence-oldest-first)
-  - [Find occurence (newest first)](#find-occurence-newest-first)
-  - [Find all occurences (newest first)](#find-all-occurences-newest-first)
 - [Checkout a single file from another branch](#checkout-a-single-file-from-another-branch)
 - [Update Index](#update-index)
 - [Git Alias](#git-alias)
@@ -140,10 +137,8 @@ Auto push of new branches
 
 ## Find
 
-### Find occurence (oldest first)
-
 ```shell
-function git-find-file-oldest() {
+git-find-file() {
     git rev-list --all --reverse | while read rev; do
         if git ls-tree -r $rev | grep -q $1; then
             echo $rev
@@ -151,31 +146,50 @@ function git-find-file-oldest() {
         fi
     done
 }
-```
 
-### Find occurence (newest first)
-
-```shell
-git-find-file() {
-    git rev-list --all | while read rev; do
+git-find-file-all() {
+    git rev-list --all --reverse | while read rev; do
         if git ls-tree -r $rev | grep -q $1; then
+            echo $rev
+        fi
+    done
+}
+
+git-find-first-sentence() {
+    git rev-list --all --reverse | while read rev; do
+        if git grep -q "$1" $rev; then
             echo $rev
             break
         fi
     done
 }
-```
 
-### Find all occurences (newest first)
-
-```shell
-function git-find-file-all() {
-    git rev-list --all | while read rev; do
-        if git ls-tree -r $rev | grep -q $1; then
+git-find-all-sentences-reverse() {
+    git rev-list --all --reverse | while read rev; do
+        if git grep -q "$1" $rev; then
             echo $rev
         fi
     done
 }
+
+git-find-last-sentence() {
+    git rev-list --all | while read rev; do
+        if git grep -q "$1" $rev; then
+            echo $rev
+            break
+        fi
+    done
+}
+
+git-find-all-sentences() {
+    git rev-list --all | while read rev; do
+        if git grep -q "$1" $rev; then
+            echo $rev
+            break
+        fi
+    done
+}
+
 ```
 
 ## Checkout a single file from another branch
