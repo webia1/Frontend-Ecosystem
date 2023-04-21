@@ -184,7 +184,6 @@ git-find-last-sentence() {
 git-find-all-sentences() {
     git rev-list --all | while read rev; do
         if git grep -q "$1" $rev; then
-            echo $rev
             break
         fi
     done
