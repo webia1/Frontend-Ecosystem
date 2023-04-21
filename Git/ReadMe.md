@@ -12,6 +12,10 @@
 - [Git Show Remote Git Repository Url](#git-show-remote-git-repository-url)
 - [Sort remote branched by up-to-dateness (committer date)](#sort-remote-branched-by-up-to-dateness-committer-date)
 - [Git Diff](#git-diff)
+- [Find](#find)
+  - [Find occurence (oldest first)](#find-occurence-oldest-first)
+  - [Find occurence (newest first)](#find-occurence-newest-first)
+  - [Find all occurences (newest first)](#find-all-occurences-newest-first)
 - [Checkout a single file from another branch](#checkout-a-single-file-from-another-branch)
 - [Update Index](#update-index)
 - [Git Alias](#git-alias)
@@ -21,13 +25,13 @@
 - [Log all modified changes by a certain user](#log-all-modified-changes-by-a-certain-user)
   - [Short version](#short-version)
   - [Long Version](#long-version)
-- [Git Search Strings in Code (added)](#git-search-strings-in-code-added)
+- [Git Search Strings in Code](#git-search-strings-in-code)
 - [Remove ignored files from remote repository](#remove-ignored-files-from-remote-repository)
 - [Undo add](#undo-add)
 - [Restore deleted file](#restore-deleted-file)
 - [Create and connect to remote repository](#create-and-connect-to-remote-repository)
-  - [Remote add & pull](#remote-add-pull)
-  - [Set-upstream & push](#set-upstream-push)
+  - [Remote add & pull](#remote-add--pull)
+  - [Set-upstream & push](#set-upstream--push)
   - [fatal: refusing to merge unrelated histories](#fatal-refusing-to-merge-unrelated-histories)
 - [Git remove remote config](#git-remove-remote-config)
 - [Set autocrlf to false](#set-autocrlf-to-false)
@@ -55,7 +59,7 @@
 - [Statistics](#statistics)
 - [Bisect](#bisect)
 - [Miscellaneous](#miscellaneous)
-- [ERRORS & SOLUTIONS](#errors-solutions)
+- [ERRORS & SOLUTIONS](#errors--solutions)
   - [Your configuration specifies to merge with the <branch name> from the remote, but no such ref was fetched](#your-configuration-specifies-to-merge-with-the-branch-name-from-the-remote-but-no-such-ref-was-fetched)
   - [Git autocomplete on Windows Visual Studio Code integrated Terminal (VSCode/Cygwin/Git/Autocomplete)](#git-autocomplete-on-windows-visual-studio-code-integrated-terminal-vscodecygwingitautocomplete)
     - [Install Cygwin and following cygwin packages](#install-cygwin-and-following-cygwin-packages)
@@ -133,6 +137,46 @@ Auto push of new branches
     git diff master --name-status   // and what kind of differences
     git diff master --stat          // my favorite
     git diff master --shortstat
+
+## Find
+
+### Find occurence (oldest first)
+
+```shell
+function git-find-file-oldest() {
+    git rev-list --all --reverse | while read rev; do
+        if git ls-tree -r $rev | grep -q $1; then
+            echo $rev
+            break
+        fi
+    done
+}
+```
+
+### Find occurence (newest first)
+
+```shell
+git-find-file() {
+    git rev-list --all | while read rev; do
+        if git ls-tree -r $rev | grep -q $1; then
+            echo $rev
+            break
+        fi
+    done
+}
+```
+
+### Find all occurences (newest first)
+
+```shell
+function git-find-file-all() {
+    git rev-list --all | while read rev; do
+        if git ls-tree -r $rev | grep -q $1; then
+            echo $rev
+        fi
+    done
+}
+```
 
 ## Checkout a single file from another branch
 
