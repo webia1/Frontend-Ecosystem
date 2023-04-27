@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CSS - Basic Examples</title>
+
+    <link
+      href="https://fonts.googleapis.com/css2?family=Oswald:wght@500&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      html,
+      body,
+      * {
+        margin: 0px;
+        padding: 0px;
+      }
+
+      body {
+        background-color: whitesmoke;
+      }
+
+      .header {
+        background-color: black;
+        padding: 10px 0;
+      }
+
+      h1 {
+        font-family: Oswald;
+        font-size: 36px;
+        text-align: center;
+        color: whitesmoke;
+      }
+
+      h1 small {
+        color: rgb(255, 230, 0);
+      }
+
+      hr {
+        border: 0;
+        height: 0;
+        border-top: 1px solid rgba(0, 0, 0, 0.1);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+      }
+    </style>
+
+    <link rel="stylesheet" href="style.css" />
+  </head>
+
+  <body>
+    <div class="header">
+      <h1>CSS Grid Examples <small>For Programmers</small></h1>
+    </div>
+    <!------------ START ---------------->
+
+    <div class="container container-border-co">
+      <div class="item">1</div>
+      <div class="item">2</div>
+      <div class="item">3</div>
+      <div class="item">4</div>
+      <div class="item">5</div>
+      <div class="item">6</div>
+    </div>
+  </body>
+</html>

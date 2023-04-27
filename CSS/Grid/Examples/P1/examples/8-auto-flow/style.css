@@ -1,0 +1,32 @@
+.container {
+  display: grid;
+  gap: 10px;
+
+  grid-template-columns: repeat(4, 1fr);
+  grid-template-rows: repeat(4, 1fr);
+  grid-auto-flow: row dense;
+  /* grid-auto-flow: row;
+  /* grid-auto-flow: row dense; */
+  grid-auto-flow: column dense;
+}
+
+.container-border-co {
+  margin: 20px;
+  border: 1px solid red;
+  /* overflow-x: auto; */
+}
+
+.item {
+  background-color: yellowgreen;
+  padding: 20px;
+  border: 1px solid blue;
+}
+
+.item:nth-of-type(2),
+.item:nth-of-type(3) {
+  grid-column: span 2;
+}
+
+.item:nth-of-type(8) {
+  grid-row: span 3;
+}

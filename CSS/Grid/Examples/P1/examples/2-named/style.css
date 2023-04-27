@@ -1,0 +1,50 @@
+.container {
+  display: grid;
+  gap: 10px;
+  grid-template-areas:
+    "header header header"
+    "aside-1 section aside-2"
+    "footer footer footer";
+  /* ". footer footer"; */
+}
+
+.container-border-co {
+  margin: 20px;
+  border: 1px solid red;
+}
+
+header {
+  grid-area: header;
+}
+
+aside:nth-of-type(1) {
+  grid-area: aside-1;
+}
+aside:nth-of-type(2) {
+  grid-area: aside-2;
+}
+
+section {
+  grid-area: section;
+}
+
+footer {
+  grid-area: footer;
+}
+
+.item {
+  background-color: yellowgreen;
+  padding: 20px;
+  border: 1px solid blue;
+}
+
+@media screen and (max-width: 576px) {
+  .container {
+    grid-template-areas:
+      "header"
+      "section"
+      "aside-1"
+      "aside-2"
+      "footer";
+  }
+}

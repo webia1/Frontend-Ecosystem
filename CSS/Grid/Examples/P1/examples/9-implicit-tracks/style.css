@@ -1,0 +1,27 @@
+.container {
+  display: grid;
+  gap: 10px;
+
+  grid-template-rows: 1fr 4fr;
+  /* grid-auto-rows: 3fr;
+  height: 80vh; */
+
+  /* grid-template-columns: repeat(auto-fill, minmax(300px, auto)); */
+}
+
+.container-border-co {
+  margin: 20px;
+  border: 1px solid red;
+  /* overflow-x: auto; */
+}
+
+.item {
+  background-color: yellowgreen;
+  padding: 20px;
+  border: 1px solid blue;
+}
+
+.item:nth-of-type(5) {
+  background-color: yellow;
+  order: -1;
+}

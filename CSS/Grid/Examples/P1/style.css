@@ -1,0 +1,22 @@
+/* .container {
+  display: grid;
+  grid-template-columns: 2fr 1fr 200px;
+  gap: 10px;
+} */
+
+.container {
+  display: grid;
+  grid-template-columns: 1fr 1fr 300px;
+  gap: 10px;
+}
+
+.container-border-co {
+  margin: 20px;
+  border: 1px solid red;
+}
+
+.item {
+  background-color: yellowgreen;
+  padding: 20px;
+  border: 1px solid blue;
+}

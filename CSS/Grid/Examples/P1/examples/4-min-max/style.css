@@ -1,0 +1,22 @@
+.container {
+  display: grid;
+  grid-template-columns:
+    /* minmax(100px, auto)
+    minmax(400px, auto); */
+    minmax(min-content, auto)
+    minmax(200px, auto);
+  /* minmax(min-content, auto); */
+  gap: 10px;
+}
+
+.container-border-co {
+  margin: 20px;
+  border: 1px solid red;
+  overflow-x: auto;
+}
+
+.item {
+  background-color: yellowgreen;
+  padding: 20px;
+  border: 1px solid blue;
+}
