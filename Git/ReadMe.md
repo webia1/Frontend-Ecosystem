@@ -321,11 +321,15 @@ then use it:
 Local:
 
     git branch -m old_name new_name
-    git branch -m new_name // if current branch
+    git branch -m new_name # if current branch
 
 Remote:
 
-    git push origin :old_name new_name
+    git push origin :old_name new_name # does not work always
+
+you will sometimes get the message: The upstream branch of your current branch does not match the name of your current branch.
+
+    git branch --set-upstream-to=origin/my-new-branch my-new-branch
 
 ## Delete local branch
 
