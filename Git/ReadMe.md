@@ -120,6 +120,18 @@ Auto push of new branches
     git config --get remote.origin.url  // SIMPLE
     git remote show origin              // DETAILS
 
+## List local and upstream branches
+
+    git branch -vv --sort=-committerdate -a
+
+shows the local branches and their upstream branches
+
+- and the last commit on the branch
+- and the last commit on the upstream branch
+- and the relationship between the local branch
+  - and the upstream branch
+- sorts by newest commit first
+
 ## Sort remote branched by up-to-dateness (committer date)
 
     // [credits prof. narebski](https://stackoverflow.com/questions/5188320/how-can-i-get-a-list-of-git-branches-ordered-by-most-recent-commit)
