@@ -11,6 +11,7 @@
 - [Git Pull and reset/ignore local changes](#git-pull-and-resetignore-local-changes)
 - [Git Show Remote Git Repository Url](#git-show-remote-git-repository-url)
 - [Sort remote branched by up-to-dateness (committer date)](#sort-remote-branched-by-up-to-dateness-committer-date)
+- [Git Cherry Pick](#git-cherry-pick)
 - [Git Diff](#git-diff)
 - [Find](#find)
 - [Checkout a single file from another branch](#checkout-a-single-file-from-another-branch)
@@ -126,6 +127,10 @@ Auto push of new branches
     # Or using git branch (since version 2.7.0)
     git branch --sort=-committerdate  # DESC
     git branch --sort=committerdate  # ASC
+
+## Git Cherry Pick
+
+    git cherry-pick <commit> --no-commit
 
 ## Git Diff
 
