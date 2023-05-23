@@ -10,6 +10,7 @@
 - [Show just the current branch](#show-just-the-current-branch)
 - [Git Pull and reset/ignore local changes](#git-pull-and-resetignore-local-changes)
 - [Git Show Remote Git Repository Url](#git-show-remote-git-repository-url)
+- [List local and upstream branches](#list-local-and-upstream-branches)
 - [Sort remote branched by up-to-dateness (committer date)](#sort-remote-branched-by-up-to-dateness-committer-date)
 - [Git Cherry Pick](#git-cherry-pick)
 - [Git Diff](#git-diff)
