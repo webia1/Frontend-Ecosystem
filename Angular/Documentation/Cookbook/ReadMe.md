@@ -255,3 +255,16 @@ import {
     @Inject(DOCUMENT) private document: Document,
     @Inject('WINDOW') private window: Window, ... // Attention it is a String!
 ```
+
+## \*ngIfAnd with Observables in Templates
+
+The solution:
+
+1. `*ngIf` and and `async` pipe are in a wrapping `ng-container`
+1. the condition is within this `ng-container`
+
+```html
+<ng-container *ngIf="myData$ | async as myData">
+  <div *ngIf="myData.length > 0">{{ myData | json }}</div>
+</ng-container>
+```
