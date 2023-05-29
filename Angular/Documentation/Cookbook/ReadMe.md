@@ -21,6 +21,7 @@
   - [Create a Service](#create-a-service)
   - [Inject and use it in your Component](#inject-and-use-it-in-your-component)
   - [Or Inject it directly without Service](#or-inject-it-directly-without-service)
+- [\*ngIfAnd with Observables in Templates](#ngifand-with-observables-in-templates)
 
 <!-- /code_chunk_output -->
 
