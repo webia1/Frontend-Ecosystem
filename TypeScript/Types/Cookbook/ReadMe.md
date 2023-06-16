@@ -5,6 +5,7 @@
 <!-- code_chunk_output -->
 
 - [Conversion between Objects](#conversion-between-objects)
+- [Pattern Types](#pattern-types)
 
 <!-- /code_chunk_output -->
 
@@ -74,4 +75,29 @@ console.log(resultObj);
  *  en: { SomeKey: 'Translation for Key' }
  * }
  */
+```
+
+## Pattern Types
+
+```ts
+type PatternType<T extends string> = `${Extract<
+  T,
+  string
+>}${string}`;
+
+type TupleOfPatternStrings<T extends string> =
+  T extends `${infer Prefix}${infer Pattern}`
+    ? PatternType<Pattern>[Pattern] extends string
+      ? [T, ...TupleOfPatternStrings<Pattern>]
+      : never
+    : [];
+
+function createTupleOfPatternStrings<T extends string>(
+  ...strings: TupleOfPatternStrings<T>
+): TupleOfPatternStrings<T> {
+  return strings;
+}
+
+const example: TupleOfPatternStrings<'A123'> =
+  createTupleOfPatternStrings('A987');
 ```
