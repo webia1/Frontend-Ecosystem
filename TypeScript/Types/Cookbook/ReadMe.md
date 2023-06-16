@@ -6,6 +6,7 @@
 
 - [Conversion between Objects](#conversion-between-objects)
 - [Sophisticated Type Guards](#sophisticated-type-guards)
+- [Only 2 Letters in a special combination](#only-2-letters-in-a-special-combination)
 
 <!-- /code_chunk_output -->
 
@@ -96,5 +97,22 @@ function createUniqueArray<T extends ReadonlyArray<MyCustomType>>(
   return arr;
 }
 
+/**
+ * If you type anything else than MyCustomType in the array,
+ * you will get an error.
+ */
+
 const x = createUniqueArray(['A807', 'A811', 'A800'] as const);
+```
+
+## Only 2 Letters in a special combination
+
+```ts
+type Only2Letters = `${'A' | 'B'}${string}`;
+
+function isOnly2Letters(value: string): value is Only2Letters {
+  return /^(A|B)[A-Z]{1}$/.test(value);
+}
+
+const y: Array<Only2Letters> = ['AA', 'AB', 'BA', 'BB', 'CC']; // <- Error 'CC'
 ```
