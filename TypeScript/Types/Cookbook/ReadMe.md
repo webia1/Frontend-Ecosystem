@@ -5,7 +5,7 @@
 <!-- code_chunk_output -->
 
 - [Conversion between Objects](#conversion-between-objects)
-- [Pattern Types](#pattern-types)
+- [Sophisticated Type Guards](#sophisticated-type-guards)
 
 <!-- /code_chunk_output -->
 
@@ -77,27 +77,24 @@ console.log(resultObj);
  */
 ```
 
-## Pattern Types
+## Sophisticated Type Guards
 
 ```ts
-type PatternType<T extends string> = `${Extract<
-  T,
-  string
->}${string}`;
+type MyCustomType = `A8${string}`;
 
-type TupleOfPatternStrings<T extends string> =
-  T extends `${infer Prefix}${infer Pattern}`
-    ? PatternType<Pattern>[Pattern] extends string
-      ? [T, ...TupleOfPatternStrings<Pattern>]
-      : never
-    : [];
-
-function createTupleOfPatternStrings<T extends string>(
-  ...strings: TupleOfPatternStrings<T>
-): TupleOfPatternStrings<T> {
-  return strings;
+function isMyCustomType(value: string): value is MyCustomType {
+  return /^A8\d{2}$/.test(value);
 }
 
-const example: TupleOfPatternStrings<'A123'> =
-  createTupleOfPatternStrings('A987');
+function createUniqueArray<T extends ReadonlyArray<MyCustomType>>(
+  arr: T,
+): T {
+  const uniqueSet = new Set(arr);
+  if (uniqueSet.size !== arr.length) {
+    throw new Error('Duplicate entries found in array.');
+  }
+  return arr;
+}
+
+const x = createUniqueArray(['A807', 'A811', 'A800'] as const);
 ```
