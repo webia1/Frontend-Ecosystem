@@ -4,9 +4,11 @@
 
 <!-- code_chunk_output -->
 
+- [Use the values of an object as key type for another one](#use-the-values-of-an-object-as-key-type-for-another-one)
 - [Conversion between Objects](#conversion-between-objects)
 - [Sophisticated Type Guards](#sophisticated-type-guards)
 - [Only 2 Letters in a special combination](#only-2-letters-in-a-special-combination)
+- [Type Guard + RunTime Check](#type-guard--runtime-check)
 
 <!-- /code_chunk_output -->
 
