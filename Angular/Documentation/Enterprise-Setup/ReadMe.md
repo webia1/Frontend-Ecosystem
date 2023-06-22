@@ -40,14 +40,14 @@ This document describes how to setup an Angular project for enterprise use. It i
   'ng i -g @nrwl/cli'
   `ng i -g nx`
   `ng i -g @nrwl/schematics`
-  `yarn add @nrwl/angular`
 
 ## Steps
 
 ### Create Nx workspace
 
 - Create a new Nx workspace
-  `npx create-nx-workspace@latest`
+  `npx create-nx-workspace@latest` or
+  `yarn create nx-workspace@latest`
 - Select Angular as application framework
 - Select Nx CLI as CLI
 - Select yarn as package manager
