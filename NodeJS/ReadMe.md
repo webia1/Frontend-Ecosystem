@@ -29,6 +29,11 @@ npm i -g n
 
 #### Examples
 
+Run with sudo:
+
 ```shell
-n latest              # install the latest version
+n latest         # Install the latest version
+n lts            # Long Time Support
+n prune          # Remove cached except current
+n rm 0.9.4       # Remove v0.9.4
 ```
