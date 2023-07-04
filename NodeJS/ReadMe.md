@@ -7,6 +7,7 @@
 - [Setup](#setup)
   - [Install Mode](#install-mode)
   - [Install n Package Manager](#install-n-package-manager)
+    - [Examples](#examples)
 
 <!-- /code_chunk_output -->
 
@@ -24,4 +25,10 @@ brew install node
 
 ```shell
 npm i -g n
+```
+
+#### Examples
+
+```shell
+n latest              # install the latest version
 ```
