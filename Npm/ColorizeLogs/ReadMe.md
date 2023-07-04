@@ -1,5 +1,7 @@
 # Colorize Logs 
 
+See colors: <https://www.ditig.com/256-colors-cheat-sheet>
+
 ```shell
 #!/bin/zsh
 
