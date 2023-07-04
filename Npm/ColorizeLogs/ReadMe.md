@@ -25,6 +25,7 @@ DARKTEAL='\033[48;5;24m'
 DARKGRAY='\033[48;5;237m'
 
 RESET='\033[0m'
+PADDING="  "
 
 colorize_logs() {
 
@@ -32,7 +33,7 @@ colorize_logs() {
     colored_line="$line"
     if echo "$line" | grep -q "WORD1"; then
       # Colorize "WORD1" in red
-      colored_line="${colored_line//WORD1/${CYAN}WORD1${RESET}}"
+      colored_line="${colored_line//WORD1/${CYAN}${PADDING}WORD1$${PADDING}{RESET}}"
     fi
     if echo "$line" | grep -q "word2"; then
       # Colorize "API" in yellow
