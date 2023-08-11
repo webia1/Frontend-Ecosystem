@@ -1,0 +1,144 @@
+export ZSH="/Users/---username---/.oh-my-zsh"
+ZSH_THEME="agnoster"
+ENABLE_CORRECTION="true"
+DISABLE_UNTRACKED_FILES_DIRTY="true"
+
+HIST_STAMPS="mm/dd/yyyy"
+
+plugins=(
+    git
+    zsh-syntax-highlighting
+    zsh-autosuggestions
+)
+
+source $ZSH/oh-my-zsh.sh
+export LANG=en_US.UTF-8
+
+if [[ -n $SSH_CONNECTION ]]; then
+    export EDITOR='code'
+else
+    export EDITOR='code'
+fi
+
+PATH="/usr/local/sbin:$PATH"
+PATH="$HOME/.gobrew/current/bin:$HOME/.gobrew/bin:$PATH"
+export GOPATH="$HOME/go"
+PATH="$GOPATH/bin:$PATH"
+export GOPRIVATE=<DOMAIN_WITHOUT_HTTP>/*,<DOMAIN2_WITHOUT_HTTP>
+export GONOSUMDB=<DOMAIN_WITHOUT_HTTP>/*,<DOMAIN2_WITHOUT_HTTP>
+export GONOPROXY=<DOMAIN_WITHOUT_HTTP>/*,<DOMAIN2_WITHOUT_HTTP>
+export GOINSECURE=<DOMAIN_WITHOUT_HTTP>/*,<DOMAIN2_WITHOUT_HTTP>
+
+PS1="$PROMPT
+
+"
+
+apis() {
+  # API Scripts e.g. start_doc_server()
+}
+
+common_microservices () {
+    ttab ~/services/my-common-microservices.sh
+}
+
+start_some_angular_app () {
+    cd ~/path/to/some-app
+    pull_fe
+    # kill $(sudo lsof -t -i:4200)
+    yarn
+    ng serve --host=0.0.0.0 --disable-host-check --port=4200
+}
+
+alias p="cd ~/PROJECTS"
+alias log_me_on_some_server="cf login -a https://some-server -u MyUserName -p $(security find-generic-password -w -s 'NameOfKey' -a 'MyUserName') --skip-ssl-validation"
+alias chromed="/Applications/Chrome\ Debugger.app/Contents/MacOS/Chrome\ Debugger&"
+
+git-find-file() {
+    git rev-list --all --reverse | while read rev; do
+        if git ls-tree -r $rev | grep -q $1; then
+            echo $rev
+            break
+        fi
+    done
+}
+
+git-find-all() {
+    git rev-list --all | while read rev; do
+        if git ls-tree -r $rev | grep -q $1; then
+            git log -1 $rev
+            echo
+        fi
+    done
+}
+
+git-find-first-sentence() {
+    git rev-list --all --reverse | while read rev; do
+        if git grep -q "$1" $rev; then
+            echo $rev
+            break
+        fi
+    done
+}
+
+git-find-all-sentences-reverse() {
+    git rev-list --all --reverse | while read rev; do
+        if git grep -q "$1" $rev; then
+            git log -1 $rev
+        fi
+    done
+}
+
+git-find-all-sentences() {
+    git rev-list --all | while read rev; do
+        if git grep -q "$1" $rev; then
+            git log -1 --date=short --pretty=format:"%ad %s %h %an" $rev
+            echo
+        fi
+    done
+}
+
+git-find-changed-file1() {
+    git rev-list --all | while read rev; do
+        if git diff-tree --no-commit-id --name-only -r $rev | grep -q $1; then
+            git log -1 --date=short --pretty=format:"%ad %s %h %an" $rev
+            echo
+        fi
+    done
+}
+
+git-find-changed-directory() {
+    git rev-list --all | while read rev; do
+        if git diff-tree --no-commit-id --name-only -r $rev | grep -q $1; then
+            # echo date, commit message, short commit id, author
+            git log -1 --date=short --pretty=format:"%ad %s %h %an" $rev
+            echo
+        fi
+    done
+}
+
+git-find-changed-file2() {
+    git rev-list --all | while read rev; do
+        if git ls-tree -r $rev | grep -q $1; then
+            echo $rev
+            git log -1 $rev
+            echo
+        fi
+    done
+}
+
+git-find-last-sentence() {
+    git rev-list --all | while read rev; do
+        if git grep -q "$1" $rev; then
+            echo $rev
+            break
+        fi
+    done
+}
+
+git-find-all-sentences() {
+    git rev-list --all | while read rev; do
+        if git grep -q "$1" $rev; then
+            echo $rev
+        fi
+    done
+}
