@@ -26,6 +26,11 @@ brew install node
 ```shell
 npm i -g n
 ```
+### Manage ZSH Config (changing Versions)
+
+```shell
+export PATH="$N_PREFIX/bin:$PATH"
+```
 
 #### Examples
 
