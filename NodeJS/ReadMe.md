@@ -1,19 +1,25 @@
 # NodeJS
 
-<!-- @import "[TOC]" {cmd="toc" depthFrom=2 depthTo=5 orderedList=false} -->
+
+<!-- @import "[TOC]" {cmd="toc" depthFrom=2 depthTo=6 orderedList=false} -->
 
 <!-- code_chunk_output -->
 
 - [Setup](#setup)
   - [Install Mode](#install-mode)
   - [Install n Package Manager](#install-n-package-manager)
-    - [Examples](#examples)
+  - [Trouble Shooting](#trouble-shooting)
+  - [Examples](#examples)
 
 <!-- /code_chunk_output -->
+
+
 
 ## Setup
 
 ### Install Mode
+
+
 
 Install Brew and then:
 
@@ -26,10 +32,11 @@ brew install node
 ```shell
 npm i -g n
 ```
-### Manage ZSH Config (changing Versions)
+### Trouble Shooting
+
+Manage ZSH Config (changing Versions)
 
 ```shell
-
 export PATH="$N_PREFIX/bin:$PATH" # add this in ~/.zshrc
 # if you get the following error after changing the version by running `n doctor`:
 There is an active version of npm shadowing the version installed by n. Check order of entries in PATH.
@@ -40,7 +47,7 @@ brew unlink node
   Unlinking /opt/homebrew/Cellar/node/20.5.1... 5 symlinks removed.
 ```
 
-#### Examples
+### Examples
 
 Run with sudo:
 
