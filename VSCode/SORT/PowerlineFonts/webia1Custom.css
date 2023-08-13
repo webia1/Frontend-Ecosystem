@@ -7,7 +7,10 @@
 
   font-family: "mplusforpowerline-1mn-light";
 }
-
-span.mtk13 {
-  font-size: 14px;
+/* visualize unexpected chars in an angular template */ 
+span.mtk1.unexpected-closing-bracket,
+span.mtk44.mtkb.unexpected-closing-bracket {
+  color: #fba800 !important;
+  font-weight: bold !important;
+  border: 1px dotted red !important;
 }
