@@ -12,6 +12,7 @@ brew install graphviz
 
 # Angular Project
 mkdir tmp
+madge ./src/main.ts # lists all files to be processed (optional)
 madge -i ./tmp/img.png  --ts-config ./tsconfig.json ./src/main.ts
 
 ```
