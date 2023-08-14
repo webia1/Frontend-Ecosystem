@@ -7,8 +7,10 @@
 - [Preconditions](#preconditions)
 - [Steps](#steps)
   - [Create Nx workspace](#create-nx-workspace)
-  - [Create a new Angular application](#create-a-new-angular-application)
+    - [Package based](#package-based)
+    - [Integrated](#integrated)
   - [Install Angular Material](#install-angular-material)
+  - [Translation (i18n)](#translation-i18n)
   - [Choose your Store Management](#choose-your-store-management)
     - [NGRX](#ngrx)
       - [Install NGRX Related Packages](#install-ngrx-related-packages)
@@ -40,43 +42,91 @@ This document describes how to setup an Angular project for enterprise use. It i
   'ng i -g @nrwl/cli'
   `ng i -g nx`
   `ng i -g @nrwl/schematics`
+- Install Zsh
+  `brew install zsh`
+- Install Oh My Zsh
+  `sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"`
+
+- Install Zsh Auto Suggestions
+  [>> Online](https://github.com/zsh-users/zsh-autosuggestions/blob/master/INSTALL.md)
 
 ## Steps
 
 ### Create Nx workspace
 
-- Create a new Nx workspace
-  `npx create-nx-workspace@latest` or
-  `yarn create nx-workspace@latest`
-- Select Angular as application framework
-- Select Nx CLI as CLI
-- Select yarn as package manager
+#### Package based
 
-### Create a new Angular application
+Library & Standalone Application..
 
-- Create a new Angular application
+#### Integrated
 
-  `ng g @nrwl/angular:application --name=app --style=scss --routing=true --prefix=app --linter=eslint`
+`npx create-nx-workspace@latest`
 
-- Add the following dependencies to the package.json
+```shell
+✔ Where would you like to create your workspace? · <path/to/workspace>
+✔ Which stack do you want to use? · angular
+✔ Standalone project or integrated monorepo? · integrated
+✔ Application name · <my-app1>
+✔ Default stylesheet format · <scss>
+✔ Would you like to use Standalone Components in your application? · <No>
+✔ Would you like to add routing? · <Yes>
+✔ Enable distributed caching to make your CI faster · <No>
+```
 
-  TBD: Add dependencies
+```shell
+cd <my-app1>
 
-  ```json
-
-  ```
+```
 
 ### Install Angular Material
 
 - Install Angular Material
 
-  `ng add @angular/material`
+  Angular/CLI Only: `ng add @angular/material`
+  Nx: `npm install @angular/material && nx g @angular/material:ng-add --project my-app1`
+
+### Translation (i18n)
+
+- `npm install @ngx-translate/core @ngx-translate/http-loader`
 
 ### Choose your Store Management
 
 #### NGRX
 
-`ng add @ngrx/store`
+```shell
+nx add @ngrx/store
+Using Nx to run Angular CLI commands is deprecated and will be removed in a future version.
+To run Angular CLI commands, use \`ng\`.
+Ng add is not natively supported by Nx
+Instead, we recommend running `npm install @ngrx/store && npx nx g @ngrx/store:ng-add`
+✔ Run this command? (y/N) · true
+npm WARN EBADENGINE Unsupported engine {
+npm WARN EBADENGINE   package: 'rollup@3.25.1',
+npm WARN EBADENGINE   required: { node: '>=14.18.0', npm: '>=8.0.0' },
+npm WARN EBADENGINE   current: { node: 'v19.9.0', npm: '7.24.0' }
+npm WARN EBADENGINE }
+
+added 1 package, and audited 1557 packages in 2s
+
+201 packages are looking for funding
+  run `npm fund` for details
+
+found 0 vulnerabilities
+
+>  NX  Generating @ngrx/store:ng-add
+
+✔ Packages installed successfully.
+✔ Packages installed successfully.
+✔ Which ESLint configuration would you like to use? · all-requiring-type-checking
+
+      The NgRx ESLint Plugin is installed and configured with the 'all-requiring-type-checking' config.
+
+      Take a look at the docs at https://ngrx.io/guide/eslint-plugin if you want to change the default configuration.
+
+UPDATE apps/my-app1/src/app/app.module.ts
+UPDATE package.json
+UPDATE .eslintrc.json
+```
 
 ##### Install NGRX Related Packages
 
