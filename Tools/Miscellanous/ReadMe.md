@@ -5,7 +5,7 @@
 <!-- code_chunk_output -->
 
 - [Diagram Maker by awslabs](#diagram-maker-by-awslabs)
-- [G6 from '@antv/g6' (OK)](#g6-from-antvg6-ok)
+- [&#10003; G6 from '@antv/g6'](#10003-g6-from-antvg6)
 
 <!-- /code_chunk_output -->
 
