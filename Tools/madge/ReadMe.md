@@ -11,6 +11,7 @@ npm -g install madge
 brew install graphviz
 
 # Angular Project
+mkdir tmp
 madge -i ./tmp/img.png  --ts-config ./tsconfig.json ./src/main.ts
 
 ```
