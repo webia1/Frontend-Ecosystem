@@ -1,4 +1,4 @@
-# List of my current extensions 
+# List of my current extensions 1
 
 ```shell
 abierbaum.vscode-file-peek
