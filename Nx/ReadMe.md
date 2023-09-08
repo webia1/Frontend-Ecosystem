@@ -11,13 +11,21 @@
 - [Add Formly](#add-formly)
 - [Update & Upgrade](#update--upgrade)
 - [Adding Nx to an Existing Repository](#adding-nx-to-an-existing-repository)
+- [Create a shared library, e.g. formly](#create-a-shared-library-eg-formly)
 
 <!-- /code_chunk_output -->
+
+## Install Nx CLI Globally
+
+```shell
+npm i -g @nrwl/cli@latest
+```
 
 ## Create a workspace
 
 ```shell
 npx create-nx-workspace@latest
+npm i -g @nrwl/cli@latest
 ```
 
 ## Add a project
@@ -65,4 +73,13 @@ Run:
 
 ```shell
 npx nx@latest init
+```
+
+## Create a shared library, e.g. formly
+
+```shell
+# example with formly
+# At the root of the workspace
+nx g @nrwl/angular:lib formly --buildable --directory=shared
+npm install @ngx-formly/core @ngx-formly/material --save
 ```
