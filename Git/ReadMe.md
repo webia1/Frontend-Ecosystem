@@ -56,6 +56,8 @@
   - [Merge: Abort if conflicts (2)](#merge-abort-if-conflicts-2)
   - [Make a branch master or replace/overwrite master with an old branch](#make-a-branch-master-or-replaceoverwrite-master-with-an-old-branch)
 - [Statistics](#statistics)
+- [Rebase (Merging Commits)](#rebase-merging-commits)
+  - [Interactive](#interactive)
 - [Bisect](#bisect)
 - [Miscellaneous](#miscellaneous)
 - [ERRORS & SOLUTIONS](#errors--solutions)
@@ -455,6 +457,26 @@ or easier
     git shortlog -sn // top list
     git shortlog -sne // with Email Addresses
     git shortlog -sn --no-merges  // top list ohne merges
+
+## Rebase (Merging Commits)
+
+Use VSCode and install GitLens Extension.
+
+### Interactive
+
+Set VSCode as Standard-Editor; With `--wait`, Git will wait until you close the file in VSCode before continuing:
+
+```shell
+git config --global core.editor "code --wait"
+```
+
+Start interactive Rebase for the last e.g. 10 commits:
+
+```shell
+git rebase -i HEAD~10
+```
+
+![Interactive rebasing with Gitlens](./assets/git-interactive-rebase.png)
 
 ## Bisect
 
