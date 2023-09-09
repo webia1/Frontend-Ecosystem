@@ -20,7 +20,6 @@
     - [Create new a Component within a Module within a Library](#create-new-a-component-within-a-module-within-a-library)
     - [Create a new Standalone Component within a Library](#create-a-new-standalone-component-within-a-library)
     - [Nx/Storybook](#nxstorybook)
-  - [Useful Commands](#useful-commands)
 - [Nx MonoRepo v16+ und Angular Apps v16+](#nx-monorepo-v16-und-angular-apps-v16)
   - [Shared Libraries](#shared-libraries)
   - [Storybook für Visualisierung](#storybook-für-visualisierung)
@@ -32,6 +31,7 @@
     - [Angular Elements](#angular-elements)
     - [Event Handling in Angular Elements](#event-handling-in-angular-elements)
     - [Build-Prozess](#build-prozess)
+- [Backup: Useful Commands](#backup-useful-commands)
 
 <!-- /code_chunk_output -->
 
@@ -140,13 +140,6 @@ nx g @nx/angular:storybook-configuration apps-shared-libs/reusables
 nx run apps-shared-libs/reusables:storybook
 ```
 
-### Useful Commands
-
-```shell
-nx reset
-
-```
-
 Natürlich, hier ist eine Zusammenfassung im Markdown-Format:
 
 ---
@@ -202,3 +195,11 @@ Selbstverständlich, ich füge ein weiteres Kapitel hinzu:
 
 - Ein spezieller Build-Prozess ist erforderlich, um Angular Elements zu generieren, insbesondere wenn sie in einer Shared Library enthalten sind.
 - Die `tsconfig.json` und `project.json` müssen manuell angepasst werden, um den Build-Prozess zu unterstützen.
+
+## Backup: Useful Commands
+
+```shell
+nx reset
+nx dep-graph
+
+```
