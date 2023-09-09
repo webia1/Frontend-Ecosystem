@@ -6,13 +6,15 @@
 
 <!-- code_chunk_output -->
 
-- [Create a workspace](#create-a-workspace)
-- [Add a project](#add-a-project)
-- [Rename a project](#rename-a-project)
-- [Add Thirdpary](#add-thirdpary)
-- [Add Formly](#add-formly)
-- [Update & Upgrade](#update--upgrade)
-- [Adding Nx to an Existing Repository](#adding-nx-to-an-existing-repository)
+- [Getting Started](#getting-started)
+  - [Install Nx CLI Globally](#install-nx-cli-globally)
+  - [Create a workspace](#create-a-workspace)
+  - [Add a project](#add-a-project)
+  - [Rename a project](#rename-a-project)
+  - [Add Thirdpary](#add-thirdpary)
+  - [Add Formly](#add-formly)
+  - [Update & Upgrade](#update--upgrade)
+  - [Adding Nx to an Existing Repository](#adding-nx-to-an-existing-repository)
   - [Create a shared library, e.g. formly](#create-a-shared-library-eg-formly)
   - [Create new libraries on a certain place](#create-new-libraries-on-a-certain-place)
     - [Create new a Component within a Module within a Library](#create-new-a-component-within-a-module-within-a-library)
@@ -33,27 +35,36 @@
 
 <!-- /code_chunk_output -->
 
-## Create a workspace
+## Getting Started
+
+### Install Nx CLI Globally
+
+```shell
+npm i -g @nrwl/cli@latest
+```
+
+### Create a workspace
 
 ```shell
 npx create-nx-workspace@latest
+npm i -g @nrwl/cli@latest
 ```
 
-## Add a project
+### Add a project
 
 ```shell
 nx g @nrwl/angular:app another-app
 ```
 
-## Rename a project
+### Rename a project
 
 ```shell
 nx g @nrwl/workspace:move --project old-app new-app
 ```
 
-## Add Thirdpary
+### Add Thirdpary
 
-## Add Formly
+### Add Formly
 
 ```shell
 # At the root of the workspace
@@ -61,7 +72,7 @@ npm install @ngx-formly/core @ngx-formly/material --save
 npm install @ngx-formly/schematics --save-dev
 ```
 
-## Update & Upgrade
+### Update & Upgrade
 
 ```shell
 
@@ -78,7 +89,7 @@ npx npm-check-updates -u
 npm install
 ```
 
-## Adding Nx to an Existing Repository
+### Adding Nx to an Existing Repository
 
 Run:
 
