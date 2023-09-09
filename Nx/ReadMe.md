@@ -1,4 +1,4 @@
-# Nx Cookbook
+# Nx Cookbook (Denglish)
 
 > Project Example here: <https://github.com/webia1/ng16-elements>
 
@@ -140,8 +140,6 @@ nx g @nx/angular:storybook-configuration apps-shared-libs/reusables
 nx run apps-shared-libs/reusables:storybook
 ```
 
-Natürlich, hier ist eine Zusammenfassung im Markdown-Format:
-
 ---
 
 ## Nx MonoRepo v16+ und Angular Apps v16+
@@ -170,8 +168,6 @@ Natürlich, hier ist eine Zusammenfassung im Markdown-Format:
 
 - `LoginComponent` kann als Angular Element verpackt und in anderen Projekten wiederverwendet werden.
 - Manuelle Konfiguration und Build-Prozesse sind erforderlich, um dies zu erreichen.
-
-Selbstverständlich, ich füge ein weiteres Kapitel hinzu:
 
 ---
 
