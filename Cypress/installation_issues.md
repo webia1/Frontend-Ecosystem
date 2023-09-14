@@ -5,6 +5,7 @@
 <!-- code_chunk_output -->
 
 - [Corporate Network Certificat Issue](#corporate-network-certificat-issue)
+  - [(Windows Powershell) - Getting Proxy Cedentials Solution](#windows-powershell---getting-proxy-cedentials-solution)
   - [Insecure Methods](#insecure-methods)
   - [Use Corporate Proxy](#use-corporate-proxy)
   - [Add Own Certificates](#add-own-certificates)
@@ -13,6 +14,50 @@
 <!-- /code_chunk_output -->
 
 ## Corporate Network Certificat Issue
+
+### (Windows Powershell) - Getting Proxy Cedentials Solution
+
+> Stackoverflow <https://stackoverflow.com/questions/26992886/>
+
+**PowerShell** can come to our rescue, **provided** you have the **ability to run it with administrative privileges.**
+
+**Import Internet Explorer Settings:**
+
+First, import your proxy settings from Internet Explorer to your system settings. This ensures that your system uses the same proxy settings that work in IE.
+
+```powershell
+netsh winhttp import proxy source=ie
+```
+
+> I just want to emphasize that even though the command `netsh winhttp import proxy source=ie` mentions Internet Explorer (IE), it actually pertains to system-wide proxy settings that could also be used by Microsoft Edge. Historically, Windows has retained the "IE" designation for these settings, even if the actual browser in use is no longer Internet Explorer.
+
+> In some cases, Windows uses the same proxy settings for both Internet Explorer and Microsoft Edge. However, attempting to import Edge-specific settings might result in an error message, as the `netsh` command was originally developed for Internet Explorer.
+
+**Initialize WebClient:**
+
+Create a new WebClient object. This object allows you to send HTTP requests and receive HTTP responses.
+
+```powershell
+$Wcl = New-Object System.Net.WebClient
+```
+
+**Get Credentials:**
+
+Use the Get-Credential `cmdlet` to prompt for your username and password. This will open a dialog box where you can enter your credentials.
+
+```powershell
+$Creds = Get-Credential
+```
+
+**Set Proxy Credentials:**
+
+Finally, assign the credentials to the WebClient's proxy. This enables the WebClient to pass through the corporate proxy using the credentials you provided.
+
+```powershell
+$Wcl.Proxy.Credentials = $Creds
+```
+
+By following these steps, you should be able to bypass the issues related to network restrictions and successfully install thirdparty packages.
 
 ### Insecure Methods
 
