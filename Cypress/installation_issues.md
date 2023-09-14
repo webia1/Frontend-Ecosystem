@@ -61,7 +61,7 @@ By following these steps, you should be able to bypass the issues related to net
 
 ### Insecure Methods
 
-Please be aware of the security risks, especially if we opt for method 1 or 4.
+> Please be aware of the security risks!
 
 We can instruct npm to ignore SSL certificate checks. **This is insecure and should only be used as a last resort.**
 
@@ -80,7 +80,7 @@ npm config set https-proxy http://proxy.company.com:8080
 
 ### Add Own Certificates
 
-If our company uses its own certificate, we can add it to npm:
+If the company uses its own certificate, we can add it to npm:
 
 ```shell
 npm config set cafile "path-to-your-certificate.pem"
