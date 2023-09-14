@@ -6,12 +6,13 @@
 
 - [Install Brew](#install-brew)
 - [Add Homebrew to PATH (zsh)](#add-homebrew-to-path-zsh)
-- [Beatiful Zsh - OhMyZsh](#beatiful-zsh-ohmyzsh)
+- [Beatiful Zsh - OhMyZsh](#beatiful-zsh---ohmyzsh)
+  - [Install Plugins](#install-plugins)
 - [Change Default Shell (if an older apple machine)](#change-default-shell-if-an-older-apple-machine)
 - [Replace Python 2 through Python 3](#replace-python-2-through-python-3)
-- [Python & tcl-tk](#python-tcl-tk)
+- [Python & tcl-tk](#python--tcl-tk)
 - [Turn Off Screen if connected to external monitors](#turn-off-screen-if-connected-to-external-monitors)
-- [Show Hidden Files in Finder - Shortcut](#show-hidden-files-in-finder-shortcut)
+- [Show Hidden Files in Finder - Shortcut](#show-hidden-files-in-finder---shortcut)
 - [Show Hidden Files in Finder](#show-hidden-files-in-finder)
 - [Change Screenshots Folder](#change-screenshots-folder)
 - [Show the Path in the Finder Title Bar](#show-the-path-in-the-finder-title-bar)
@@ -57,6 +58,27 @@ shows then only ~ without user@machine and with Git-Info
      prompt_hg
      prompt_end
     }
+
+### Install Plugins
+
+```shell
+# .zshrc
+plugins=(
+  git
+  zsh-autosuggestions
+  sudo
+  dirhistory
+)
+```
+
+```shell
+git clone https://github.com/zsh-users/zsh-autosuggestions ~/.oh-my-zsh/custom/plugins/zsh-autosuggestions
+
+git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ~/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting
+
+source ~/.zshrc
+
+```
 
 ## Change Default Shell (if an older apple machine)
 
