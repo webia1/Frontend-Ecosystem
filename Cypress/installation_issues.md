@@ -5,7 +5,7 @@
 <!-- code_chunk_output -->
 
 - [Corporate Network Certificat Issue](#corporate-network-certificat-issue)
-  - [(Windows Powershell) - Getting Proxy Cedentials Solution](#windows-powershell---getting-proxy-cedentials-solution)
+  - [(Windows Powershell) - Getting Proxy Credentials Solution](#windows-powershell---getting-proxy-credentials-solution)
   - [Insecure Methods](#insecure-methods)
   - [Use Corporate Proxy](#use-corporate-proxy)
   - [Add Own Certificates](#add-own-certificates)
@@ -15,7 +15,7 @@
 
 ## Corporate Network Certificat Issue
 
-### (Windows Powershell) - Getting Proxy Cedentials Solution
+### (Windows Powershell) - Getting Proxy Credentials Solution
 
 **PowerShell** can come to our rescue, **provided** you have the **ability to run it with administrative privileges.**
 
