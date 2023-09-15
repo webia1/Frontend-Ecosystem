@@ -17,8 +17,6 @@
 
 ### (Windows Powershell) - Getting Proxy Cedentials Solution
 
-> Stackoverflow <https://stackoverflow.com/questions/26992886/>
-
 **PowerShell** can come to our rescue, **provided** you have the **ability to run it with administrative privileges.**
 
 **Import Internet Explorer Settings:**
