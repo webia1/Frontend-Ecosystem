@@ -91,6 +91,8 @@ npm set strict-ssl false
 If the company uses a proxy server, we need to make sure npm is configured to use it:
 
 ```shell
+# IMPORTANT: registry -> `https`
+npm config set registry https://registry.npmjs.org/
 npm config set proxy http://proxy.company.com:8080
 npm config set https-proxy http://proxy.company.com:8080
 ```
