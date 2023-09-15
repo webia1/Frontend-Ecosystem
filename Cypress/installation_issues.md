@@ -6,6 +6,7 @@
 
 - [Corporate Network Certificat Issue](#corporate-network-certificat-issue)
   - [(Windows Powershell) - Getting Proxy Credentials Solution](#windows-powershell---getting-proxy-credentials-solution)
+    - [WEbClient-Object - Further Details](#webclient-object---further-details)
   - [Insecure Methods](#insecure-methods)
   - [Use Corporate Proxy](#use-corporate-proxy)
   - [Add Own Certificates](#add-own-certificates)
@@ -75,6 +76,32 @@ $Wcl.Proxy.Credentials = $Creds
 ```
 
 By following these steps, you should be able to bypass the issues related to network restrictions and successfully install thirdparty packages.
+
+#### WEbClient-Object - Further Details
+
+DownloadFile:
+`$Wcl.DownloadFile($url, $path)`
+
+DownloadString:
+`$result = $Wcl.DownloadString($url)`
+
+UploadFile:
+`$Wcl.UploadFile($url, "POST", $path)`
+
+UploadString:
+`$Wcl.UploadString($url, "POST", $data)`
+
+Headers:
+`$Wcl.Headers.Add("User-Agent", "Mozilla/5.0")`
+
+Proxy:
+`$Wcl.Proxy = New-Object System.Net.WebProxy("http://IP:Port", $true)`
+
+Timeout:
+`$Wcl.Timeout = 10000 (in Millisekunden)`
+
+Credentials:
+`$Wcl.Credentials = New-Object System.Net.NetworkCredential("username", "password")`
 
 ### Insecure Methods
 
