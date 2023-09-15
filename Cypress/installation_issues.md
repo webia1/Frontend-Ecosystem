@@ -17,16 +17,20 @@
 
 ### (Windows Powershell) - Getting Proxy Cedentials Solution
 
-> Stackoverflow <https://stackoverflow.com/questions/26992886/>
-
 **PowerShell** can come to our rescue, **provided** you have the **ability to run it with administrative privileges.**
 
-**Import Internet Explorer Settings:**
+**Import or Set Proxy Settings:**
 
 First, import your proxy settings from Internet Explorer to your system settings. This ensures that your system uses the same proxy settings that work in IE.
 
 ```powershell
 netsh winhttp import proxy source=ie
+```
+
+if it does not work (no import possible or none was set), then set it manually:
+
+```powershell
+$Wcl.Proxy = New-Object System.Net.WebProxy("http://IP_Adresse:Port", $true)
 ```
 
 > I just want to emphasize that even though the command `netsh winhttp import proxy source=ie` mentions Internet Explorer (IE), it actually pertains to system-wide proxy settings that could also be used by Microsoft Edge. Historically, Windows has retained the "IE" designation for these settings, even if the actual browser in use is no longer Internet Explorer.
