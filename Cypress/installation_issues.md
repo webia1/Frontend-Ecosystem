@@ -47,6 +47,19 @@ $Wcl = New-Object System.Net.WebClient
 
 **Get Credentials:**
 
+Check before `whoami`
+
+```powershell
+$ whoami
+somedomain\someuser
+
+# Powershell
+echo $env:USERNAME
+
+# Command Prompt
+echo %USERNAME%
+```
+
 Use the Get-Credential `cmdlet` to prompt for your username and password. This will open a dialog box where you can enter your credentials.
 
 ```powershell
