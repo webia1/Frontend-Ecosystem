@@ -6,6 +6,7 @@
 
 <!-- code_chunk_output -->
 
+- [Overview](#overview)
 - [Getting Started](#getting-started)
   - [Install Nx CLI Globally](#install-nx-cli-globally)
   - [Create a workspace](#create-a-workspace)
@@ -26,14 +27,37 @@
     - [Beispiel: LoginComponent](#beispiel-logincomponent)
   - [Angular Elements für Wiederverwendung](#angular-elements-für-wiederverwendung)
     - [Beispiel: LoginComponent als Angular Element](#beispiel-logincomponent-als-angular-element)
+  - [Nx Console](#nx-console)
+  - [Move Project](#move-project)
+    - [Remove Project](#remove-project)
+    - [Flat Config](#flat-config)
+    - [Fix Configuration](#fix-configuration)
   - [Mögliche Fallen & Stolpersteine](#mögliche-fallen--stolpersteine)
     - [Standalone-Komponenten](#standalone-komponenten)
     - [Angular Elements](#angular-elements)
     - [Event Handling in Angular Elements](#event-handling-in-angular-elements)
     - [Build-Prozess](#build-prozess)
-- [Backup: Useful Commands](#backup-useful-commands)
+- [Backup](#backup)
+  - [Useful Commands](#useful-commands)
+  - [Standard Tags](#standard-tags)
 
 <!-- /code_chunk_output -->
+
+## Overview
+
+- Workspaces
+- Code-Generatoren
+- Dependency Graph
+- Affected Commands
+- Build Caching
+- Code-Sharing
+- Linting
+- Testing
+- E2E Tests
+- DevServer
+- Plugins
+- Schematics
+- Executors
 
 ## Getting Started
 
@@ -169,13 +193,39 @@ nx run apps-shared-libs/reusables:storybook
 - `LoginComponent` kann als Angular Element verpackt und in anderen Projekten wiederverwendet werden.
 - Manuelle Konfiguration und Build-Prozesse sind erforderlich, um dies zu erreichen.
 
----
+### Nx Console
+
+### Move Project
+
+```shell
+nx workspace-generator move --project=project-name --destination=new-dir
+```
+
+#### Remove Project
+
+```shell
+nx g @nx/workspace:remove <app-name>
+```
+
+#### Flat Config
+
+<https://nx.dev/recipes/tips-n-tricks/flat-config>
+
+```shell
+nx g @nx/linter:convert-to-flat-config
+```
+
+#### Fix Configuration
+
+```shell
+nx g @nx/workspace:fix-configuration
+```
 
 ### Mögliche Fallen & Stolpersteine
 
 #### Standalone-Komponenten
 
-- Standalone-Komponenten in Shared Libraries erfordern besondere Aufmerksamkeit, da sie nicht automatisch von Nx oder Storybook erkannt werden.
+- Standalone-Komponenten in Shared Libraries erfordern besondere Aufmerksamkeit, da sie (zum Zeitpunkt des Erfassens dieses Dokumentes noch) nicht automatisch von Nx oder Storybook erkannt werden.
 - Manuelle Konfiguration in der Storybook-Datei ist erforderlich, um solche Komponenten darzustellen.
 
 #### Angular Elements
@@ -192,10 +242,21 @@ nx run apps-shared-libs/reusables:storybook
 - Ein spezieller Build-Prozess ist erforderlich, um Angular Elements zu generieren, insbesondere wenn sie in einer Shared Library enthalten sind.
 - Die `tsconfig.json` und `project.json` müssen manuell angepasst werden, um den Build-Prozess zu unterstützen.
 
-## Backup: Useful Commands
+## Backup
+
+### Useful Commands
 
 ```shell
 nx reset
 nx dep-graph
 
+```
+
+### Standard Tags
+
+```shell
+type:ui
+type:data-access
+type:util
+type:feature
 ```

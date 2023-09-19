@@ -93,7 +93,6 @@ tnrich.vscode-extension-open-cypress
 tomwhite007.rename-angular-component
 ukoloff.win-ca
 vscode-infra.image-viewer
-vscodevim.vim
 yo1dog.cursor-align
 yo1dog.cursor-trim
 yo1dog.multi-cursor-search
