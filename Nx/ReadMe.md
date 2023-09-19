@@ -28,10 +28,11 @@
   - [Angular Elements für Wiederverwendung](#angular-elements-für-wiederverwendung)
     - [Beispiel: LoginComponent als Angular Element](#beispiel-logincomponent-als-angular-element)
   - [Nx Console](#nx-console)
-  - [Move Project](#move-project)
+    - [Move Project](#move-project)
     - [Remove Project](#remove-project)
     - [Flat Config](#flat-config)
     - [Fix Configuration](#fix-configuration)
+    - [PlugIns](#plugins)
   - [Mögliche Fallen & Stolpersteine](#mögliche-fallen--stolpersteine)
     - [Standalone-Komponenten](#standalone-komponenten)
     - [Angular Elements](#angular-elements)
@@ -195,7 +196,7 @@ nx run apps-shared-libs/reusables:storybook
 
 ### Nx Console
 
-### Move Project
+#### Move Project
 
 ```shell
 nx workspace-generator move --project=project-name --destination=new-dir
@@ -219,6 +220,15 @@ nx g @nx/linter:convert-to-flat-config
 
 ```shell
 nx g @nx/workspace:fix-configuration
+```
+
+#### PlugIns
+
+```shell
+npm install --save-dev @nx/nx-plugin
+nx g @nx/nx-plugin:plugin <my-plugin>
+nx g @nx/nx-plugin:generator clone-project --project=<my-plugin>
+nx generate <my-plugin>:clone-project --weitereOptionen
 ```
 
 ### Mögliche Fallen & Stolpersteine
@@ -248,6 +258,7 @@ nx g @nx/workspace:fix-configuration
 
 ```shell
 nx reset
+nx g @nx/workspace:fix-configuration
 nx dep-graph
 
 ```
