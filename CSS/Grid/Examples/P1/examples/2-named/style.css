@@ -2,9 +2,9 @@
   display: grid;
   gap: 10px;
   grid-template-areas:
-    "header header header"
-    "aside-1 section aside-2"
-    "footer footer footer";
+    'header header header'
+    'logo label icon'
+    'footer footer footer';
   /* ". footer footer"; */
 }
 
@@ -18,14 +18,14 @@ header {
 }
 
 aside:nth-of-type(1) {
-  grid-area: aside-1;
+  grid-area: logo;
 }
 aside:nth-of-type(2) {
-  grid-area: aside-2;
+  grid-area: icon;
 }
 
-section {
-  grid-area: section;
+label {
+  grid-area: label;
 }
 
 footer {
@@ -41,10 +41,10 @@ footer {
 @media screen and (max-width: 576px) {
   .container {
     grid-template-areas:
-      "header"
-      "section"
-      "aside-1"
-      "aside-2"
-      "footer";
+      'header'
+      'label'
+      'logo'
+      'icon'
+      'footer';
   }
 }
