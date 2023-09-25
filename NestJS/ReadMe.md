@@ -85,6 +85,24 @@
     - [Execution context](#execution-context)
     - [Role based authentication](#role-based-authentication)
     - [Binding guards](#binding-guards)
+    - [Setting roles per handler](#setting-roles-per-handler)
+    - [Putting it all together](#putting-it-all-together)
+  - [Interceptors](#interceptors)
+    - [Basics](#basics)
+    - [Execution context](#execution-context-1)
+    - [Call handler](#call-handler)
+    - [Aspect Interception](#aspect-interception)
+    - [Binding interceptors](#binding-interceptors)
+    - [Interceptor composition](#interceptor-composition)
+    - [Interceptor context](#interceptor-context)
+    - [Interceptor exclusion](#interceptor-exclusion)
+    - [Interceptor inheritance](#interceptor-inheritance)
+    - [Interceptor ordering](#interceptor-ordering)
+    - [Interceptor interface](#interceptor-interface)
+    - [Interceptor as middleware](#interceptor-as-middleware)
+    - [Response mapping](#response-mapping)
+    - [Stream Overriding](#stream-overriding)
+    - [More Operators](#more-operators)
 
 <!-- /code_chunk_output -->
 
@@ -2066,3 +2084,526 @@ export class RolesGuard implements CanActivate {
 #### Binding guards
 
 Source: <https://docs.nestjs.com/guards#binding-guards>
+
+Like pipes and exception filters, guards can be **controller-scoped**, method-scoped, or global-scoped. Below, we set up a controller-scoped guard using the `@UseGuards()` decorator. This decorator may take a single argument, or a comma-separated list of arguments. This lets you easily apply the appropriate set of guards with one declaration.
+
+```typescript
+@Controller('cats')
+@UseGuards(RolesGuard)
+export class CatsController {}
+```
+
+> **Hint** The `@UseGuards()` decorator is imported from the `@nestjs/common` package.
+
+Above, we passed the `RolesGuard` class (instead of an instance), leaving responsibility for instantiation to the framework and enabling dependency injection. As with pipes and exception filters, we can also pass an in-place instance:
+
+```typescript
+@Controller('cats')
+@UseGuards(new RolesGuard())
+export class CatsController {}
+```
+
+The construction above attaches the guard to every handler declared by this controller. If we wish the guard to apply only to a single method, we apply the `@UseGuards()` decorator at the **method level**.
+
+In order to set up a global guard, use the `useGlobalGuards()` method of the Nest application instance:
+
+```typescript
+const app = await NestFactory.create(AppModule);
+app.useGlobalGuards(new RolesGuard());
+```
+
+> **Notice** In the case of hybrid apps the `useGlobalGuards()` method doesn't set up guards for gateways and micro services by default (see [Hybrid application](https://docs.nestjs.com/faq/hybrid-application) for information on how to change this behavior). For "standard" (non-hybrid) microservice apps, `useGlobalGuards()` does mount the guards globally.
+
+Global guards are used across the whole application, for every controller and every route handler. In terms of dependency injection, global guards registered from outside of any module (with `useGlobalGuards()` as in the example above) cannot inject dependencies since this is done outside the context of any module. In order to solve this issue, you can set up a guard directly from any module using the following construction:
+
+```typescript
+// app.module.ts
+
+import { Module } from '@nestjs/common';
+import { APP_GUARD } from '@nestjs/core';
+
+@Module({
+  providers: [
+    {
+      provide: APP_GUARD,
+      useClass: RolesGuard,
+    },
+  ],
+})
+export class AppModule {}
+```
+
+> **Hint** When using this approach to perform dependency injection for the guard, note that regardless of the module where this construction is employed, the guard is, in fact, global. Where should this be done? Choose the module where the guard (`RolesGuard` in the example above) is defined. Also, `useClass` is not the only way of dealing with custom provider registration. Learn more [here](https://docs.nestjs.com/fundamentals/custom-providers).
+
+#### Setting roles per handler
+
+Source <https://docs.nestjs.com/guards#setting-roles-per-handler>
+
+Our `RolesGuard` is working, but it's not very smart yet. We're not yet taking advantage of the most important guard feature - the [execution context](https://docs.nestjs.com/fundamentals/execution-context). It doesn't yet know about roles, or which roles are allowed for each handler. The `CatsController`, for example, could have different permission schemes for different routes. Some might be available only for an admin user, and others could be open for everyone. How can we match roles to routes in a flexible and reusable way?
+
+This is where **custom metadata** comes into play (learn more [here](https://docs.nestjs.com/fundamentals/execution-context#reflection-and-metadata)). Nest provides the ability to attach custom **metadata** to route handlers through either decorators created via `Reflector#createDecorator` static method, or the built-in `@SetMetadata()` decorator.
+
+For example, let's create a `@Roles()` decorator using the `Reflector#createDecorator` method that will attach the metadata to the handler. `Reflector` is provided out of the box by the framework and exposed from the `@nestjs/core` package.
+
+```ts
+// roles.decorator.ts
+import { Reflector } from '@nestjs/core';
+
+export const Roles = Reflector.createDecorator<string[]>();
+```
+
+The `Roles` decorator here is a function that takes a single argument of type `string[]`.
+
+Now, to use this decorator, we simply annotate the handler with it:
+
+```typescript
+// cats.controller.ts
+
+@Post()
+@Roles(['admin'])
+async create(@Body() createCatDto: CreateCatDto) {
+  this.catsService.create(createCatDto);
+}
+```
+
+Here we've attached the `Roles` decorator metadata to the `create()` method, indicating that only users with the `admin` role should be allowed to access this route.
+
+Alernatively, instead of using the `Reflector#createDecorator` method, we could use the built-in `@SetMetadata()` decorator. Learn more about [here](https://docs.nestjs.com/fundamentals/execution-context#low-level-approach).
+
+#### Putting it all together
+
+Source: <https://docs.nestjs.com/guards#putting-it-all-together>
+
+Let's now go back and tie this together with our `RolesGuard`. Currently, it simply returns `true` in all cases, allowing every request to proceed. We want to make the return value conditional based on the comparing the **roles assigned to the current user** to the actual roles required by the current route being processed. In order to access the route's role(s) (custom metadata), we'll use the `Reflector` helper class again, as follows:
+
+```typescript
+// roles.guard.ts
+import {
+  Injectable,
+  CanActivate,
+  ExecutionContext,
+} from '@nestjs/common';
+import { Reflector } from '@nestjs/core';
+import { Roles } from './roles.decorator';
+
+@Injectable()
+export class RolesGuard implements CanActivate {
+  constructor(private reflector: Reflector) {}
+
+  canActivate(context: ExecutionContext): boolean {
+    const roles = this.reflector.get(Roles, context.getHandler());
+    if (!roles) {
+      return true;
+    }
+    const request = context.switchToHttp().getRequest();
+    const user = request.user;
+    return matchRoles(roles, user.roles);
+  }
+}
+```
+
+> **Hint** In the node.js world, it's common practice to attach the authorized user to the `request` object. Thus, in our sample code above, we are assuming that `request.user` contains the user instance and allowed roles. In your app, you will probably make that association in your custom **authentication guard** (or middleware). Check [this chapter](https://docs.nestjs.com/security/authentication) for more information on this topic.
+
+> **Warning** The logic inside the `matchRoles()` function can be as simple or sophisticated as needed. The main point of this example is to show how guards fit into the request/response cycle.
+
+Refer to the [Reflection and metadata](https://docs.nestjs.com/fundamentals/execution-context#reflection-and-metadata) section of the **Execution context** chapter for more details on utilizing `Reflector` in a context-sensitive way.
+
+When a user with insufficient privileges requests an endpoint, Nest automatically returns the following response:
+
+```typescript
+
+{
+  "statusCode": 403,
+  "message": "Forbidden resource",
+  "error": "Forbidden"
+}
+```
+
+Note that behind the scenes, when a guard returns `false`, the framework throws a `ForbiddenException`. If you want to return a different error response, you should throw your own specific exception. For example:
+
+```typescript
+throw new UnauthorizedException();
+```
+
+Any exception thrown by a guard will be handled by the [exceptions layer](https://docs.nestjs.com/exception-filters) (global exceptions filter and any exceptions filters that are applied to the current context).
+
+> **Hint** If you are looking for a real-world example on how to implement authorization, check [this chapter](https://docs.nestjs.com/security/authorization).
+
+### Interceptors
+
+Source: <https://docs.nestjs.com/interceptors>
+
+An interceptor is a class annotated with the @Injectable() decorator and implements the NestInterceptor interface.
+
+![From official NestJS Documentation](https://docs.nestjs.com/assets/Interceptors_1.png)
+
+Interceptors have a set of useful capabilities which are inspired by the [Aspect Oriented Programming](https://en.wikipedia.org/wiki/Aspect-oriented_programming) (AOP) technique. They make it possible to:
+
+- bind extra logic before / after method execution
+- transform the result returned from a function
+- transform the exception thrown from a function
+- extend the basic function behavior
+- completely override a function depending on specific conditions (e.g., for caching purposes)
+
+#### Basics
+
+Source: <https://docs.nestjs.com/interceptors#basics>
+
+Each interceptor implements the `intercept()` method, which takes two arguments. The first one is the `ExecutionContext` instance (exactly the same object as for [guards](https://docs.nestjs.com/guards)). The `ExecutionContext` inherits from `ArgumentsHost`. We saw `ArgumentsHost` before in the exception filters chapter. There, we saw that it's a wrapper around arguments that have been passed to the original handler, and contains different arguments arrays based on the type of the application. You can refer back to the [exception filters](https://docs.nestjs.com/exception-filters#arguments-host) for more on this topic.
+
+#### Execution context
+
+Source <https://docs.nestjs.com/interceptors#execution-context>
+
+By extending `ArgumentsHost`, `ExecutionContext` also adds several new helper methods that provide additional details about the current execution process. These details can be helpful in building more generic interceptors that can work across a broad set of controllers, methods, and execution contexts. Learn more about `ExecutionContext`[here](https://docs.nestjs.com/fundamentals/execution-context).
+
+#### Call handler
+
+Source: <https://docs.nestjs.com/interceptors#call-handler>
+
+The second argument is a `CallHandler`. The `CallHandler` interface implements the `handle()` method, which you can use to invoke the route handler method at some point in your interceptor. If you don't call the `handle()` method in your implementation of the `intercept()` method, the route handler method won't be executed at all.
+
+This approach means that the `intercept()` method effectively **wraps** the request/response stream. As a result, you may implement custom logic **both before and after** the execution of the final route handler. It's clear that you can write code in your `intercept()` method that executes **before** calling `handle()`, but how do you affect what happens afterward? Because the `handle()` method returns an `Observable`, we can use powerful [RxJS](https://github.com/ReactiveX/rxjs) operators to further manipulate the response. Using Aspect Oriented Programming terminology, the invocation of the route handler (i.e., calling `handle()`) is called a [Pointcut](https://en.wikipedia.org/wiki/Pointcut), indicating that it's the point at which our additional logic is inserted.
+
+Consider, for example, an incoming `POST /cats` request. This request is destined for the `create()` handler defined inside the `CatsController`. If an interceptor which does not call the `handle()` method is called anywhere along the way, the `create()` method won't be executed. Once `handle()` is called (and its `Observable` has been returned), the `create()` handler will be triggered. And once the response stream is received via the `Observable`, additional operations can be performed on the stream, and a final result returned to the caller.
+
+#### Aspect Interception
+
+The first use case we'll look at is to use an interceptor to log user interaction (e.g., storing user calls, asynchronously dispatching events or calculating a timestamp). We show a simple LoggingInterceptor below:
+
+```typescript
+// logging.interceptor.ts
+import {
+  Injectable,
+  NestInterceptor,
+  ExecutionContext,
+  CallHandler,
+} from '@nestjs/common';
+import { Observable } from 'rxjs';
+import { tap } from 'rxjs/operators';
+
+@Injectable()
+export class LoggingInterceptor implements NestInterceptor {
+  intercept(
+    context: ExecutionContext,
+    next: CallHandler,
+  ): Observable<any> {
+    console.log('Before...');
+
+    const now = Date.now();
+    return next
+      .handle()
+      .pipe(
+        tap(() => console.log(`After... ${Date.now() - now}ms`)),
+      );
+  }
+}
+```
+
+> **Hint** The `NestInterceptor<T, R>` is a generic interface in which `T` indicates the type of an `Observable<T>` (supporting the response stream), and `R` is the type of the value wrapped by `Observable<R>`.
+
+> **Notice** Interceptors, like controllers, providers, guards, and so on, can **inject dependencies** through their `constructor`.
+
+Since `handle()` returns an RxJS `Observable`, we have a wide choice of operators we can use to manipulate the stream. In the example above, we used the `tap()` operator, which invokes our anonymous logging function upon graceful or exceptional termination of the observable stream, but doesn't otherwise interfere with the response cycle.
+
+#### Binding interceptors
+
+In order to set up the interceptor, we use the @UseInterceptors() decorator imported from the @nestjs/common package. Like pipes and guards, interceptors can be controller-scoped, method-scoped, or global-scoped.
+
+Below, we set up a controller-scoped interceptor using the @UseInterceptors() decorator. This decorator may take a single argument, or a comma-separated list of arguments. This lets you easily apply the appropriate set of interceptors with one declaration.
+
+```typescript
+@Controller('cats')
+@UseInterceptors(LoggingInterceptor)
+export class CatsController {}
+```
+
+> **Hint** The `@UseInterceptors()` decorator is imported from the `@nestjs/common` package.
+
+Above, we passed the `LoggingInterceptor` class (instead of an instance), leaving responsibility for instantiation to the framework and enabling dependency injection. As with pipes and guards, we can also pass an in-place instance:
+
+```typescript
+@Controller('cats')
+@UseInterceptors(new LoggingInterceptor())
+export class CatsController {}
+```
+
+The construction above attaches the interceptor to every handler declared by this controller. If we wish the interceptor to apply only to a single method, we apply the `@UseInterceptors()` decorator at the **method level**.
+
+In order to set up a global interceptor, use the `useGlobalInterceptors()` method of the Nest application instance:
+
+```typescript
+const app = await NestFactory.create(AppModule);
+app.useGlobalInterceptors(new LoggingInterceptor());
+```
+
+> **Notice** In the case of hybrid apps the `useGlobalInterceptors()` method doesn't set up interceptors for gateways and micro services by default (see [Hybrid application](https://docs.nestjs.com/faq/hybrid-application) for information on how to change this behavior). For "standard" (non-hybrid) microservice apps, `useGlobalInterceptors()` does mount the interceptors globally.
+
+Global interceptors are used across the whole application, for every controller and every route handler. In terms of dependency injection, global interceptors registered from outside of any module (with `useGlobalInterceptors()` as in the example above) cannot inject dependencies since this is done outside the context of any module. In order to solve this issue, you can set up an interceptor directly from any module using the following construction:
+
+```typescript
+// app.module.ts
+
+import { Module } from '@nestjs/common';
+import { APP_INTERCEPTOR } from '@nestjs/core';
+
+@Module({
+  providers: [
+    {
+      provide: APP_INTERCEPTOR,
+      useClass: LoggingInterceptor,
+    },
+  ],
+})
+export class AppModule {}
+```
+
+> **Hint** When using this approach to perform dependency injection for the interceptor, note that regardless of the module where this construction is employed, the interceptor is, in fact, global. Where should this be done? Choose the module where the interceptor (`LoggingInterceptor` in the example above) is defined. Also, `useClass` is not the only way of dealing with custom provider registration. Learn more [here](https://docs.nestjs.com/fundamentals/custom-providers).
+
+#### Interceptor composition
+
+Source: <https://docs.nestjs.com/interceptors#interceptor-composition>
+
+Interceptors can be composed. This means that you can apply multiple interceptors to a single handler. The interceptors will then be executed in the order they are set up (from left to right). For example, let's bind the `LoggingInterceptor` and the `TransformInterceptor` to the `findOne()` method of the `CatsController`:
+
+```typescript
+@Controller('cats')
+@UseInterceptors(LoggingInterceptor, TransformInterceptor)
+export class CatsController {
+  @Get(':id')
+  async findOne(@Param('id') id: number) {
+    return this.catsService.findOne(id);
+  }
+}
+```
+
+#### Interceptor context
+
+Source: <https://docs.nestjs.com/interceptors#interceptor-context>
+
+Interceptors have access to a `ExecutionContext` instance, and thus know exactly what's going to be executed next. They're designed, much like exception filters, pipes, and guards, to let you interpose processing logic at exactly the right point in the request/response cycle, and to do so declaratively. This helps keep your code DRY and declarative.
+
+#### Interceptor exclusion
+
+Source: <https://docs.nestjs.com/interceptors#interceptor-exclusion>
+
+You can exclude interceptors from being applied to specific routes. To do so, use the `@ExcludeInterceptors()` decorator. This decorator may take a single argument, or a comma-separated list of arguments. This lets you easily exclude the appropriate set of interceptors with one declaration.
+
+```typescript
+@Controller('cats')
+@UseInterceptors(LoggingInterceptor)
+export class CatsController {
+  @Get(':id')
+  @ExcludeInterceptors(TransformInterceptor)
+  async findOne(@Param('id') id: number) {
+    return this.catsService.findOne(id);
+  }
+}
+```
+
+#### Interceptor inheritance
+
+Source: <https://docs.nestjs.com/interceptors#interceptor-inheritance>
+
+Interceptors can be inherited. This means that you can apply an interceptor to a controller, and it will be automatically applied to all the handlers within that controller. For example, let's bind the `LoggingInterceptor` to the `CatsController`:
+
+```typescript
+@UseInterceptors(LoggingInterceptor)
+@Controller('cats')
+export class CatsController {
+  @Get(':id')
+  async findOne(@Param('id') id: number) {
+    return this.catsService.findOne(id);
+  }
+}
+```
+
+In the example above, the `LoggingInterceptor` will be applied to the `findOne()` method. This is because the `findOne()` method is defined within the `CatsController` class. If you want to exclude the interceptor from a specific handler, you can use the `@ExcludeInterceptors()` decorator.
+
+#### Interceptor ordering
+
+Source: <https://docs.nestjs.com/interceptors#interceptor-ordering>
+
+Interceptors are executed in the order they are defined. The order of global interceptors is not guaranteed. The order of controller-scoped interceptors is also not guaranteed. The order of method-scoped interceptors is guaranteed.
+
+#### Interceptor interface
+
+Source: <https://docs.nestjs.com/interceptors#interceptor-interface>
+
+The `NestInterceptor<T, R>` is a generic interface in which `T` indicates the type of an `Observable<T>` (supporting the response stream), and `R` is the type of the value wrapped by `Observable<R>`.
+
+```typescript
+export interface NestInterceptor<T, R> {
+  intercept(
+    context: ExecutionContext,
+    next: CallHandler<T>,
+  ): Observable<R> | Promise<Observable<R>>;
+}
+```
+
+#### Interceptor as middleware
+
+Source: <https://docs.nestjs.com/interceptors#interceptor-as-middleware>
+
+Interceptors can be used as middleware. This means that you can apply an interceptor to a controller, and it will be automatically applied to all the handlers within that controller. For example, let's bind the `LoggingInterceptor` to the `CatsController`:
+
+```typescript
+@UseInterceptors(LoggingInterceptor)
+@Controller('cats')
+export class CatsController {
+  @Get(':id')
+  async findOne(@Param('id') id: number) {
+    return this.catsService.findOne(id);
+  }
+}
+```
+
+#### Response mapping
+
+Source: <https://docs.nestjs.com/interceptors#response-mapping>
+
+Interceptors can be used to transform the result returned from a function. For example, let's create a `TransformInterceptor` that will transform the result returned from the `CatsController`:
+
+```typescript
+// transform.interceptor.ts
+import {
+  Injectable,
+  NestInterceptor,
+  ExecutionContext,
+  CallHandler,
+} from '@nestjs/common';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
+
+export interface Response<T> {
+  data: T;
+}
+
+@Injectable()
+export class TransformInterceptor<T>
+  implements NestInterceptor<T, Response<T>>
+{
+  intercept(
+    context: ExecutionContext,
+    next: CallHandler,
+  ): Observable<Response<T>> {
+    return next.handle().pipe(map((data) => ({ data })));
+  }
+}
+```
+
+> **Hint** Nest interceptors work with both synchronous and asynchronous `intercept()` methods. You can simply switch the method to `async` if necessary.
+
+With the above construction, when someone calls the `GET /cats` endpoint, the response would look like the following (assuming that route handler returns an empty array `[]`):
+
+```json
+{
+  "data": []
+}
+```
+
+Interceptors have great value in creating re-usable solutions to requirements that occur across an entire application. For example, imagine we need to transform each occurrence of a `null` value to an empty string `''`. We can do it using one line of code and bind the interceptor globally so that it will automatically be used by each registered handler.
+
+```typescript
+// transform.interceptor.ts
+import {
+  Injectable,
+  NestInterceptor,
+  ExecutionContext,
+  CallHandler,
+} from '@nestjs/common';
+
+@Injectable()
+export class TransformInterceptor implements NestInterceptor {
+  intercept(
+    context: ExecutionContext,
+    next: CallHandler,
+  ): Observable<any> {
+    return next
+      .handle()
+      .pipe(map((data) => (data === null ? '' : data)));
+  }
+}
+```
+
+```typescript
+// main.ts
+async function bootstrap() {
+  const app = await NestFactory.create(AppModule);
+  app.useGlobalInterceptors(new TransformInterceptor());
+  await app.listen(3000);
+}
+bootstrap();
+```
+
+```typescript
+// cats.controller.ts
+@Get()
+async findAll(): Promise<any[]> {
+  return [null];
+}
+```
+
+```json
+[""]
+```
+
+#### Stream Overriding
+
+Source: <https://docs.nestjs.com/interceptors#stream-overriding>
+
+Interceptors can be used to completely override a function depending on specific conditions (e.g., for caching purposes). For example, let's create a `CacheInterceptor` that will cache the response for 5 seconds:
+
+```typescript
+// cache.interceptor.ts
+import {
+  Injectable,
+  NestInterceptor,
+  ExecutionContext,
+  CallHandler,
+} from '@nestjs/common';
+
+@Injectable()
+export class CacheInterceptor implements NestInterceptor {
+  intercept(
+    context: ExecutionContext,
+    next: CallHandler,
+  ): Observable<any> {
+    const isCached = true;
+    if (isCached) {
+      return of([]);
+    }
+    return next.handle();
+  }
+}
+```
+
+Our `CacheInterceptor` has a hardcoded `isCached` variable and a hardcoded response `[]` as well. The key point to note is that we return a new stream here, created by the RxJS `of()` operator, therefore the route handler **won't be called** at all. When someone calls an endpoint that makes use of `CacheInterceptor`, the response (a hardcoded, empty array) will be returned immediately. In order to create a generic solution, you can take advantage of `Reflector` and create a custom decorator. The `Reflector` is well described in the [guards](https://docs.nestjs.com/guards) chapter.
+
+#### More Operators
+
+Source: <https://docs.nestjs.com/interceptors#more-operators>
+
+Interceptors can be used to extend the basic function behavior. For example, let's create a `TimeoutInterceptor` that will throw an exception if the request takes longer than 5000 milliseconds:
+
+```typescript
+// timeout.interceptor.ts
+import {
+  Injectable,
+  NestInterceptor,
+  ExecutionContext,
+  CallHandler,
+} from '@nestjs/common';
+import { Observable, TimeoutError } from 'rxjs';
+import { timeout } from 'rxjs/operators';
+
+@Injectable()
+export class TimeoutInterceptor implements NestInterceptor {
+  intercept(
+    context: ExecutionContext,
+    next: CallHandler,
+  ): Observable<any> {
+    return next.handle().pipe(timeout(5000));
+  }
+}
+```
