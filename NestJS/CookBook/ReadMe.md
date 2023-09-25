@@ -1,537 +1,411 @@
-# NestJS in a NxMonoRepo CookBook
+# NestJS Cookbook
 
 <!-- @import "[TOC]" {cmd="toc" depthFrom=2 depthTo=6 orderedList=false} -->
 
 <!-- code_chunk_output -->
 
-- [Nx Setup](#nx-setup)
-  - [Nx Workspace: Run the NestJS Application](#nx-workspace-run-the-nestjs-application)
-  - [Or run via `nest` (If created with NestJS CLI)](#or-run-via-nest-if-created-with-nestjs-cli)
-  - [Nx & SWC](#nx--swc)
-- [Theoretical Background](#theoretical-background)
-  - [Controllers](#controllers)
-    - [Example](#example)
-      - [CatsController](#catscontroller)
-      - [CreateCatDto](#createcatdto)
-      - [UpdateCatDto](#updatecatdto)
-      - [Cat Class](#cat-class)
-      - [CatsService](#catsservice)
-  - [Providers](#providers)
-    - [Providers & Scope](#providers--scope)
-    - [Providers, Value Providers, Factory Providers](#providers-value-providers-factory-providers)
-    - [Optional Providers](#optional-providers)
-    - [Property-based Injection](#property-based-injection)
-    - [Provider registration](#provider-registration)
-      - [Adding the service to the providers array of the @Module() decorator](#adding-the-service-to-the-providers-array-of-the-module-decorator)
-      - [As Object with `provide` and `useClass` properties](#as-object-with-provide-and-useclass-properties)
-      - [As Object with `provide` and `useValue` properties, whereby the value is an instance of the service](#as-object-with-provide-and-usevalue-properties-whereby-the-value-is-an-instance-of-the-service)
-      - [As Object with `provide` and `useFactory` properties, whereby the factory function returns an instance of the service](#as-object-with-provide-and-usefactory-properties-whereby-the-factory-function-returns-an-instance-of-the-service)
-      - [As Object with `provide`, `useFactory` and `inject` properties, whereby the factory function returns an instance of the service and awaits the result of the injected service before returning the instance of the service](#as-object-with-provide-usefactory-and-inject-properties-whereby-the-factory-function-returns-an-instance-of-the-service-and-awaits-the-result-of-the-injected-service-before-returning-the-instance-of-the-service)
-      - [As Object with `provide`, `useFactory` and `inject` properties, whereby the factory function accepts parameters (`connection: Connection`) and dependend on them returns one or the other service instance](#as-object-with-provide-usefactory-and-inject-properties-whereby-the-factory-function-accepts-parameters-connection-connection-and-dependend-on-them-returns-one-or-the-other-service-instance)
-      - [As Object with `provide`, `useFactory` and `inject` properties, whereby the factory function accepts a provider (`optionsProvider: OptionsProvider`) as parameter, awaits its result and creates the service instance with the result.](#as-object-with-provide-usefactory-and-inject-properties-whereby-the-factory-function-accepts-a-provider-optionsprovider-optionsprovider-as-parameter-awaits-its-result-and-creates-the-service-instance-with-the-result)
-      - [As Object with `provide` and `useExisting` properties, whereby the value of the `useExisting` property is the class of the service](#as-object-with-provide-and-useexisting-properties-whereby-the-value-of-the-useexisting-property-is-the-class-of-the-service)
+- [Authentication / Authorization](#authentication--authorization)
+  - [Common Authentication Methods](#common-authentication-methods)
+    - [Basic](#basic)
+    - [Bearer](#bearer)
+    - [CAS](#cas)
+    - [Digest](#digest)
+    - [JWT](#jwt)
+    - [LDAP](#ldap)
+    - [NTLM](#ntlm)
+    - [OAuth](#oauth)
+    - [OpenID](#openid)
+    - [Passport](#passport)
+    - [SAML](#saml)
+    - [Session](#session)
+  - [Others](#others)
+    - [500px](#500px)
+    - [Apple](#apple)
+    - [Auth0](#auth0)
+    - [AWS](#aws)
+    - [Azure Active Directory](#azure-active-directory)
+    - [Bitbucket](#bitbucket)
+    - [Cognito](#cognito)
+    - [Discord](#discord)
+    - [Discord](#discord-1)
+    - [Dribbble](#dribbble)
+    - [Dropbox](#dropbox)
+    - [Facebook](#facebook)
+    - [Firebase](#firebase)
+    - [Foursquare](#foursquare)
+    - [Github](#github)
+    - [Gitlab](#gitlab)
+    - [Gitter](#gitter)
+    - [Goodreads](#goodreads)
+    - [Google](#google)
+    - [Imgur](#imgur)
+    - [Instagram](#instagram)
+    - [Kakao](#kakao)
+    - [Line](#line)
+    - [Mail.ru](#mailru)
+    - [Medium](#medium)
+    - [Mixer](#mixer)
+    - [Odnoklassniki](#odnoklassniki)
+    - [Okta](#okta)
+    - [Pinterest](#pinterest)
+    - [Reddit](#reddit)
+    - [Reddit](#reddit-1)
+    - [Salesforce](#salesforce)
+    - [Shopify](#shopify)
+    - [Slack](#slack)
+    - [Snapchat](#snapchat)
+    - [Spotify](#spotify)
+    - [Strava](#strava)
+    - [Trello](#trello)
+    - [Tumblr](#tumblr)
+    - [Twitch](#twitch)
+    - [Twitch](#twitch-1)
+    - [Twitter](#twitter)
+    - [Untappd](#untappd)
+    - [VK](#vk)
+    - [VKontakte](#vkontakte)
+    - [WeChat](#wechat)
+    - [Yammer](#yammer)
+    - [Yandex](#yandex)
+    - [Yandex](#yandex-1)
+    - [Zendesk](#zendesk)
 
 <!-- /code_chunk_output -->
 
-## Nx Setup
+## Authentication / Authorization
 
-Create a new NestJS project within a NxMonoRepo via Nx Console:
+- Authentication <https://docs.nestjs.com/security/authentication>
+- Authorization <https://docs.nestjs.com/security/authorization>
 
-```bash
-npm i -g @nestjs/cli
-npm i -D @nx/nest
-npx nx generate @nx/nest:application
-  --name=middleware-basis-app
-  --frontendProject=basis-app
-  --directory=apps/basis/middleware-basis-app
-  --projectNameAndRootFormat=as-provided
-  --tags=middleware-basis-app
-  --no-interactive
-  # --dry-run
+**Authentication** is an essential part of most applications; it identifies users and helps to determine whether a user is permitted to perform actions on a given resource. Authentication is the process of verifying the identity of a user.
+
+**Authorization** refers to the process that determines what a user is able to do. For example, an administrative user is allowed to create, edit, and delete posts. A non-administrative user is only authorized to read the posts. Authorization is orthogonal and independent from authentication. However, authorization requires an authentication mechanism.
+
+### Common Authentication Methods
+
+#### Basic
+
+Basic Authentication Example
+
+```typescript
+import { Injectable } from '@nestjs/common';
+import { AuthGuard } from '@nestjs/passport';
+
+@Injectable()
+export class BasicAuthGuard extends AuthGuard('basic') {}
 ```
 
-### Nx Workspace: Run the NestJS Application
+In this example, the `BasicAuthGuard` class extends the `AuthGuard` class and passes the `basic` string to the `super()` method. This string corresponds to the name of the strategy that Passport should use. Passport will now attempt to authenticate the user using the `BasicStrategy` class:
 
-```bash
-nx run middleware-basis-app:serve:development
+```typescript
+import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { PassportStrategy } from '@nestjs/passport';
+import { Strategy } from 'passport-http';
+
+@Injectable()
+export class BasicStrategy extends PassportStrategy(Strategy) {
+  constructor() {
+    super();
+  }
+
+  async validate(username: string, password: string): Promise<any> {
+    const user = await this.authService.validateUser(
+      username,
+      password,
+    );
+    if (!user) {
+      throw new UnauthorizedException();
+    }
+    return user;
+  }
+}
 ```
 
-### Or run via `nest` (If created with NestJS CLI)
+The credentials will be verified by the `validate()` method. If the credentials are valid, the `validate()` method will return the user object. If the credentials are not valid, the `validate()` method will throw an `UnauthorizedException` exception. The `BasicStrategy` class is decorated with the `@Injectable()` decorator so that Nest can inject the `AuthService` class into the constructor. The `AuthService` class is responsible for validating the user credentials:
 
-> **Hint** If created with **nestjs/cli (nest)** instead of **Nx**
-> To speed up the development process (x20 times faster builds), you can use the [SWC builder](https://docs.nestjs.com/recipes/swc) by passing the `-b swc` flag to the `start` script, as follows `nest start -b swc`.
+```typescript
+import { Injectable } from '@nestjs/common';
+import { UsersService } from '../users/users.service';
+import * as bcrypt from 'bcrypt';
 
-### Nx & SWC
+@Injectable()
+export class AuthService {
+  constructor(private readonly usersService: UsersService) {}
 
-**For Nx & swc** -> see <https://nx.dev/nx-api/js/executors/swc>
+  async validateUser(
+    username: string,
+    password: string,
+  ): Promise<any> {
+    const user = await this.usersService.findOne(username);
+    if (user && bcrypt.compareSync(password, user.password)) {
+      const { password, ...result } = user;
+      return result;
+    }
+    return null;
+  }
+}
+```
 
-## Theoretical Background
+The `validateUser()` method will return the user object if the username and password are valid. If the username and password are not valid, the `validateUser()` method will return `null`.
 
-### Controllers
+The username and password can be stored in a database or in a configuration file. In this example, the username and password are stored in a configuration file:
 
-Controllers are responsible for handling **incoming requests** and **returning responses** to the client and for transforming the incoming request to the format required by the service.
+```typescript
+import { Module } from '@nestjs/common';
+import { AppController } from './app.controller';
+import { AppService } from './app.service';
+import { UsersModule } from './users/users.module';
+import { AuthModule } from './auth/auth.module';
+import { ConfigModule } from '@nestjs/config';
 
-They should be kept as lean as possible and should not contain any business logic except for routing logic. They are bound to a specific **path** (or paths) and **HTTP method** combination.
+@Module({
+  imports: [
+    ConfigModule.forRoot({
+      envFilePath: '.development.env',
+    }),
+    UsersModule,
+    AuthModule,
+  ],
+  controllers: [AppController],
+  providers: [AppService],
+})
+export class AppModule {}
+```
 
-#### Example
+```typescript
+import { Module } from '@nestjs/common';
+import { AuthService } from './auth.service';
+import { UsersModule } from '../users/users.module';
+import { PassportModule } from '@nestjs/passport';
+import { BasicStrategy } from './basic.strategy';
 
-##### CatsController
+@Module({
+  imports: [UsersModule, PassportModule],
+  providers: [AuthService, BasicStrategy],
+  exports: [AuthService],
+})
+export class AuthModule {}
+```
 
-```ts
+```typescript
+import { Module } from '@nestjs/common';
+import { UsersController } from './users.controller';
+import { UsersService } from './users.service';
+
+@Module({
+  controllers: [UsersController],
+  providers: [UsersService],
+  exports: [UsersService],
+})
+export class UsersModule {}
+```
+
+```typescript
 import {
   Controller,
   Get,
+  Request,
   Post,
-  Body,
-  Patch,
-  Param,
-  Delete,
+  UseGuards,
 } from '@nestjs/common';
-import { CreateCatDto } from './dto/create-cat.dto';
-import { UpdateCatDto } from './dto/update-cat.dto';
-import { CatsService } from './cats.service';
-import { Cat } from './entities/cat.entity';
+import { AppService } from './app.service';
+import { LocalAuthGuard } from './auth/local-auth.guard';
+import { BasicAuthGuard } from './auth/basic-auth.guard';
 
-/**
- * The `@Controller()` decorator takes an optional `path`
- * argument that will be prefixed to each path
- * defined within the controller. `/cats` in this case.
- */
-
-@Controller('cats')
-export class CatsController {
-  constructor(private readonly catsService: CatsService) {}
-
-  /**
-   * The `@Post()` decorator takes an optional `path` argument
-   * that will be appended to the path defined at the controller level.
-   * In this case, the path will be `/cats` + `/create`.
-   *
-   * The `@Body()` decorator takes an optional `param` argument
-   * that will be used to retrieve the value of the parameter
-   * from the request object.
-   *
-   * In this case, the value of the `createCatDto` parameter
-   * will be retrieved from the `body` property of the request object.
-   *
-   * The `create()` method returns a `Promise` of type `Cat`.
-   */
-
-  @Post()
-  create(@Body() createCatDto: CreateCatDto): Promise<Cat> {
-    return this.catsService.create(createCatDto);
-  }
-
-  /**
-   * The `@Get()` decorator takes an optional `path` argument
-   * that will be appended to the path defined at the controller level.
-   * In this case, the path will be `/cats` + `/findAll`.
-   * The `findAll()` method returns a `Promise` of type `Cat[]`.
-   */
+@Controller()
+export class AppController {
+  constructor(private readonly appService: AppService) {}
 
   @Get()
-  findAll(): Promise<Cat[]> {
-    return this.catsService.findAll();
+  getHello(): string {
+    return this.appService.getHello();
   }
 
-  /**
-   * The `@Get()` decorator takes an optional `path` argument
-   * that will be appended to the path defined at the controller level.
-   * In this case, the path will be `/cats` + `/:id`.
-   *
-   * The `@Param()` decorator takes an optional `param` argument
-   * that will be used to retrieve the value of the parameter
-   * from the request object.
-   *
-   * In this case, the value of the `id` parameter
-   * will be retrieved from the `params` property of the request object.
-   * The `findOne()` method returns a `Promise` of type `Cat`.
-   */
-
-  @Get(':id')
-  findOne(@Param('id') id: string): Promise<Cat> {
-    return this.catsService.findOne(+id);
+  @UseGuards(LocalAuthGuard)
+  @Post('auth/login')
+  async login(@Request() req) {
+    return req.user;
   }
 
-  /**
-   * The `@Patch()` decorator takes an optional `path` argument
-   * that will be appended to the path defined at the controller level.
-   * In this case, the path will be `/cats` + `/:id`.
-   *
-   * The `@Param()` decorator takes an optional `param` argument
-   * that will be used to retrieve the value of the parameter
-   * from the request object.
-   *
-   * In this case, the value of the `id` parameter
-   * will be retrieved from the `params` property of the request object.
-   *
-   * The `@Body()` decorator takes an optional `param` argument
-   * that will be used to retrieve the value of the parameter
-   * from the request object.
-   *
-   * In this case, the value of the `updateCatDto` parameter
-   * will be retrieved from the `body` property of the request object.
-   *
-   * The `update()` method returns a `Promise` of type `Cat`.
-   */
-
-  @Patch(':id')
-  update(
-    @Param('id') id: string,
-    @Body() updateCatDto: UpdateCatDto,
-  ): Promise<Cat> {
-    return this.catsService.update(+id, updateCatDto);
-  }
-
-  /**
-   * The `@Delete()` decorator takes an optional `path` argument
-   * that will be appended to the path defined at the controller level.
-   *
-   * In this case, the path will be `/cats` + `/:id`.
-   *
-   * The `@Param()` decorator takes an optional `param` argument
-   * that will be used to retrieve the value of the parameter
-   * from the request object.
-   *
-   * In this case, the value of the `id` parameter
-   * will be retrieved from the `params` property of the request object.
-   *
-   * The `remove()` method returns a `Promise` of type `void`.
-   */
-
-  @Delete(':id')
-  remove(@Param('id') id: string): Promise<void> {
-    return this.catsService.remove(+id);
+  @UseGuards(BasicAuthGuard)
+  @Get('profile')
+  getProfile(@Request() req) {
+    return req.user;
   }
 }
 ```
 
-##### CreateCatDto
-
-```ts
-export class CreateCatDto {
-  name: string;
-  age: number;
-  breed: string;
-}
-```
-
-##### UpdateCatDto
-
-```ts
-export class UpdateCatDto {
-  name: string;
-  age: number;
-  breed: string;
-}
-```
-
-##### Cat Class
-
-```ts
-export class Cat {
-  id: number;
-  name: string;
-  age: number;
-  breed: string;
-}
-```
-
-##### CatsService
-
-```ts
+```typescript
 import { Injectable } from '@nestjs/common';
-import { CreateCatDto } from './dto/create-cat.dto';
-import { UpdateCatDto } from './dto/update-cat.dto';
-import { Cat } from './entities/cat.entity';
+import { PassportStrategy } from '@nestjs/passport';
+import { Strategy } from 'passport-http';
 
 @Injectable()
-export class CatsService {
-  private readonly cats: Cat[] = [];
-
-  create(createCatDto: CreateCatDto): Promise<Cat> {
-    const cat = new Cat();
-    cat.name = createCatDto.name;
-    cat.age = createCatDto.age;
-    cat.breed = createCatDto.breed;
-
-    this.cats.push(cat);
-    return Promise.resolve(cat);
-  }
-
-  findAll(): Promise<Cat[]> {
-    return Promise.resolve(this.cats);
-  }
-
-  findOne(id: number): Promise<Cat> {
-    return Promise.resolve(this.cats[id]);
-  }
-
-  update(id: number, updateCatDto: UpdateCatDto): Promise<Cat> {
-    const cat = this.cats[id];
-    cat.name = updateCatDto.name;
-    cat.age = updateCatDto.age;
-    cat.breed = updateCatDto.breed;
-
-    return Promise.resolve(cat);
-  }
-
-  remove(id: number): Promise<void> {
-    this.cats.splice(id, 1);
-    return Promise.resolve();
-  }
-}
-```
-
-### Providers
-
-Everything, that can be annotated with the `@Injectable()` decorator, can be used as a provider. The `@Injectable()` decorator is optional, but it is good practice to use it to keep the code clean and explicit.
-
-#### Providers & Scope
-
-By default, Nest makes each provider **singleton**, which means that **the same instance of each provider will be shared across the entire module**. If you want to **limit the scope of a provider**, you can use the `@Scope()` decorator.
-
-```ts
-import { Injectable, Scope } from '@nestjs/common';
-
-@Injectable({ scope: Scope.REQUEST })
-export class CatsService {}
-```
-
-The `@Scope()` decorator takes a single argument, which is a `Scope` enum member. The following table describes the available options:
-
-> **Hint** The `REQUEST` scope is **not** available in **microservices**. If you want to **share** the provider instance across consumers, you should **not** use the `REQUEST` scope.
-
-| Scope       | Description                                                                                                                                                                                                                                                                                                         |
-| ----------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `DEFAULT`   | The provider is instantiated **only once** in the scope of the entire application. The same instance is shared across **all** consumers.                                                                                                                                                                            |
-| `TRANSIENT` | The provider is instantiated **every time** it is requested. This behavior is **independent** of the consumer's lifetime, which means that **every** consumer gets a **dedicated** instance of the provider.                                                                                                        |
-| `REQUEST`   | The provider is instantiated **once** per incoming request. That means that **each** provider instance lives **only** within the **scope** of a single request and **is not** shared across consumers. If you want to **share** the provider instance across consumers, you should **not** use the `REQUEST` scope. |
-
-#### Providers, Value Providers, Factory Providers
-
-Value providers are a special type of provider that **returns a value** rather than an instance when requested. Value providers are **not** instantiated by the Nest IoC container.
-
-Factory providers are a special type of provider that returns a value created by a **factory function**. Factory providers are **not** instantiated by the Nest IoC container.
-
-```ts
-import { Injectable } from '@nestjs/common';
-
-@Injectable()
-export class ConfigService {
-  private readonly envConfig: Record<string, string>;
-
+export class BasicStrategy extends PassportStrategy(Strategy) {
   constructor() {
-    this.envConfig = dotenv.parse(fs.readFileSync('.env'));
+    super();
   }
 
-  get(key: string): string {
-    return this.envConfig[key];
+  async validate(username: string, password: string): Promise<any> {
+    const user = await this.authService.validateUser(
+      username,
+      password,
+    );
+    if (!user) {
+      throw new UnauthorizedException();
+    }
+    return user;
   }
 }
 ```
 
-#### Optional Providers
-
-If you want to **inject** a provider **conditionally**, you can use the `@Optional()` decorator. If the provider is not found, the `@Optional()` decorator will cause the **dependency injector** to **inject** `undefined` instead of throwing an exception.
-
-```ts
-import { Injectable, Optional } from '@nestjs/common';
-import { CatsService } from './cats.service';
+```typescript
+import { Injectable } from '@nestjs/common';
+import { PassportStrategy } from '@nestjs/passport';
+import { Strategy } from 'passport-local';
+import { AuthService } from './auth.service';
 
 @Injectable()
-export class DogsService {
-  constructor(@Optional() private catsService: CatsService) {}
+export class LocalStrategy extends PassportStrategy(Strategy) {
+  constructor(private authService: AuthService) {
+    super();
+  }
+
+  async validate(username: string, password: string): Promise<any> {
+    const user = await this.authService.validateUser(
+      username,
+      password,
+    );
+    if (!user) {
+      throw new UnauthorizedException();
+    }
+    return user;
+  }
 }
 ```
 
-#### Property-based Injection
+#### Bearer
 
-Details online <https://docs.nestjs.com/providers#property-based-injection>
+#### CAS
 
-The technique we've used so far is called constructor-based injection, as providers are injected via the constructor method. In some very specific cases, **property-based injection** might be useful. For instance, if your top-level class depends on either one or multiple providers, passing them all the way up by calling `super()` in sub-classes from the constructor can be very tedious. In order to avoid this, you can use the `@Inject()` decorator at the property level.
+#### Digest
 
-```ts
-import { Injectable, Inject } from '@nestjs/common';
+#### JWT
 
-@Injectable()
-export class HttpService<T> {
-  @Inject('HTTP_OPTIONS')
-  private readonly httpClient: T;
-}
-```
+#### LDAP
 
-#### Provider registration
+#### NTLM
 
-Providers are registered in modules.
+#### OAuth
 
-##### Adding the service to the providers array of the @Module() decorator
+#### OpenID
 
-CatsController has CatsService as a dependency. The CatsService is a provider. The CatsService is registered in the providers array of the @Module() decorator.
+#### Passport
 
-```ts
-import { Module } from '@nestjs/common';
-import { CatsController } from './cats.controller';
-import { CatsService } from './cats.service';
+#### SAML
 
-@Module({
-  controllers: [CatsController],
-  providers: [CatsService],
-})
-export class CatsModule {}
-```
+#### Session
 
-##### As Object with `provide` and `useClass` properties
+### Others
 
-```ts
-import { Module } from '@nestjs/common';
-import { CatsController } from './cats.controller';
-import { CatsService } from './cats.service';
+#### 500px
 
-@Module({
-  controllers: [CatsController],
-  providers: [
-    {
-      provide: CatsService,
-      useClass: CatsService,
-    },
-  ],
-})
-export class CatsModule {}
-```
+#### Apple
 
-##### As Object with `provide` and `useValue` properties, whereby the value is an instance of the service
+#### Auth0
 
-```ts
-import { Module } from '@nestjs/common';
-import { CatsController } from './cats.controller';
-import { CatsService } from './cats.service';
+Auth0 is an authentication broker that supports social identity providers as well as enterprise identity providers such as Active Directory, LDAP, Google Apps and Salesforce. Auth0 provides a platform to authenticate, authorize, and secure access for applications, devices, and users.
 
-@Module({
-  controllers: [CatsController],
-  providers: [
-    {
-      provide: 'CatsService',
-      useValue: new CatsService(),
-    },
-  ],
-})
-export class CatsModule {}
-```
+#### AWS
 
-##### As Object with `provide` and `useFactory` properties, whereby the factory function returns an instance of the service
+#### Azure Active Directory
 
-```ts
-import { Module } from '@nestjs/common';
-import { CatsController } from './cats.controller';
-import { CatsService } from './cats.service';
+#### Bitbucket
 
-@Module({
-  controllers: [CatsController],
-  providers: [
-    {
-      provide: 'CatsService',
-      useFactory: () => {
-        const catsService = new CatsService();
-        // ... do something with the catsService
-        // e.g. bind to events, etc.
-        return catsService;
-      },
-    },
-  ],
-})
-export class CatsModule {}
-```
+#### Cognito
 
-##### As Object with `provide`, `useFactory` and `inject` properties, whereby the factory function returns an instance of the service and awaits the result of the injected service before returning the instance of the service
+#### Discord
 
-```ts
-import { Module } from '@nestjs/common';
-import { CatsController } from './cats.controller';
-import { CatsService } from './cats.service';
+#### Discord
 
-@Module({
-  controllers: [CatsController],
-  providers: [
-    {
-      provide: 'CatsService',
-      useFactory: async () => {
-        const catsService = new CatsService();
-        await catsService.init();
-        return catsService;
-      },
-    },
-  ],
-})
-export class CatsModule {}
-```
+#### Dribbble
 
-##### As Object with `provide`, `useFactory` and `inject` properties, whereby the factory function accepts parameters (`connection: Connection`) and dependend on them returns one or the other service instance
+#### Dropbox
 
-```ts
-import { Module } from '@nestjs/common';
-import { CatsController } from './cats.controller';
-import { CatsService } from './cats.service';
+#### Facebook
 
-@Module({
-  controllers: [CatsController],
-  providers: [
-    {
-      provide: 'CatsService',
-      useFactory: (connection: Connection) => {
-        if (connection.isConnected) {
-          return new CatsService(connection);
-        }
-        return new MockCatsService();
-      },
-      inject: [Connection],
-    },
-  ],
-})
-export class CatsModule {}
-```
+#### Firebase
 
-##### As Object with `provide`, `useFactory` and `inject` properties, whereby the factory function accepts a provider (`optionsProvider: OptionsProvider`) as parameter, awaits its result and creates the service instance with the result.
+#### Foursquare
 
-```ts
-import { Module } from '@nestjs/common';
-import { CatsController } from './cats.controller';
-import { CatsService } from './cats.service';
+#### Github
 
-@Module({
-  controllers: [CatsController],
-  providers: [
-    {
-      provide: 'CatsService',
-      useFactory: async (optionsProvider: OptionsProvider) => {
-        const options = await optionsProvider.get();
-        return new CatsService(options);
-      },
-      inject: [OptionsProvider],
-    },
-  ],
-})
-export class CatsModule {}
-```
+#### Gitlab
 
-##### As Object with `provide` and `useExisting` properties, whereby the value of the `useExisting` property is the class of the service
+#### Gitter
 
-```ts
-import { Module } from '@nestjs/common';
-import { CatsController } from './cats.controller';
-import { CatsService } from './cats.service';
-import { Connection } from './connection.provider';
+#### Goodreads
 
-@Module({
-  controllers: [CatsController],
-  providers: [
-    CatsService,
-    Connection,
-    {
-      provide: 'CONNECTION',
-      useExisting: Connection,
-    },
-  ],
-})
-export class CatsModule {}
-```
+#### Google
+
+#### Imgur
+
+#### Instagram
+
+#### Kakao
+
+#### Line
+
+#### Mail.ru
+
+#### Medium
+
+#### Mixer
+
+#### Odnoklassniki
+
+#### Okta
+
+#### Pinterest
+
+#### Reddit
+
+#### Reddit
+
+#### Salesforce
+
+#### Shopify
+
+#### Slack
+
+#### Snapchat
+
+#### Spotify
+
+#### Strava
+
+#### Trello
+
+#### Tumblr
+
+#### Twitch
+
+#### Twitch
+
+#### Twitter
+
+#### Untappd
+
+#### VK
+
+#### VKontakte
+
+#### WeChat
+
+#### Yammer
+
+#### Yandex
+
+#### Yandex
+
+#### Zendesk
