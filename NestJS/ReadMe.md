@@ -172,6 +172,16 @@
     - [Asynchronous initialization](#asynchronous-initialization)
     - [Application shutdown](#application-shutdown)
   - [Platform agnosticism](#platform-agnosticism)
+  - [Testing](#testing)
+    - [Installation](#installation)
+    - [Unit testing](#unit-testing)
+    - [Testing utilities](#testing-utilities)
+  - [Configuration](#configuration)
+    - [Installation](#installation-1)
+    - [Custom env file path](#custom-env-file-path)
+    - [Disable env variables loading](#disable-env-variables-loading)
+    - [Use module globally](#use-module-globally)
+    - [Custom configuration files](#custom-configuration-files)
 
 <!-- /code_chunk_output -->
 
@@ -4609,3 +4619,305 @@ Furthermore, Nest comes with a dedicated [GraphQL](https://docs.nestjs.com/graph
 In addition, the [application context](https://docs.nestjs.com/application-context) feature helps to create any kind of Node.js application - including things like CRON jobs and CLI apps - on top of Nest.
 
 Nest aspires to be a full-fledged platform for Node.js apps that brings a higher-level of modularity and reusability to your applications.
+
+### Testing
+
+Automated testing is considered an essential part of any serious software development effort. Automation makes it easy to repeat individual tests or test suites quickly and easily during development. This helps ensure that releases meet quality and performance goals. Automation helps increase coverage and provides a faster feedback loop to developers. Automation both increases the productivity of individual developers and ensures that tests are run at critical development lifecycle junctures, such as source code control check-in, feature integration, and version release.
+
+Such tests often span a variety of types, including unit tests, end-to-end (e2e) tests, integration tests, and so on. While the benefits are unquestionable, it can be tedious to set them up. Nest strives to promote development best practices, including effective testing, so it includes features such as the following to help developers and teams build and automate tests. Nest:
+
+- automatically scaffolds default unit tests for components and e2e tests for applications
+- provides default tooling (such as a test runner that builds an isolated module/application loader)
+- provides integration with [Jest](https://github.com/facebook/jest) and [Supertest](https://github.com/visionmedia/supertest) out-of-the-box, while remaining agnostic to testing tools
+- makes the Nest dependency injection system available in the testing environment for easily mocking components
+
+As mentioned, you can use any **testing framework** that you like, as Nest doesn't force any specific tooling. Simply replace the elements needed (such as the test runner), and you will still enjoy the benefits of Nest's ready-made testing facilities.
+
+#### Installation
+
+Source <https://docs.nestjs.com/fundamentals/testing#installation>
+
+To get started, first install the required package:
+
+```bash
+
+$ npm i --save-dev @nestjs/testing
+```
+
+#### Unit testing
+
+Source: <https://docs.nestjs.com/fundamentals/testing#unit-testing>
+
+In the following example, we test two classes: `CatsController` and `CatsService`. As mentioned, [Jest](https://github.com/facebook/jest) is provided as the default testing framework. It serves as a test-runner and also provides assert functions and test-double utilities that help with mocking, spying, etc. In the following basic test, we manually instantiate these classes, and ensure that the controller and service fulfill their API contract.
+
+cats.controller.spec.ts
+
+```typescript
+import { CatsController } from './cats.controller';
+import { CatsService } from './cats.service';
+
+describe('CatsController', () => {
+  let catsController: CatsController;
+  let catsService: CatsService;
+
+  beforeEach(() => {
+    catsService = new CatsService();
+    catsController = new CatsController(catsService);
+  });
+
+  describe('findAll', () => {
+    it('should return an array of cats', async () => {
+      const result = ['test'];
+      jest
+        .spyOn(catsService, 'findAll')
+        .mockImplementation(() => result);
+
+      expect(await catsController.findAll()).toBe(result);
+    });
+  });
+});
+```
+
+> **Hint** Keep your test files located near the classes they test. Testing files should have a `.spec` or `.test` suffix.
+
+Because the above sample is trivial, we aren't really testing anything Nest-specific. Indeed, we aren't even using dependency injection (notice that we pass an instance of `CatsService` to our `catsController`). This form of testing - where we manually instantiate the classes being tested - is often called **isolated testing** as it is independent from the framework. Let's introduce some more advanced capabilities that help you test applications that make more extensive use of Nest features.
+
+#### Testing utilities
+
+Source: <https://docs.nestjs.com/fundamentals/testing#testing-utilities>
+
+The `@nestjs/testing` package provides a set of utilities that enable a more robust testing process. Let's rewrite the previous example using the built-in `Test` class:
+
+cats.controller.spec.ts
+
+```typescript
+import { Test } from '@nestjs/testing';
+import { CatsController } from './cats.controller';
+import { CatsService } from './cats.service';
+
+describe('CatsController', () => {
+  let catsController: CatsController;
+  let catsService: CatsService;
+
+  beforeEach(async () => {
+    const moduleRef = await Test.createTestingModule({
+      controllers: [CatsController],
+      providers: [CatsService],
+    }).compile();
+
+    catsService = moduleRef.get<CatsService>(CatsService);
+    catsController = moduleRef.get<CatsController>(CatsController);
+  });
+
+  describe('findAll', () => {
+    it('should return an array of cats', async () => {
+      const result = ['test'];
+      jest
+        .spyOn(catsService, 'findAll')
+        .mockImplementation(() => result);
+
+      expect(await catsController.findAll()).toBe(result);
+    });
+  });
+});
+```
+
+The `Test` class is useful for providing an application execution context that essentially mocks the full Nest runtime, but gives you hooks that make it easy to manage class instances, including mocking and overriding. The `Test` class has a `createTestingModule()` method that takes a module metadata object as its argument (the same object you pass to the `@Module()` decorator). This method returns a `TestingModule` instance which in turn provides a few methods. For unit tests, the important one is the `compile()` method. This method bootstraps a module with its dependencies (similar to the way an application is bootstrapped in the conventional `main.ts` file using `NestFactory.create()`), and returns a module that is ready for testing.
+
+> **Hint** The `compile()` method is **asynchronous** and therefore has to be awaited. Once the module is compiled you can retrieve any **static** instance it declares (controllers and providers) using the `get()` method.
+
+`TestingModule` inherits from the [module reference](https://docs.nestjs.com/fundamentals/module-ref) class, and therefore its ability to dynamically resolve scoped providers (transient or request-scoped). Do this with the `resolve()` method (the `get()` method can only retrieve static instances).
+
+```typescript
+const moduleRef = await Test.createTestingModule({
+  controllers: [CatsController],
+  providers: [CatsService],
+}).compile();
+
+catsService = await moduleRef.resolve(CatsService);
+```
+
+> **Warning** The `resolve()` method returns a unique instance of the provider, from its own **DI container sub-tree**. Each sub-tree has a unique context identifier. Thus, if you call this method more than once and compare instance references, you will see that they are not equal.
+
+> **Hint** Learn more about the module reference features [here](https://docs.nestjs.com/fundamentals/module-ref).
+
+Instead of using the production version of any provider, you can override it with a [custom provider](https://docs.nestjs.com/fundamentals/custom-providers) for testing purposes. For example, you can mock a database service instead of connecting to a live database. We'll cover overrides in the next section, but they're available for unit tests as well.
+
+### Configuration
+
+Applications often run in different **environments**. Depending on the environment, different configuration settings should be used. For example, usually the local environment relies on specific database credentials, valid only for the local DB instance. The production environment would use a separate set of DB credentials. Since configuration variables change, best practice is to [store configuration variables](https://12factor.net/config) in the environment.
+
+Externally defined environment variables are visible inside Node.js through the `process.env` global. We could try to solve the problem of multiple environments by setting the environment variables separately in each environment. This can quickly get unwieldy, especially in the development and testing environments where these values need to be easily mocked and/or changed.
+
+In Node.js applications, it's common to use `.env` files, holding key-value pairs where each key represents a particular value, to represent each environment. Running an app in different environments is then just a matter of swapping in the correct `.env` file.
+
+A good approach for using this technique in Nest is to create a `ConfigModule` that exposes a `ConfigService` which loads the appropriate `.env` file. While you may choose to write such a module yourself, for convenience Nest provides the `@nestjs/config` package out-of-the box. We'll cover this package in the current chapter.
+
+#### Installation
+
+Source: <https://docs.nestjs.com/techniques/configuration#installation>
+
+To begin using it, we first install the required dependency.
+
+```bash
+
+$ npm i --save @nestjs/config
+```
+
+> **Hint** The `@nestjs/config` package internally uses [dotenv](https://github.com/motdotla/dotenv).
+
+> **Note**`@nestjs/config` requires TypeScript 4.1 or later.
+
+Once the installation process is complete, we can import the `ConfigModule`. Typically, we'll import it into the root `AppModule` and control its behavior using the `.forRoot()` static method. During this step, environment variable key/value pairs are parsed and resolved. Later, we'll see several options for accessing the `ConfigService` class of the `ConfigModule` in our other feature modules.
+
+```typescript
+import { Module } from '@nestjs/common';
+import { ConfigModule } from '@nestjs/config';
+
+@Module({
+  imports: [
+    ConfigModule.forRoot({
+      isGlobal: true,
+    }),
+  ],
+})
+export class AppModule {}
+```
+
+The above code will load and parse a `.env` file from the default location (the project root directory), merge key/value pairs from the `.env` file with environment variables assigned to `process.env`, and store the result in a private structure that you can access through the `ConfigService`. The `forRoot()` method registers the `ConfigService` provider, which provides a `get()` method for reading these parsed/merged configuration variables. Since `@nestjs/config` relies on [dotenv](https://github.com/motdotla/dotenv), it uses that package's rules for resolving conflicts in environment variable names. When a key exists both in the runtime environment as an environment variable (e.g., via OS shell exports like `export DATABASE_USER=test`) and in a `.env` file, the runtime environment variable takes precedence.
+
+A sample `.env` file looks something like this:
+
+```shell
+DATABASE_USER=test
+DATABASE_PASSWORD=test
+DATABASE_NAME=test
+```
+
+#### Custom env file path
+
+Source: <https://docs.nestjs.com/techniques/configuration#custom-env-file-path>
+
+By default, the package looks for a `.env` file in the root directory of the application. To specify another path for the `.env` file, set the `envFilePath` property of an (optional) options object you pass to `forRoot()`, as follows:
+
+```typescript
+ConfigModule.forRoot({
+  envFilePath: '.development.env',
+});
+```
+
+You can also specify multiple paths for `.env` files like this:
+
+```typescript
+ConfigModule.forRoot({
+  envFilePath: ['.env.development.local', '.env.development'],
+});
+```
+
+If a variable is found in multiple files, the first one takes precedence.
+
+#### Disable env variables loading
+
+Source: <https://docs.nestjs.com/techniques/configuration#disable-env-variables-loading>
+
+If you don't want to load the `.env` file, but instead would like to simply access environment variables from the runtime environment (as with OS shell exports like `export DATABASE_USER=test`), set the options object's `ignoreEnvFile` property to `true`, as follows:
+
+```typescript
+ConfigModule.forRoot({
+  ignoreEnvFile: true,
+});
+```
+
+#### Use module globally
+
+Source: <https://docs.nestjs.com/techniques/configuration#use-module-globally>
+
+When you want to use `ConfigModule` in other modules, you'll need to import it (as is standard with any Nest module). Alternatively, declare it as a [global module](https://docs.nestjs.com/modules#global-modules) by setting the options object's `isGlobal` property to `true`, as shown below. In that case, you will not need to import `ConfigModule` in other modules once it's been loaded in the root module (e.g., `AppModule`).
+
+```typescript
+ConfigModule.forRoot({
+  isGlobal: true,
+});
+```
+
+#### Custom configuration files
+
+Source: <https://docs.nestjs.com/techniques/configuration#custom-configuration-files>
+
+For more complex projects, you may utilize custom configuration files to return nested configuration objects. This allows you to group related configuration settings by function (e.g., database-related settings), and to store related settings in individual files to help manage them independently.
+
+A custom configuration file exports a factory function that returns a configuration object. The configuration object can be any arbitrarily nested plain JavaScript object. The `process.env` object will contain the fully resolved environment variable key/value pairs (with `.env` file and externally defined variables resolved and merged as described [above](https://docs.nestjs.com/techniques/configuration#getting-started)). Since you control the returned configuration object, you can add any required logic to cast values to an appropriate type, set default values, etc. For example:
+
+config/configuration.ts
+
+```typescript
+export default () => ({
+  port: parseInt(process.env.PORT, 10) || 3000,
+  database: {
+    host: process.env.DATABASE_HOST,
+    port: parseInt(process.env.DATABASE_PORT, 10) || 5432,
+  },
+});
+```
+
+We load this file using the `load` property of the options object we pass to the `ConfigModule.forRoot()` method:
+
+```typescript
+import configuration from './config/configuration';
+
+@Module({
+  imports: [
+    ConfigModule.forRoot({
+      load: [configuration],
+    }),
+  ],
+})
+export class AppModule {}
+```
+
+> **Notice** The value assigned to the `load` property is an array, allowing you to load multiple configuration files (e.g. `load: [databaseConfig, authConfig]`)
+
+With custom configuration files, we can also manage custom files such as YAML files. Here is an example of a configuration using YAML format:
+
+```yaml
+http:
+  host: 'localhost'
+  port: 8080
+
+db:
+  postgres:
+    url: 'localhost'
+    port: 5432
+    database: 'yaml-db'
+
+  sqlite:
+    database: 'sqlite.db'
+```
+
+To read and parse YAML files, we can leverage the `js-yaml` package.
+
+```bash
+
+$ npm i js-yaml
+$ npm i -D @types/js-yaml
+```
+
+Once the package is installed, we use `yaml#load` function to load YAML file we just created above.
+
+config/configuration.ts
+
+```typescript
+import { readFileSync } from 'fs';
+import * as yaml from 'js-yaml';
+import { join } from 'path';
+
+const YAML_CONFIG_FILENAME = 'config.yaml';
+
+export default () => {
+  return yaml.load(
+    readFileSync(join(__dirname, YAML_CONFIG_FILENAME), 'utf8'),
+  ) as Record<string, any>;
+};
+```
+
+> **Note** Nest CLI does not automatically move your "assets" (non-TS files) to the `dist` folder during the build process. To make sure that your YAML files are copied, you have to specify this in the `compilerOptions#assets` object in the `nest-cli.json` file. As an example, if the `config` folder is at the same level as the `src` folder, add `compilerOptions#assets` with the value `"assets": [{"include": "../config/*.yaml", "outDir": "./dist/config"}]`. Read more [here](https://docs.nestjs.com/cli/monorepo#assets).
