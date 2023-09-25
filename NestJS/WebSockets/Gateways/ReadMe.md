@@ -1,30 +1,27 @@
-# WebSockets
+# Gateways
 
 <!-- @import "[TOC]" {cmd="toc" depthFrom=2 depthTo=6 orderedList=false} -->
 
 <!-- code_chunk_output -->
 
-- [Gateways](#gateways)
-  - [Installation](#installation)
-  - [Overview](#overview)
-  - [Multiple responses](#multiple-responses)
-  - [Asynchronous responses](#asynchronous-responses)
-  - [Lifecycle hooks](#lifecycle-hooks)
-  - [Server](#server)
+- [Installation](#installation)
+- [Overview](#overview)
+- [Multiple responses](#multiple-responses)
+- [Asynchronous responses](#asynchronous-responses)
+- [Lifecycle hooks](#lifecycle-hooks)
+- [Server](#server)
 
 <!-- /code_chunk_output -->
-
-## Gateways
 
 Most of the concepts discussed elsewhere in this documentation, such as dependency injection, decorators, exception filters, pipes, guards and interceptors, apply equally to gateways. Wherever possible, Nest abstracts implementation details so that the same components can run across HTTP-based platforms, WebSockets, and Microservices. This section covers the aspects of Nest that are specific to WebSockets.
 
 In Nest, a gateway is simply a class annotated with `@WebSocketGateway()` decorator. Technically, gateways are platform-agnostic which makes them compatible with any WebSockets library once an adapter is created. There are two WS platforms supported out-of-the-box: [socket.io](https://github.com/socketio/socket.io) and [ws](https://github.com/websockets/ws). You can choose the one that best suits your needs. Also, you can build your own adapter by following this [guide](https://docs.nestjs.com/websockets/adapter).
 
-![](/assets/Gateways_1.png)
+![Offical Documentation](https://docs.nestjs.com/assets/Gateways_1.png)
 
 > **Hint** Gateways can be treated as [providers](https://docs.nestjs.com/providers); this means they can inject dependencies through the class constructor. Also, gateways can be injected by other classes (providers and controllers) as well.
 
-### Installation
+## Installation
 
 Source: <https://docs.nestjs.com/websockets/gateways#installation>
 
@@ -34,7 +31,7 @@ To start building WebSockets-based applications, first install the required pack
 npm i --save @nestjs/websockets @nestjs/platform-socket.io
 ```
 
-### Overview
+## Overview
 
 Source: <https://docs.nestjs.com/websockets/gateways#overview>
 
@@ -175,7 +172,7 @@ socket.emit('events', { name: 'Nest' }, (data) =>
 );
 ```
 
-### Multiple responses
+## Multiple responses
 
 Source: <https://docs.nestjs.com/websockets/gateways#multiple-responses>
 
@@ -212,7 +209,7 @@ In order to listen for the incoming response(s), the client has to apply another
 socket.on('events', (data) => console.log(data));
 ```
 
-### Asynchronous responses
+## Asynchronous responses
 
 Source: <https://docs.nestjs.com/websockets/gateways#asynchronous-responses>
 
@@ -249,7 +246,7 @@ onEvent(data) {
 
 In the example above, the message handler will respond **3 times** (with each item from the array).
 
-### Lifecycle hooks
+## Lifecycle hooks
 
 Source: <https://docs.nestjs.com/websockets/gateways#lifecycle-hooks>
 
@@ -259,7 +256,7 @@ There are 3 useful lifecycle hooks available. All of them have corresponding int
 
 > **Hint** Each lifecycle interface is exposed from `@nestjs/websockets` package.
 
-### Server
+## Server
 
 Source: <https://docs.nestjs.com/websockets/gateways#server>
 
