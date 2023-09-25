@@ -30,6 +30,14 @@
       - [As Object with `provide`, `useFactory` and `inject` properties, whereby the factory function accepts parameters (`connection: Connection`) and dependend on them returns one or the other service instance](#as-object-with-provide-usefactory-and-inject-properties-whereby-the-factory-function-accepts-parameters-connection-connection-and-dependend-on-them-returns-one-or-the-other-service-instance)
       - [As Object with `provide`, `useFactory` and `inject` properties, whereby the factory function accepts a provider (`optionsProvider: OptionsProvider`) as parameter, awaits its result and creates the service instance with the result.](#as-object-with-provide-usefactory-and-inject-properties-whereby-the-factory-function-accepts-a-provider-optionsprovider-optionsprovider-as-parameter-awaits-its-result-and-creates-the-service-instance-with-the-result)
       - [As Object with `provide` and `useExisting` properties, whereby the value of the `useExisting` property is the class of the service](#as-object-with-provide-and-useexisting-properties-whereby-the-value-of-the-useexisting-property-is-the-class-of-the-service)
+    - [Asynchronous Providers](#asynchronous-providers)
+    - [Custom Providers](#custom-providers)
+      - [DI Fundamentals](#di-fundamentals)
+    - [Class Providers](#class-providers)
+    - [Factory Providers](#factory-providers)
+    - [Alias Providers](#alias-providers)
+    - [Non-service based providers](#non-service-based-providers)
+    - [Export Custom Provider](#export-custom-provider)
   - [Modules](#modules)
     - [Feature (Child) Modules](#feature-child-modules)
     - [Global Modules](#global-modules)
@@ -103,6 +111,60 @@
     - [Response mapping](#response-mapping)
     - [Stream Overriding](#stream-overriding)
     - [More Operators](#more-operators)
+  - [Custom Decorators](#custom-decorators)
+    - [Decorator Factories](#decorator-factories)
+    - [Decorator Composition](#decorator-composition)
+    - [Passing Data](#passing-data)
+    - [Decorator Internals](#decorator-internals)
+    - [Decorator as middleware](#decorator-as-middleware)
+    - [Decorator inheritance](#decorator-inheritance)
+    - [Decorator ordering](#decorator-ordering)
+    - [Decorator interface](#decorator-interface)
+    - [Working with Pipes](#working-with-pipes)
+    - [Working with Guards](#working-with-guards)
+    - [Working with Interceptors](#working-with-interceptors)
+    - [Working with Filters](#working-with-filters)
+  - [Injection Scopes](#injection-scopes)
+    - [Provider Scope](#provider-scope)
+      - [Usage](#usage)
+    - [Controller Scope](#controller-scope)
+    - [Scope Hierarchies](#scope-hierarchies)
+    - [Request Provider](#request-provider)
+    - [Inquirer Provider](#inquirer-provider)
+    - [Performance Considerations](#performance-considerations)
+    - [Durable Providers](#durable-providers)
+  - [Circular Dependency](#circular-dependency)
+    - [Circular Dependency Detection](#circular-dependency-detection)
+    - [Circular Dependency Prevention](#circular-dependency-prevention)
+      - [Technique 1: Use `forwardRef()`](#technique-1-use-forwardref)
+      - [Technique 2: Use `@Inject()` with string token](#technique-2-use-inject-with-string-token)
+      - [Technique 3: Use `@Inject()` with `forwardRef()`](#technique-3-use-inject-with-forwardref)
+      - [Technique 4: Use `@Inject()` with `Type` token](#technique-4-use-inject-with-type-token)
+      - [Technique 5: Use `@Inject()` with `Type` token and `forwardRef()`](#technique-5-use-inject-with-type-token-and-forwardref)
+      - [Technique 6: Use `@Inject()` with `Type` token and `forwardRef()` (with `useClass`)](#technique-6-use-inject-with-type-token-and-forwardref-with-useclass)
+      - [Technique 7: Use `@Inject()` with `Type` token and `forwardRef()` (with `useFactory`)](#technique-7-use-inject-with-type-token-and-forwardref-with-usefactory)
+      - [Technique 8: Use `@Inject()` with `Type` token and `forwardRef()` (with `useExisting`)](#technique-8-use-inject-with-type-token-and-forwardref-with-useexisting)
+      - [Technique 9: Use `@Inject()` with `Type` token and `forwardRef()` (with `useValue`)](#technique-9-use-inject-with-type-token-and-forwardref-with-usevalue)
+  - [Module Reference](#module-reference)
+    - [Resolving Providers](#resolving-providers)
+    - [Resolving Scoped Providers](#resolving-scoped-providers)
+    - [Resolving Scoped Providers with Payload](#resolving-scoped-providers-with-payload)
+    - [Resolving Scoped Providers with ContextId](#resolving-scoped-providers-with-contextid)
+    - [Resolving Scoped Providers with ContextId and Payload](#resolving-scoped-providers-with-contextid-and-payload)
+    - [Resolving Scoped Providers with ContextId and Payload](#resolving-scoped-providers-with-contextid-and-payload-1)
+    - [Retrieving Instances](#retrieving-instances)
+    - [Getting Instance by Name](#getting-instance-by-name)
+    - [Registering REQUEST Provider](#registering-request-provider)
+    - [Getting Current Sub-tree](#getting-current-sub-tree)
+    - [Instantiating custom classes dynamically](#instantiating-custom-classes-dynamically)
+  - [Lazy Loading Modules](#lazy-loading-modules)
+    - [Lazy Loading controllers, gateways, and resolvers](#lazy-loading-controllers-gateways-and-resolvers)
+      - [Common Use Cases](#common-use-cases)
+  - [Execution Context](#execution-context-2)
+    - [ArgumentsHost Class](#argumentshost-class)
+    - [Current Application Context](#current-application-context)
+    - [Host handler arguments](#host-handler-arguments)
+    - [ExecutionContext class](#executioncontext-class)
 
 <!-- /code_chunk_output -->
 
@@ -607,6 +669,285 @@ import { Connection } from './connection.provider';
   ],
 })
 export class CatsModule {}
+```
+
+#### Asynchronous Providers
+
+Providers can be **asynchronous**. This is useful when the provider is **dependent** on **asynchronous** logic. For example, when the provider needs to **connect** to a **database**.
+
+At times, the application start should be delayed until one or more **asynchronous tasks** are completed. For example, you may not want to start accepting requests until the connection with the database has been established. You can achieve this using asynchronous providers.
+
+The syntax for this is to use `async/await` with the `useFactory` syntax. The factory returns a `Promise`, and the factory function can `await` asynchronous tasks. Nest will await resolution of the promise before instantiating any class that depends on (injects) such a provider.
+
+```ts
+{
+  provide: 'ASYNC_CONNECTION',
+  useFactory: async () => {
+    const connection = await createConnection(options);
+    return connection;
+  },
+}
+```
+
+#### Custom Providers
+
+Custom providers are useful when you want to **configure** a provider before injecting it, or when you want to **create** a **dynamic** provider.
+
+```ts
+import { Module } from '@nestjs/common';
+import { CatsController } from './cats.controller';
+import { CatsService } from './cats.service';
+import { Connection } from './connection.provider';
+
+@Module({
+  controllers: [CatsController],
+  providers: [
+    CatsService,
+    Connection,
+    {
+      provide: 'CONNECTION',
+      useExisting: Connection,
+    },
+  ],
+})
+
+// The `configure()` method takes a `consumer` argument
+// which is an instance of the `MiddlewareConsumer` class.
+export class CatsModule implements NestModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer.apply(LoggerMiddleware).forRoutes('cats');
+  }
+}
+```
+
+##### DI Fundamentals
+
+Source: <https://docs.nestjs.com/fundamentals/custom-providers>
+
+Dependency injection is an [inversion of control (IoC)](https://en.wikipedia.org/wiki/Inversion_of_control) technique wherein you delegate instantiation of dependencies to the IoC container (in our case, the NestJS runtime system), instead of doing it in your own code imperatively. Let's examine what's happening in this example from the [Providers chapter](https://docs.nestjs.com/providers).
+
+First, we define a provider. The `@Injectable()` decorator marks the `CatsService` class as a provider.
+
+```ts
+import { Injectable } from '@nestjs/common';
+import { Cat } from './interfaces/cat.interface';
+
+@Injectable()
+export class CatsService {
+  private readonly cats: Cat[] = [];
+
+  findAll(): Cat[] {
+    return this.cats;
+  }
+}
+```
+
+Then we request that Nest inject the provider into our controller class:
+
+```ts
+import { Controller, Get } from '@nestjs/common';
+import { CatsService } from './cats.service';
+import { Cat } from './interfaces/cat.interface';
+
+@Controller('cats')
+export class CatsController {
+  constructor(private catsService: CatsService) {}
+
+  @Get()
+  async findAll(): Promise<Cat[]> {
+    return this.catsService.findAll();
+  }
+}
+```
+
+Finally, we register the provider with the Nest IoC container:
+
+```ts
+import { Module } from '@nestjs/common';
+import { CatsController } from './cats.controller';
+import { CatsService } from './cats.service';
+
+@Module({
+  controllers: [CatsController],
+  providers: [CatsService],
+})
+export class CatsModule {}
+```
+
+What exactly is happening under the covers to make this work? There are three key steps in the process:
+
+1. In `cats.service.ts`, the `@Injectable()` decorator declares the `CatsService` class as a class that can be managed by the Nest IoC container.
+2. In `cats.controller.ts`, `CatsController` declares a dependency on the `CatsService` token with constructor injection:
+
+```ts
+constructor(private catsService: CatsService) {}
+```
+
+3. In `app.module.ts`, we associate the token `CatsService` with the class `CatsService` from the `cats.service.ts` file. We'll [see below](https://docs.nestjs.com/fundamentals/custom-providers#standard-providers) exactly how this association (also called _registration_) occurs.
+
+When the Nest IoC container instantiates a `CatsController`, it first looks for any dependencies\*. When it finds the `CatsService` dependency, it performs a lookup on the `CatsService` token, which returns the `CatsService` class, per the registration step (#3 above). Assuming `SINGLETON` scope (the default behavior), Nest will then either create an instance of `CatsService`, cache it, and return it, or if one is already cached, return the existing instance.
+
+\*This explanation is a bit simplified to illustrate the point. One important area we glossed over is that the process of analyzing the code for dependencies is very sophisticated, and happens during application bootstrapping. One key feature is that dependency analysis (or "creating the dependency graph"), is **transitive**. In the above example, if the `CatsService` itself had dependencies, those too would be resolved. The dependency graph ensures that dependencies are resolved in the correct order - essentially "bottom up". This mechanism relieves the developer from having to manage such complex dependency graphs.
+
+#### Class Providers
+
+The `useClass` syntax allows you to dynamically determine a class that a token should resolve to. For example, suppose we have an abstract (or default) `ConfigService` class. Depending on the current environment, we want Nest to provide a different implementation of the configuration service. The following code implements such a strategy.
+
+```ts
+const configServiceProvider = {
+  provide: ConfigService,
+  useClass:
+    process.env.NODE_ENV === 'development'
+      ? DevelopmentConfigService
+      : ProductionConfigService,
+};
+
+@Module({
+  providers: [configServiceProvider],
+})
+export class AppModule {}
+```
+
+Let's look at a couple of details in this code sample. You'll notice that we define `configServiceProvider` with a literal object first, then pass it in the module decorator's `providers` property. This is just a bit of code organization, but is functionally equivalent to the examples we've used thus far in this chapter.
+
+Also, we have used the `ConfigService` class name as our token. For any class that depends on `ConfigService`, Nest will inject an instance of the provided class (`DevelopmentConfigService` or `ProductionConfigService`) overriding any default implementation that may have been declared elsewhere (e.g., a `ConfigService` declared with an `@Injectable()` decorator).
+
+#### Factory Providers
+
+The `useFactory` syntax allows for creating providers **dynamically**. The actual provider will be supplied by the value returned from a factory function. The factory function can be as simple or complex as needed. A simple factory may not depend on any other providers. A more complex factory can itself inject other providers it needs to compute its result. For the latter case, the factory provider syntax has a pair of related mechanisms:
+
+1. The factory function can accept (optional) arguments.
+2. The (optional) `inject` property accepts an array of providers that Nest will resolve and pass as arguments to the factory function during the instantiation process. Also, these providers can be marked as optional. The two lists should be correlated: Nest will pass instances from the `inject` list as arguments to the factory function in the same order. The example below demonstrates this.
+
+```ts
+// prettier-ignore
+const connectionProvider = {
+  provide: 'CONNECTION',
+  useFactory: (
+    optionsProvider: OptionsProvider,
+    optionalProvider?: string
+    ) => {
+    const options = optionsProvider.get();
+    return new DatabaseConnection(options);
+  },
+  inject: [OptionsProvider, { token: 'SomeOptionalProvider', optional: true }],
+  //       \_____________/            \__________________/
+  //        This provider              The provider with this
+  //        is mandatory.              token can resolve to `undefined`.
+};
+
+@Module({
+  providers: [
+    connectionProvider,
+    OptionsProvider,
+    // { provide: 'SomeOptionalProvider', useValue: 'anything' },
+  ],
+})
+export class AppModule {}
+```
+
+#### Alias Providers
+
+The `useExisting` syntax allows you to create aliases for existing providers. This creates two ways to access the same provider. In the example below, the (string-based) token `'AliasedLoggerService'` is an alias for the (class-based) token `LoggerService`. Assume we have two different dependencies, one for `'AliasedLoggerService'` and one for `LoggerService`. If both dependencies are specified with `SINGLETON` scope, they'll both resolve to the same instance.
+
+```ts
+@Injectable()
+class LoggerService {
+  /* implementation details */
+}
+
+const loggerAliasProvider = {
+  provide: 'AliasedLoggerService',
+  useExisting: LoggerService,
+};
+
+@Module({
+  providers: [LoggerService, loggerAliasProvider],
+})
+export class AppModule {}
+```
+
+#### Non-service based providers
+
+While providers often supply services, they are not limited to that usage. A provider can supply **any** value. For example, a provider may supply an array of configuration objects based on the current environment, as shown below:
+
+```ts
+const configServiceProvider = {
+  provide: 'CONFIG_OPTIONS',
+  useFactory: (): ConfigOptions => {
+    const env = process.env.NODE_ENV || 'development';
+    const configFilePath = `${env}.config.json`;
+    const config = JSON.parse(
+      fs.readFileSync(configFilePath).toString(),
+    );
+    return config;
+  },
+};
+
+@Module({
+  providers: [configServiceProvider],
+})
+export class AppModule {}
+```
+
+or
+
+```ts
+const configFactory = {
+  provide: 'CONFIG',
+  useFactory: () => {
+    return process.env.NODE_ENV === 'development'
+      ? devConfig
+      : prodConfig;
+  },
+};
+
+@Module({
+  providers: [configFactory],
+})
+export class AppModule {}
+```
+
+#### Export Custom Provider
+
+Like any provider, a custom provider is scoped to its declaring module. To make it visible to other modules, it must be exported. To export a custom provider, we can either use its token or the full provider object.
+
+The following example shows exporting using the token:
+
+```ts
+const connectionFactory = {
+  provide: 'CONNECTION',
+  useFactory: (optionsProvider: OptionsProvider) => {
+    const options = optionsProvider.get();
+    return new DatabaseConnection(options);
+  },
+  inject: [OptionsProvider],
+};
+
+@Module({
+  providers: [connectionFactory],
+  exports: ['CONNECTION'],
+})
+export class AppModule {}
+```
+
+Alternatively, export with the full provider object:
+
+```ts
+const connectionFactory = {
+  provide: 'CONNECTION',
+  useFactory: (optionsProvider: OptionsProvider) => {
+    const options = optionsProvider.get();
+    return new DatabaseConnection(options);
+  },
+  inject: [OptionsProvider],
+};
+
+@Module({
+  providers: [connectionFactory],
+  exports: [connectionFactory],
+})
+export class AppModule {}
 ```
 
 ### Modules
@@ -2607,3 +2948,1511 @@ export class TimeoutInterceptor implements NestInterceptor {
   }
 }
 ```
+
+### Custom Decorators
+
+Source: <https://docs.nestjs.com/custom-decorators>
+
+Decorators are a language feature that allow you to annotate or modify classes and class members (properties, methods, and so on) at compile time. Decorators use the form `@expression`, where `expression` must evaluate to a function that will be called at runtime with information about the decorated declaration.
+
+Nest is built around a language feature called **decorators**. Decorators are a well-known concept in a lot of commonly used programming languages, but in the JavaScript world, they're still relatively new. In order to better understand how decorators work, we recommend reading [this article](https://medium.com/google-developers/exploring-es7-decorators-76ecb65fb841). Here's a simple definition:
+
+> An ES2016 decorator is an expression which returns a function and can take a target, name and property descriptor as arguments. You apply it by prefixing the decorator with an `@` character and placing this at the very top of what you are trying to decorate. Decorators can be defined for either a class, a method or a property.
+
+#### Decorator Factories
+
+Source: <https://docs.nestjs.com/custom-decorators#decorator-factories>
+
+A decorator factory is simply a function that returns the expression that will be called by the decorator at runtime. For example, let's create a `@Roles()` decorator factory:
+
+```typescript
+// roles.decorator.ts
+import { SetMetadata } from '@nestjs/common';
+
+export const Roles = (...roles: string[]) =>
+  SetMetadata('roles', roles);
+```
+
+#### Decorator Composition
+
+Source: <https://docs.nestjs.com/custom-decorators#decorator-composition>
+
+Decorators can be composed. This means that you can apply multiple decorators to a single class, method, or property. The decorators will then be executed in the order they are set up (from left to right). For example, let's bind the `@Roles()` and the `@UseGuards()` decorators to the `CatsController`:
+
+```typescript
+@Roles('admin')
+@UseGuards(AuthGuard, RolesGuard)
+export class CatsController {}
+```
+
+#### Passing Data
+
+Source: <https://docs.nestjs.com/custom-decorators#passing-data>
+
+Decorators can take arguments. For example, let's create a `@Roles()` decorator that takes a variable number of string arguments:
+
+```typescript
+// roles.decorator.ts
+import { SetMetadata } from '@nestjs/common';
+
+export const Roles = (...roles: string[]) =>
+  SetMetadata('roles', roles);
+```
+
+#### Decorator Internals
+
+Source: <https://docs.nestjs.com/custom-decorators#decorator-internals>
+
+Decorators are just functions, and like any function, they can be synchronous or asynchronous. Nest supports both types of decorators. Synchronous decorators are the most common, and are used to modify or replace the target declaration. Asynchronous decorators are used to perform additional processing after the target declaration has been evaluated.
+
+#### Decorator as middleware
+
+Source: <https://docs.nestjs.com/custom-decorators#decorator-as-middleware>
+
+Decorators can be used as middleware. This means that you can apply a decorator to a controller, and it will be automatically applied to all the handlers within that controller. For example, let's bind the `@Roles()` decorator to the `CatsController`:
+
+```typescript
+@Roles('admin')
+@Controller('cats')
+export class CatsController {}
+```
+
+In the example above, the `@Roles()` decorator will be applied to all the handlers defined within the `CatsController` class. If you want to exclude the decorator from a specific handler, you can use the `@ExcludeRoles()` decorator.
+
+#### Decorator inheritance
+
+Source: <https://docs.nestjs.com/custom-decorators#decorator-inheritance>
+
+Decorators can be inherited. This means that you can apply a decorator to a controller, and it will be automatically applied to all the handlers within that controller. For example, let's bind the `@Roles()` decorator to the `CatsController`:
+
+```typescript
+@Roles('admin')
+@Controller('cats')
+export class CatsController {}
+```
+
+In the example above, the `@Roles()` decorator will be applied to all the handlers defined within the `CatsController` class. If you want to exclude the decorator from a specific handler, you can use the `@ExcludeRoles()` decorator.
+
+#### Decorator ordering
+
+Source: <https://docs.nestjs.com/custom-decorators#decorator-ordering>
+
+Decorators are executed in the order they are defined. The order of global decorators is not guaranteed. The order of controller-scoped decorators is also not guaranteed. The order of method-scoped decorators is guaranteed.
+
+#### Decorator interface
+
+Source: <https://docs.nestjs.com/custom-decorators#decorator-interface>
+
+The `NestInterceptor<T, R>` is a generic interface in which `T` indicates the type of an `Observable<T>` (supporting the response stream), and `R` is the type of the value wrapped by `Observable<R>`.
+
+```typescript
+export interface NestInterceptor<T, R> {
+  intercept(
+    context: ExecutionContext,
+    next: CallHandler<T>,
+  ): Observable<R> | Promise<Observable<R>>;
+}
+```
+
+#### Working with Pipes
+
+Source: <https://docs.nestjs.com/custom-decorators#working-with-pipes>
+
+Decorators can be used to apply pipes. For example, let's create a `@UsePipes()` decorator that will apply the `ValidationPipe` to the `CatsController`:
+
+```typescript
+// use-pipes.decorator.ts
+import { applyDecorators, UsePipes } from '@nestjs/common';
+import { ValidationPipe } from '@nestjs/common';
+
+export function UseValidationPipe() {
+  return applyDecorators(UsePipes(new ValidationPipe()));
+}
+```
+
+```typescript
+// cats.controller.ts
+@UseValidationPipe()
+@Controller('cats')
+export class CatsController {}
+```
+
+#### Working with Guards
+
+Source: <https://docs.nestjs.com/custom-decorators#working-with-guards>
+
+Decorators can be used to apply guards. For example, let's create a `@UseGuards()` decorator that will apply the `AuthGuard` to the `CatsController`:
+
+```typescript
+// use-guards.decorator.ts
+import { applyDecorators, UseGuards } from '@nestjs/common';
+import { AuthGuard } from '@nestjs/common';
+
+export function UseAuthGuard() {
+  return applyDecorators(UseGuards(AuthGuard));
+}
+```
+
+```typescript
+// cats.controller.ts
+@UseAuthGuard()
+@Controller('cats')
+export class CatsController {}
+```
+
+#### Working with Interceptors
+
+Source: <https://docs.nestjs.com/custom-decorators#working-with-interceptors>
+
+Decorators can be used to apply interceptors. For example, let's create a `@UseInterceptors()` decorator that will apply the `LoggingInterceptor` to the `CatsController`:
+
+```typescript
+// use-interceptors.decorator.ts
+import { applyDecorators, UseInterceptors } from '@nestjs/common';
+import { LoggingInterceptor } from '@nestjs/common';
+
+export function UseLoggingInterceptor() {
+  return applyDecorators(UseInterceptors(LoggingInterceptor));
+}
+```
+
+```typescript
+// cats.controller.ts
+@UseLoggingInterceptor()
+@Controller('cats')
+export class CatsController {}
+```
+
+#### Working with Filters
+
+Source: <https://docs.nestjs.com/custom-decorators#working-with-filters>
+
+Decorators can be used to apply filters. For example, let's create a `@UseFilters()` decorator that will apply the `HttpExceptionFilter` to the `CatsController`:
+
+```typescript
+// use-filters.decorator.ts
+import { applyDecorators, UseFilters } from '@nestjs/common';
+import { HttpExceptionFilter } from '@nestjs/common';
+
+export function UseHttpExceptionFilter() {
+  return applyDecorators(UseFilters(HttpExceptionFilter));
+}
+```
+
+```typescript
+// cats.controller.ts
+@UseHttpExceptionFilter()
+@Controller('cats')
+export class CatsController {}
+```
+
+### Injection Scopes
+
+Source: <https://docs.nestjs.com/fundamentals/injection-scopes>
+
+For people coming from different programming language backgrounds, it might be unexpected to learn that in Nest, almost everything is shared across incoming requests. We have a connection pool to the database, singleton services with global state, etc. Remember that Node.js doesn't follow the request/response Multi-Threaded Stateless Model in which every request is processed by a separate thread. Hence, using singleton instances is fully **safe** for our applications.
+
+However, there are edge-cases when request-based lifetime may be the desired behavior, for instance per-request caching in GraphQL applications, request tracking, and multi-tenancy. Injection scopes provide a mechanism to obtain the desired provider lifetime behavior.
+
+#### Provider Scope
+
+A provider can have any of the following scopes:
+
+| Scope       | Description                                                                                                                                                                                                                                                                |
+| ----------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `DEFAULT`   | A single instance of the provider is shared across the entire application. The instance lifetime is tied directly to the application lifecycle. Once the application has bootstrapped, all singleton providers have been instantiated. Singleton scope is used by default. |
+| `REQUEST`   | A new instance of the provider is created exclusively for each incoming **request**. The instance is garbage-collected after the request has completed processing.                                                                                                         |
+| `TRANSIENT` | Transient providers are not shared across consumers. Each consumer that injects a transient provider will receive a new, dedicated instance.                                                                                                                               |
+
+> **Hint** Using singleton scope is **recommended** for most use cases. Sharing providers across consumers and across requests means that an instance can be cached and its initialization occurs only once, during application startup.
+
+##### Usage
+
+To set the scope of a provider, use the `@Injectable()` decorator. The `@Injectable()` decorator takes an optional `scope` argument, which can be set to `Scope.DEFAULT`, `Scope.REQUEST`, or `Scope.TRANSIENT`.
+
+```typescript
+import { Injectable, Scope } from '@nestjs/common';
+
+@Injectable({ scope: Scope.REQUEST })
+export class CatsService {}
+```
+
+Similarly, for [custom providers](https://docs.nestjs.com/fundamentals/custom-providers), set the `scope` property in the long-hand form for a provider registration:
+
+```typescript
+{
+  provide: 'CACHE_MANAGER',
+  useClass: CacheManager,
+  scope: Scope.TRANSIENT,
+}
+```
+
+> **Hint** Import the `Scope` enum from `@nestjs/common`
+
+Singleton scope is used by default, and need not be declared. If you do want to declare a provider as singleton scoped, use the `Scope.DEFAULT` value for the `scope` property.
+
+> **Notice** Websocket Gateways should not use request-scoped providers because they must act as singletons. Each gateway encapsulates a real socket and cannot be instantiated multiple times. The limitation also applies to some other providers, like [_Passport strategies_](https://docs.nestjs.com/security/authentication#request-scoped-strategies) or _Cron controllers_.
+
+#### Controller Scope
+
+Source: <https://docs.nestjs.com/fundamentals/injection-scopes#controller-scope>
+
+Controllers can also be scoped. This means that you can apply a scope to a controller, and it will be automatically applied to all the providers within that controller. For example, let's bind the `CatsController` to the `REQUEST` scope:
+
+```typescript
+@Controller({
+  path: 'cats',
+  scope: Scope.REQUEST,
+})
+export class CatsController {}
+```
+
+#### Scope Hierarchies
+
+The `REQUEST` scope bubbles up the injection chain. A controller that depends on a request-scoped provider will, itself, be request-scoped.
+
+Imagine the following dependency graph: `CatsController <- CatsService <- CatsRepository`. If `CatsService` is request-scoped (and the others are default singletons), the `CatsController` will become request-scoped as it is dependent on the injected service. The `CatsRepository`, which is not dependent, would remain singleton-scoped.
+
+Transient-scoped dependencies don't follow that pattern. If a singleton-scoped `DogsService` injects a transient `LoggerService` provider, it will receive a fresh instance of it. However, `DogsService` will stay singleton-scoped, so injecting it anywhere would _not_ resolve to a new instance of `DogsService`. In case it's desired behavior, `DogsService` must be explicitly marked as `TRANSIENT` as well.
+
+#### Request Provider
+
+In an HTTP server-based application (e.g., using `@nestjs/platform-express` or `@nestjs/platform-fastify`), you may want to access a reference to the original request object when using request-scoped providers. You can do this by injecting the `REQUEST` object.
+
+```typescript
+import { Injectable, Scope, Inject } from '@nestjs/common';
+import { REQUEST } from '@nestjs/core';
+import { Request } from 'express';
+
+@Injectable({ scope: Scope.REQUEST })
+export class CatsService {
+  constructor(@Inject(REQUEST) private request: Request) {}
+}
+```
+
+Because of underlying platform/protocol differences, you access the inbound request slightly differently for Microservice or GraphQL applications. In [GraphQL](https://docs.nestjs.com/graphql/quick-start) applications, you inject `CONTEXT` instead of `REQUEST`:
+
+```typescript
+import { Injectable, Scope, Inject } from '@nestjs/common';
+import { CONTEXT } from '@nestjs/graphql';
+import { GqlContextType } from '@nestjs/graphql';
+
+@Injectable({ scope: Scope.REQUEST })
+export class CatsService {
+  constructor(@Inject(CONTEXT) private context: GqlContextType) {}
+}
+```
+
+You then configure your `context` value (in the `GraphQLModule`) to contain `request` as its property.
+
+```typescript
+GraphQLModule.forRoot({
+  context: ({ req }) => ({ request: req }),
+}),
+```
+
+#### Inquirer Provider
+
+If you want to get the class where a provider was constructed, for instance in logging or metrics providers, you can inject the INQUIRER token.
+
+```ts
+import { Inject, Injectable, Scope } from '@nestjs/common';
+import { INQUIRER } from '@nestjs/core';
+
+@Injectable({ scope: Scope.TRANSIENT })
+export class HelloService {
+  constructor(@Inject(INQUIRER) private parentClass: object) {}
+
+  sayHello(message: string) {
+    console.log(
+      `${this.parentClass?.constructor?.name}: ${message}`,
+    );
+  }
+}
+```
+
+And then use it as follows:
+
+```ts
+import { Injectable } from '@nestjs/common';
+import { HelloService } from './hello.service';
+
+@Injectable()
+export class AppService {
+  constructor(private helloService: HelloService) {}
+
+  getRoot(): string {
+    this.helloService.sayHello('My name is getRoot');
+
+    return 'Hello world!';
+  }
+}
+```
+
+In the example above when `AppService#getRoot` is called, `"AppService: My name is getRoot"` will be logged to the console.
+
+#### Performance Considerations
+
+Source: <https://docs.nestjs.com/fundamentals/injection-scopes#performance>
+
+Using request-scoped providers will have an impact on application performance. While Nest tries to cache as much metadata as possible, it will still have to create an instance of your class on each request. Hence, it will slow down your average response time and overall benchmarking result. Unless a provider must be request-scoped, it is strongly recommended that you use the default singleton scope.
+
+> **Hint** Although it all sounds quite intimidating, a properly designed application that leverages request-scoped providers should not slow down by more than ~5% latency-wise.
+
+#### Durable Providers
+
+Source: <https://docs.nestjs.com/fundamentals/injection-scopes#durable-providers>
+
+Request-scoped providers, as mentioned in the section above, may lead to increased latency since having at least 1 request-scoped provider (injected into the controller instance, or deeper - injected into one of its providers) makes the controller request-scoped as well. That means, it must be recreated (instantiated) per each individual request (and garbage collected afterwards). Now, that also means, that for let's say 30k requests in parallel, there will be 30k ephemeral instances of the controller (and its request-scoped providers).
+
+Having a common provider that most providers depend on (think of a database connection, or a logger service), automatically converts all those providers to request-scoped providers as well. This can pose a challenge in **multi-tenant applications**, especially for those that have a central request-scoped "data source" provider that grabs headers/token from the request object and based on its values, retrieves the corresponding database connection/schema (specific to that tenant).
+
+For instance, let's say you have an application alternately used by 10 different customers. Each customer has its **own dedicated data source**, and you want to make sure customer A will never be able to reach customer B's database. One way to achieve this could be to declare a request-scoped "data source" provider that - based on the request object - determines what's the "current customer" and retrieves its corresponding database. With this approach, you can turn your application into a multi-tenant application in just a few minutes. But, a major downside to this approach is that since most likely a large chunk of your application' components rely on the "data source" provider, they will implicitly become "request-scoped", and therefore you will undoubtedly see an impact in your apps performance.
+
+But what if we had a better solution? Since we only have 10 customers, couldn't we have 10 individual [DI sub-trees](https://docs.nestjs.com/fundamentals/module-ref#resolving-scoped-providers) per customer (instead of recreating each tree per request)? If your providers don't rely on any property that's truly unique for each consecutive request (e.g., request UUID) but instead there're some specific attributes that let us aggregate (classify) them, there's no reason to _recreate DI sub-tree_ on every incoming request.
+
+And that's exactly when the **durable providers** come in handy.
+
+Before we start flagging providers as durable, we must first register a **strategy** that instructs Nest what are those "common request attributes", provide logic that groups requests - associates them with their corresponding DI sub-trees. The strategy is a simple class that implements the `DurableStrategyHost` interface:
+
+```ts
+import { DurableStrategyHost } from '@nestjs/common';
+import { Request } from 'express';
+
+export class RequestStrategy implements DurableStrategyHost {
+  getDurabilityGroupId(request: Request): string {
+    return request.headers['x-tenant-id'];
+  }
+}
+```
+
+The `getDurabilityGroupId` method is responsible for returning a string that will be used as a key to group requests. In the example above, we're using the `x-tenant-id` header to determine the tenant ID. This means that all requests with the same `x-tenant-id` header will be grouped together and will share the same DI sub-tree.
+
+> **Hint** The `DurableStrategyHost` interface is imported from the `@nestjs/common` package.
+
+Once we have our strategy, we can register it in the `DurableModule`:
+
+```ts
+import { Module } from '@nestjs/common';
+import { DurableModule } from '@nestjs/common';
+import { RequestStrategy } from './request.strategy';
+
+@Module({
+  imports: [
+    DurableModule.register({
+      strategy: new RequestStrategy(),
+    }),
+  ],
+})
+export class AppModule {}
+```
+
+Another Example
+
+```ts
+import {
+  HostComponentInfo,
+  ContextId,
+  ContextIdFactory,
+  ContextIdStrategy,
+} from '@nestjs/core';
+import { Request } from 'express';
+
+const tenants = new Map<string, ContextId>();
+
+export class AggregateByTenantContextIdStrategy
+  implements ContextIdStrategy
+{
+  attach(contextId: ContextId, request: Request) {
+    const tenantId = request.headers['x-tenant-id'] as string;
+    let tenantSubTreeId: ContextId;
+
+    if (tenants.has(tenantId)) {
+      tenantSubTreeId = tenants.get(tenantId);
+    } else {
+      tenantSubTreeId = ContextIdFactory.create();
+      tenants.set(tenantId, tenantSubTreeId);
+    }
+
+    // If tree is not durable, return the original "contextId" object
+    return (info: HostComponentInfo) =>
+      info.isTreeDurable ? tenantSubTreeId : contextId;
+  }
+}
+```
+
+```ts
+import { Module } from '@nestjs/common';
+import { DurableModule } from '@nestjs/common';
+import { AggregateByTenantContextIdStrategy } from './aggregate-by-tenant-context-id.strategy';
+
+@Module({
+  imports: [
+    DurableModule.register({
+      strategy: new AggregateByTenantContextIdStrategy(),
+    }),
+  ],
+})
+export class AppModule {}
+```
+
+> **Hint** Similar to the request scope, durability bubbles up the injection chain. That means if A depends on B which is flagged as `durable`, A implicitly becomes durable too (unless `durable` is explicitly set to `false` for A provider).
+
+> **Warning** Note this strategy is not ideal for applications operating with a large number of tenants.
+
+The value returned from the `attach` method instructs Nest what context identifier should be used for a given host. In this case, we specified that the `tenantSubTreeId` should be used instead of the original, auto-generated `contextId` object, when the host component (e.g., request-scoped controller) is flagged as durable (you can learn how to mark providers as durable below). Also, in the above example, **no payload** would be registered (where payload = `REQUEST`/`CONTEXT` provider that represents the "root" - parent of the sub-tree).
+
+If you want to register the payload for a durable tree, use the following construction instead:
+
+```ts
+import { Module } from '@nestjs/common';
+import { DurableModule } from '@nestjs/common';
+import { AggregateByTenantContextIdStrategy } from './aggregate-by-tenant-context-id.strategy';
+
+@Module({
+  imports: [
+    DurableModule.register({
+      strategy: new AggregateByTenantContextIdStrategy(),
+      payload: {
+        provide: 'REQUEST',
+        useFactory: (contextId: ContextId) => {
+          const request = contextId.switchToHttp().getRequest();
+          return request;
+        },
+        inject: [ContextId],
+      },
+    }),
+  ],
+})
+export class AppModule {}
+```
+
+> **Hint** The `ContextId` object is imported from the `@nestjs/core` package.
+
+Another Example:
+
+```ts
+// The return of `AggregateByTenantContextIdStrategy#attach` method:
+return {
+  resolve: (info: HostComponentInfo) =>
+    info.isTreeDurable ? tenantSubTreeId : contextId,
+  payload: { tenantId },
+  }
+}
+```
+
+```ts
+import { Module } from '@nestjs/common';
+import { DurableModule } from '@nestjs/common';
+import { AggregateByTenantContextIdStrategy } from './aggregate-by-tenant-context-id.strategy';
+
+@Module({
+  imports: [
+    DurableModule.register({
+      strategy: new AggregateByTenantContextIdStrategy(),
+      payload: {
+        provide: 'TENANT_ID',
+        useFactory: (payload: any) => payload.tenantId,
+        inject: ['DURABLE_CONTEXT_ID_PAYLOAD'],
+      },
+    }),
+  ],
+})
+export class AppModule {}
+```
+
+Now whenever you inject the `REQUEST` provider (or `CONTEXT` for GraphQL applications) using the `@Inject(REQUEST)`/`@Inject(CONTEXT)`, the `payload` object would be injected (consisting of a single property - `tenantId` in this case).
+
+Alright so with this strategy in place, you can register it somewhere in your code (as it applies globally anyway), so for example, you could place it in the `main.ts` file:
+
+```ts
+import { NestFactory } from '@nestjs/core';
+import { AppModule } from './app.module';
+import { RequestStrategy } from './request.strategy';
+
+async function bootstrap() {
+  const app = await NestFactory.create(AppModule);
+  app.useLogger(app.get(RequestStrategy));
+  await app.listen(3000);
+}
+bootstrap();
+```
+
+Or
+
+```ts
+ContextIdFactory.apply(new AggregateByTenantContextIdStrategy());
+```
+
+> **Hint** The `ContextIdFactory` class is imported from the `@nestjs/core` package.
+
+As long as the registration occurs before any request hits your application, everything will work as intended.
+
+Now, you can flag providers as durable by setting the `scope` property to `Scope.DEFAULT` and the `durable` property to `true`:
+
+```ts
+import { Injectable, Scope } from '@nestjs/common';
+
+@Injectable({ scope: Scope.DEFAULT, durable: true })
+export class CatsService {}
+```
+
+Similarly, for custom providers, set the durable property in the long-hand form for a provider registration:
+
+```ts
+{
+  provide: 'CACHE_MANAGER',
+  useClass: CacheManager,
+  scope: Scope.TRANSIENT,
+  durable: true,
+}
+```
+
+or
+
+```ts
+{
+  provide: 'foobar',
+  useFactory: () => { ... },
+  scope: Scope.REQUEST,
+  durable: true,
+}
+```
+
+### Circular Dependency
+
+Source: <https://docs.nestjs.com/fundamentals/circular-dependency>
+
+A circular dependency occurs when two or more modules depend on each other. For example, module `A` imports module `B`, and module `B` imports module `A`. This creates a circular dependency between the two modules, which Nest cannot resolve.
+
+#### Circular Dependency Detection
+
+Nest detects circular dependencies and throws an error when one is found. For example, let's create a circular dependency between the `CatsModule` and the `DogsModule`:
+
+```typescript
+// cats.module.ts
+import { Module } from '@nestjs/common';
+import { DogsModule } from './dogs.module';
+
+@Module({
+  imports: [DogsModule],
+})
+export class CatsModule {}
+```
+
+```typescript
+// dogs.module.ts
+import { Module } from '@nestjs/common';
+import { CatsModule } from './cats.module';
+
+@Module({
+  imports: [CatsModule],
+})
+export class DogsModule {}
+```
+
+When you run the application, you'll see the following error:
+
+```bash
+Nest can't resolve dependencies of the DogsService (?). Please make sure that the argument dependency at index [0] is available in the DogsModule context.
+
+Potential solutions:
+- If dependency is a provider, is it part of the current DogsModule?
+- If dependency is exported from a separate @Module, is that module imported within DogsModule?
+  @Module({
+    imports: [ /* the Module containing dependency */ ]
+  })
+```
+
+#### Circular Dependency Prevention
+
+Source: <https://docs.nestjs.com/fundamentals/circular-dependency#prevention>
+
+To prevent circular dependencies, you can use one of the following techniques:
+
+##### Technique 1: Use `forwardRef()`
+
+Source: <https://docs.nestjs.com/fundamentals/circular-dependency#technique-1-use-forwardref>
+
+The `forwardRef()` function returns a **temporary** `Module` object required to reference modules which are not yet defined. This is required when you want to create a circular dependency (see the example below).
+
+```typescript
+// cats.module.ts
+import { Module, forwardRef } from '@nestjs/common';
+import { DogsModule } from './dogs.module';
+
+@Module({
+  imports: [forwardRef(() => DogsModule)],
+})
+export class CatsModule {}
+```
+
+```typescript
+// dogs.module.ts
+import { Module, forwardRef } from '@nestjs/common';
+import { CatsModule } from './cats.module';
+
+@Module({
+  imports: [forwardRef(() => CatsModule)],
+})
+export class DogsModule {}
+```
+
+> **Hint** The `forwardRef()` function is imported from the `@nestjs/common` package.
+
+##### Technique 2: Use `@Inject()` with string token
+
+Source: <https://docs.nestjs.com/fundamentals/circular-dependency#technique-2-use-inject-with-string-token>
+
+You can use the `@Inject()` decorator with a string token to reference a provider that is not yet defined. This is required when you want to create a circular dependency (see the example below).
+
+```typescript
+// cats.module.ts
+import { Module } from '@nestjs/common';
+import { DogsModule } from './dogs.module';
+
+@Module({
+  imports: [DogsModule],
+})
+export class CatsModule {}
+```
+
+```typescript
+// dogs.module.ts
+import { Module, Inject } from '@nestjs/common';
+import { CatsModule } from './cats.module';
+
+@Module({
+  imports: [CatsModule],
+})
+export class DogsModule {
+  constructor(
+    @Inject('CatsService')
+    private readonly catsService: CatsService,
+  ) {}
+}
+```
+
+> **Hint** The `@Inject()` decorator is imported from the `@nestjs/common` package.
+
+##### Technique 3: Use `@Inject()` with `forwardRef()`
+
+Source: <https://docs.nestjs.com/fundamentals/circular-dependency#technique-3-use-inject-with-forwardref>
+
+You can use the `@Inject()` decorator with the `forwardRef()` function to reference a provider that is not yet defined. This is required when you want to create a circular dependency (see the example below).
+
+```typescript
+// cats.module.ts
+import { Module, forwardRef } from '@nestjs/common';
+import { DogsModule } from './dogs.module';
+
+@Module({
+  imports: [forwardRef(() => DogsModule)],
+})
+export class CatsModule {}
+```
+
+```typescript
+// dogs.module.ts
+import { Module, forwardRef, Inject } from '@nestjs/common';
+import { CatsModule } from './cats.module';
+
+@Module({
+  imports: [forwardRef(() => CatsModule)],
+})
+export class DogsModule {
+  constructor(
+    @Inject(forwardRef(() => CatsService))
+    private readonly catsService: CatsService,
+  ) {}
+}
+```
+
+> **Hint** The `@Inject()` decorator and the `forwardRef()` function are imported from the `@nestjs/common` package.
+
+##### Technique 4: Use `@Inject()` with `Type` token
+
+Source: <https://docs.nestjs.com/fundamentals/circular-dependency#technique-4-use-inject-with-type-token>
+
+You can use the `@Inject()` decorator with a `Type` token to reference a provider that is not yet defined. This is required when you want to create a circular dependency (see the example below).
+
+```typescript
+// cats.module.ts
+import { Module } from '@nestjs/common';
+
+@Module({
+  imports: [DogsModule],
+})
+export class CatsModule {}
+```
+
+```typescript
+// dogs.module.ts
+
+import { Module, Inject } from '@nestjs/common';
+import { CatsModule } from './cats.module';
+
+@Module({
+  imports: [CatsModule],
+})
+export class DogsModule {
+  constructor(
+    @Inject(CatsService)
+    private readonly catsService: CatsService,
+  ) {}
+}
+```
+
+> **Hint** The `@Inject()` decorator is imported from the `@nestjs/common` package.
+
+##### Technique 5: Use `@Inject()` with `Type` token and `forwardRef()`
+
+Source: <https://docs.nestjs.com/fundamentals/circular-dependency#technique-5-use-inject-with-type-token-and-forwardref>
+
+You can use the `@Inject()` decorator with a `Type` token and the `forwardRef()` function to reference a provider that is not yet defined. This is required when you want to create a circular dependency (see the example below).
+
+```typescript
+// cats.module.ts
+import { Module, forwardRef } from '@nestjs/common';
+import { DogsModule } from './dogs.module';
+
+@Module({
+  imports: [forwardRef(() => DogsModule)],
+})
+export class CatsModule {}
+```
+
+```typescript
+// dogs.module.ts
+import { Module, forwardRef, Inject } from '@nestjs/common';
+import { CatsModule } from './cats.module';
+
+@Module({
+  imports: [forwardRef(() => CatsModule)],
+})
+export class DogsModule {
+  constructor(
+    @Inject(forwardRef(() => CatsService))
+    private readonly catsService: CatsService,
+  ) {}
+}
+```
+
+> **Hint** The `@Inject()` decorator and the `forwardRef()` function are imported from the `@nestjs/common` package.
+
+##### Technique 6: Use `@Inject()` with `Type` token and `forwardRef()` (with `useClass`)
+
+Source: <https://docs.nestjs.com/fundamentals/circular-dependency#technique-6-use-inject-with-type-token-and-forwardref-with-useclass>
+
+You can use the `@Inject()` decorator with a `Type` token and the `forwardRef()` function to reference a provider that is not yet defined. This is required when you want to create a circular dependency (see the example below).
+
+```typescript
+// cats.module.ts
+import { Module, forwardRef } from '@nestjs/common';
+import { DogsModule } from './dogs.module';
+
+@Module({
+  imports: [forwardRef(() => DogsModule)],
+})
+export class CatsModule {}
+```
+
+```typescript
+// dogs.module.ts
+import { Module, forwardRef, Inject } from '@nestjs/common';
+import { CatsModule } from './cats.module';
+
+@Module({
+  imports: [forwardRef(() => CatsModule)],
+})
+export class DogsModule {
+  constructor(
+    @Inject(forwardRef(() => CatsService))
+    private readonly catsService: CatsService,
+  ) {}
+}
+```
+
+> **Hint** The `@Inject()` decorator and the `forwardRef()` function are imported from the `@nestjs/common` package.
+
+##### Technique 7: Use `@Inject()` with `Type` token and `forwardRef()` (with `useFactory`)
+
+Source: <https://docs.nestjs.com/fundamentals/circular-dependency#technique-7-use-inject-with-type-token-and-forwardref-with-usefactory>
+
+You can use the `@Inject()` decorator with a `Type` token and the `forwardRef()` function to reference a provider that is not yet defined. This is required when you want to create a circular dependency (see the example below).
+
+```typescript
+// cats.module.ts
+import { Module, forwardRef } from '@nestjs/common';
+import { DogsModule } from './dogs.module';
+
+@Module({
+  imports: [forwardRef(() => DogsModule)],
+})
+export class CatsModule {}
+```
+
+```typescript
+// dogs.module.ts
+import { Module, forwardRef, Inject } from '@nestjs/common';
+import { CatsModule } from './cats.module';
+
+@Module({
+  imports: [forwardRef(() => CatsModule)],
+})
+export class DogsModule {
+  constructor(
+    @Inject(forwardRef(() => CatsService))
+    private readonly catsService: CatsService,
+  ) {}
+}
+```
+
+> **Hint** The `@Inject()` decorator and the `forwardRef()` function are imported from the `@nestjs/common` package.
+
+##### Technique 8: Use `@Inject()` with `Type` token and `forwardRef()` (with `useExisting`)
+
+Source: <https://docs.nestjs.com/fundamentals/circular-dependency#technique-8-use-inject-with-type-token-and-forwardref-with-useexisting>
+
+You can use the `@Inject()` decorator with a `Type` token and the `forwardRef()` function to reference a provider that is not yet defined. This is required when you want to create a circular dependency (see the example below).
+
+```typescript
+// cats.module.ts
+import { Module, forwardRef } from '@nestjs/common';
+import { DogsModule } from './dogs.module';
+
+@Module({
+  imports: [forwardRef(() => DogsModule)],
+})
+export class CatsModule {}
+```
+
+```typescript
+// dogs.module.ts
+
+import { Module, forwardRef, Inject } from '@nestjs/common';
+import { CatsModule } from './cats.module';
+
+@Module({
+  imports: [forwardRef(() => CatsModule)],
+})
+export class DogsModule {
+  constructor(
+    @Inject(forwardRef(() => CatsService))
+    private readonly catsService: CatsService,
+  ) {}
+}
+```
+
+> **Hint** The `@Inject()` decorator and the `forwardRef()` function are imported from the `@nestjs/common` package.
+
+##### Technique 9: Use `@Inject()` with `Type` token and `forwardRef()` (with `useValue`)
+
+Source: <https://docs.nestjs.com/fundamentals/circular-dependency#technique-9-use-inject-with-type-token-and-forwardref-with-usevalue>
+
+You can use the `@Inject()` decorator with a `Type` token and the `forwardRef()` function to reference a provider that is not yet defined. This is required when you want to create a circular dependency (see the example below).
+
+```typescript
+// cats.module.ts
+import { Module, forwardRef } from '@nestjs/common';
+import { DogsModule } from './dogs.module';
+
+@Module({
+  imports: [forwardRef(() => DogsModule)],
+})
+export class CatsModule {}
+```
+
+```typescript
+// dogs.module.ts
+import { Module, forwardRef, Inject } from '@nestjs/common';
+import { CatsModule } from './cats.module';
+
+@Module({
+  imports: [forwardRef(() => CatsModule)],
+})
+export class DogsModule {
+  constructor(
+    @Inject(forwardRef(() => CatsService))
+    private readonly catsService: CatsService,
+  ) {}
+}
+```
+
+> **Hint** The `@Inject()` decorator and the `forwardRef()` function are imported from the `@nestjs/common` package.
+
+### Module Reference
+
+Source: <https://docs.nestjs.com/fundamentals/module-ref>
+
+Nest provides the `ModuleRef` class to navigate the internal list of providers and obtain a reference to any provider using its injection token as a lookup key. The `ModuleRef` class also provides a way to dynamically instantiate both static and scoped providers. `ModuleRef` can be injected into a class in the normal way:
+
+```typescript
+import { Injectable } from '@nestjs/common';
+import { ModuleRef } from '@nestjs/core';
+
+@Injectable()
+export class CatsService {
+  constructor(private moduleRef: ModuleRef) {}
+}
+```
+
+> **Hint** The `ModuleRef` class is imported from the `@nestjs/core` package.
+
+#### Resolving Providers
+
+Source: <https://docs.nestjs.com/fundamentals/module-ref#resolving-providers>
+
+To resolve a provider, use the `resolve()` method. The `resolve()` method takes a single argument, the provider's injection token, and returns the provider instance.
+
+```typescript
+import { Injectable } from '@nestjs/common';
+import { ModuleRef } from '@nestjs/core';
+
+@Injectable()
+export class CatsService {
+  constructor(private moduleRef: ModuleRef) {}
+
+  getCatsService(): CatsService {
+    return this.moduleRef.resolve(CatsService);
+  }
+}
+```
+
+#### Resolving Scoped Providers
+
+Source: <https://docs.nestjs.com/fundamentals/module-ref#resolving-scoped-providers>
+
+To dynamically resolve a scoped provider (transient or request-scoped), use the resolve() method, passing the provider's injection token as an argument.
+
+```typescript
+@Injectable()
+export class CatsService implements OnModuleInit {
+  private transientService: TransientService;
+  constructor(private moduleRef: ModuleRef) {}
+
+  async onModuleInit() {
+    this.transientService = await this.moduleRef.resolve(
+      TransientService,
+    );
+  }
+}
+```
+
+The `resolve()` method returns a unique instance of the provider, from its own **DI container sub-tree**. Each sub-tree has a unique **context identifier**. Thus, if you call this method more than once and compare instance references, you will see that they are not equal.
+
+```ts
+@Injectable()
+export class CatsService implements OnModuleInit {
+  constructor(private moduleRef: ModuleRef) {}
+
+  async onModuleInit() {
+    const transientServices = await Promise.all([
+      this.moduleRef.resolve(TransientService),
+      this.moduleRef.resolve(TransientService),
+    ]);
+    console.log(transientServices[0] === transientServices[1]); // false
+  }
+}
+```
+
+To generate a single instance across multiple `resolve()` calls, and ensure they share the same generated DI container sub-tree, you can pass a context identifier to the `resolve()` method. Use the `ContextIdFactory` class to generate a context identifier. This class provides a `create()` method that returns an appropriate unique identifier.
+
+```ts
+@Injectable()
+export class CatsService implements OnModuleInit {
+  constructor(private moduleRef: ModuleRef) {}
+
+  async onModuleInit() {
+    const contextId = ContextIdFactory.create();
+    const transientServices = await Promise.all([
+      this.moduleRef.resolve(TransientService, contextId),
+      this.moduleRef.resolve(TransientService, contextId),
+    ]);
+    console.log(transientServices[0] === transientServices[1]); // true
+  }
+}
+```
+
+> **Hint** The `ContextIdFactory` class is imported from the `@nestjs/core` package.
+
+#### Resolving Scoped Providers with Payload
+
+Source: <https://docs.nestjs.com/fundamentals/module-ref#resolving-scoped-providers-with-payload>
+
+To resolve a scoped provider with payload, use the `resolve()` method. The `resolve()` method takes a single argument, the provider's injection token, and returns the provider instance.
+
+```typescript
+import { Injectable, Scope } from '@nestjs/common';
+import { ModuleRef } from '@nestjs/core';
+
+@Injectable({ scope: Scope.REQUEST })
+export class CatsService {
+  constructor(private moduleRef: ModuleRef) {}
+
+  getCatsService(): CatsService {
+    return this.moduleRef.resolve(CatsService);
+  }
+}
+```
+
+#### Resolving Scoped Providers with ContextId
+
+Source: <https://docs.nestjs.com/fundamentals/module-ref#resolving-scoped-providers-with-contextid>
+
+To resolve a scoped provider with contextId, use the `resolve()` method. The `resolve()` method takes a single argument, the provider's injection token, and returns the provider instance.
+
+```typescript
+import { Injectable, Scope } from '@nestjs/common';
+import { ModuleRef } from '@nestjs/core';
+
+@Injectable({ scope: Scope.REQUEST })
+export class CatsService {
+  constructor(private moduleRef: ModuleRef) {}
+
+  getCatsService(): CatsService {
+    return this.moduleRef.resolve(CatsService);
+  }
+}
+```
+
+#### Resolving Scoped Providers with ContextId and Payload
+
+Source: <https://docs.nestjs.com/fundamentals/module-ref#resolving-scoped-providers-with-contextid-and-payload>
+
+To resolve a scoped provider with contextId and payload, use the `resolve()` method. The `resolve()` method takes a single argument, the provider's injection token, and returns the provider instance.
+
+```typescript
+import { Injectable, Scope } from '@nestjs/common';
+import { ModuleRef } from '@nestjs/core';
+
+@Injectable({ scope: Scope.REQUEST })
+export class CatsService {
+  constructor(private moduleRef: ModuleRef) {}
+
+  getCatsService(): CatsService {
+    return this.moduleRef.resolve(CatsService);
+  }
+}
+```
+
+#### Resolving Scoped Providers with ContextId and Payload
+
+Source: <https://docs.nestjs.com/fundamentals/module-ref#resolving-scoped-providers-with-contextid-and-payload>
+
+To resolve a scoped provider with contextId and payload, use the `resolve()` method. The `resolve()` method takes a single argument, the provider's injection token, and returns the provider instance.
+
+```typescript
+import { Injectable, Scope } from '@nestjs/common';
+import { ModuleRef } from '@nestjs/core';
+
+@Injectable({ scope: Scope.REQUEST })
+export class CatsService {
+  constructor(private moduleRef: ModuleRef) {}
+
+  getCatsService(): CatsService {
+    return this.moduleRef.resolve(CatsService);
+  }
+}
+```
+
+#### Retrieving Instances
+
+Source: <https://docs.nestjs.com/fundamentals/module-ref#retrieving-instances>
+
+To retrieve an instance of a provider, use the `get()` method. The `get()` method takes a single argument, the provider's injection token, and returns the provider instance.
+
+```typescript
+import { Injectable } from '@nestjs/common';
+import { ModuleRef } from '@nestjs/core';
+
+@Injectable()
+export class CatsService {
+  constructor(private moduleRef: ModuleRef) {}
+
+  getCatsService(): CatsService {
+    return this.moduleRef.get(CatsService);
+  }
+}
+```
+
+> **Warning** You can't retrieve scoped providers (transient or request-scoped) with the `get()` method. Instead, use the technique described [below](https://docs.nestjs.com/fundamentals/module-ref#resolving-scoped-providers). Learn how to control scopes [here](https://docs.nestjs.com/fundamentals/injection-scopes).
+
+To retrieve a provider from the global context (for example, if the provider has been injected in a different module), pass the `{ strict: false }` option as a second argument to `get()`.
+
+```ts
+const catsService = this.moduleRef.get(CatsService, {
+  strict: false,
+});
+```
+
+#### Getting Instance by Name
+
+Source: <https://docs.nestjs.com/fundamentals/module-ref#getting-instance-by-name>
+
+To retrieve an instance of a provider by name, use the `get()` method. The `get()` method takes a single argument, the provider's name, and returns the provider instance.
+
+```typescript
+import { Injectable } from '@nestjs/common';
+import { ModuleRef } from '@nestjs/core';
+
+@Injectable()
+export class CatsService {
+  constructor(private moduleRef: ModuleRef) {}
+
+  getCatsService(): CatsService {
+    return this.moduleRef.get('CatsService');
+  }
+}
+```
+
+#### Registering REQUEST Provider
+
+Source: <https://docs.nestjs.com/fundamentals/module-ref#registering-request-provider>
+
+To register a request provider, use the `registerRequestByContextId()` method. The `registerRequestByContextId()` method takes a single argument, the request object, and returns the context identifier.
+
+```typescript
+import { Injectable } from '@nestjs/common';
+import { ModuleRef } from '@nestjs/core';
+
+@Injectable()
+export class CatsService {
+  constructor(private moduleRef: ModuleRef) {}
+
+  getCatsService(): CatsService {
+    const contextId = this.moduleRef.registerRequestByContextId(
+      /* YOUR_REQUEST_OBJECT */,
+    );
+    return this.moduleRef.get('CatsService', contextId);
+  }
+}
+```
+
+or
+
+```typescript
+const contextId = ContextIdFactory.create();
+this.moduleRef.registerRequestByContextId(/* YOUR_REQUEST_OBJECT */, contextId);
+```
+
+#### Getting Current Sub-tree
+
+Occasionally, you may want to resolve an instance of a request-scoped provider within a **request context**. Let's say that `CatsService` is request-scoped and you want to resolve the `CatsRepository` instance which is also marked as a request-scoped provider. In order to share the same DI container sub-tree, you must obtain the current context identifier instead of generating a new one (e.g., with the `ContextIdFactory.create()` function, as shown above). To obtain the current context identifier, start by injecting the request object using `@Inject()` decorator.
+
+```typescript
+import { Injectable } from '@nestjs/common';
+
+@Injectable()
+export class CatsService {
+  constructor(
+    @Inject(REQUEST) private request: Record<string, unknown>,
+  ) {}
+}
+```
+
+> **Hint** Learn more about the request provider [here](https://docs.nestjs.com/fundamentals/injection-scopes#request-provider).
+
+Now, use the `getByRequest()` method of the `ContextIdFactory` class to create a context id based on the request object, and pass this to the `resolve()` call:
+
+```typescript
+import { Injectable } from '@nestjs/common';
+import { ContextIdFactory } from '@nestjs/core';
+
+@Injectable()
+export class CatsService {
+  constructor(
+    @Inject(REQUEST) private request: Record<string, unknown>,
+    private moduleRef: ModuleRef,
+  ) {}
+
+  getCatsService(): CatsService {
+    const contextId = ContextIdFactory.getByRequest(this.request);
+    const catsRepository = await this.moduleRef.resolve(
+      CatsRepository,
+      contextId,
+    );
+    return catsRepository; // Re-check it!
+  }
+}
+```
+
+#### Instantiating custom classes dynamically
+
+Source: <https://docs.nestjs.com/fundamentals/module-ref#instantiating-custom-classes-dynamically>
+
+To dynamically instantiate a class that **wasn't previously registered** as a **provider**, use the module reference's `create()` method.
+
+```ts
+@Injectable()
+export class CatsService implements OnModuleInit {
+  private catsFactory: CatsFactory;
+  constructor(private moduleRef: ModuleRef) {}
+
+  async onModuleInit() {
+    this.catsFactory = await this.moduleRef.create(CatsFactory);
+  }
+}
+```
+
+This technique enables you to conditionally instantiate different classes outside of the framework container.
+
+### Lazy Loading Modules
+
+Source: <https://docs.nestjs.com/fundamentals/lazy-loading-modules>
+
+By default, modules are eagerly loaded, which means that as soon as the application loads, so do all the modules, whether or not they are immediately necessary. While this is fine for most applications, it may become a bottleneck for apps/workers running in the **serverless environment**, where the startup latency ("cold start") is crucial.
+
+Lazy loading can help decrease bootstrap time by loading only modules required by the specific serverless function invocation. In addition, you could also load other modules asynchronously once the serverless function is "warm" to speed-up the bootstrap time for subsequent calls even further (deferred modules registration).
+
+> **Hint** If you're familiar with the **Angular** framework, you might have seen the "lazy-loading modules" term before. Be aware that this technique is **functionally different** in Nest and so think about this as an entirely different feature that shares similar naming conventions.
+
+> **Warning** Do note that [lifecycle hooks methods](https://docs.nestjs.com/fundamentals/lifecycle-events) are not invoked in lazy loaded modules and services.
+
+To load modules on-demand, Nest provides the `LazyModuleLoader` class that can be injected into a class in the normal way:
+
+```ts
+import { Injectable } from '@nestjs/common';
+import { LazyModuleLoader } from '@nestjs/core';
+
+@Injectable()
+export class CatsService {
+  constructor(private lazyModuleLoader: LazyModuleLoader) {}
+}
+```
+
+> **Hint** The `LazyModuleLoader` class is imported from the `@nestjs/core` package.
+
+Alternatively, you can obtain a reference to the `LazyModuleLoader` provider from within your application bootstrap file (`main.ts`), as follows:
+
+```ts
+import { NestFactory } from '@nestjs/core';
+import { AppModule } from './app.module';
+
+async function bootstrap() {
+  const app = await NestFactory.create(AppModule);
+  const lazyModuleLoader = app.get(LazyModuleLoader);
+  await app.listen(3000);
+}
+bootstrap();
+```
+
+With this in place, you can now load any module using the following construction:
+
+```ts
+const moduleRef = await this.lazyModuleLoader.load(() =>
+  import('./cats.module').then((m) => m.CatsModule),
+);
+```
+
+or
+
+```ts
+const { LazyModule } = await import('./lazy.module');
+const moduleRef = await this.lazyModuleLoader.load(
+  () => LazyModule,
+);
+```
+
+**Hint** "Lazy-loaded" modules are **cached** upon the first `LazyModuleLoader#load` method invocation. That means, each consecutive attempt to load `LazyModule` will be **very fast** and will return a cached instance, instead of loading the module again.
+
+```shell
+Load "LazyModule" attempt: 1
+time: 2.379ms
+Load "LazyModule" attempt: 2
+time: 0.294ms
+Load "LazyModule" attempt: 3
+time: 0.303ms
+```
+
+Where `lazy.module.ts` is a TypeScript file that exports a **regular Nest module** (no extra changes are required).
+
+The `LazyModuleLoader#load` method returns the [module reference](https://docs.nestjs.com/fundamentals/module-ref) (of `LazyModule`) that lets you navigate the internal list of providers and obtain a reference to any provider using its injection token as a lookup key.
+
+For example, let's say we have a `LazyModule` with the following definition:
+
+```ts
+import { Module } from '@nestjs/common';
+import { LazyService } from '...';
+
+@Module({
+  providers: [LazyService],
+  exports: [LazyService],
+})
+export class LazyModule {}
+```
+
+> **Hint** Lazy-loaded modules cannot be registered as **global modules** as it simply makes no sense (since they are registered lazily, on-demand when all the statically registered modules have been already instantiated). Likewise, registered **global enhancers** (guards/interceptors/etc.) **will not work** properly either.
+
+With this, we could obtain a reference to the `LazyService` provider, as follows:
+
+```ts
+const { LazyModule } = await import('./lazy.module');
+const moduleRef = await this.lazyModuleLoader.load(
+  () => LazyModule,
+);
+
+const { LazyService } = await import('./lazy.service');
+const lazyService = moduleRef.get(LazyService);
+```
+
+**Warning** If you use **Webpack**, make sure to update your `tsconfig.json` file - setting `compilerOptions.module` to `"esnext"` and adding `compilerOptions.moduleResolution` property with `"node"` as a value:
+
+```shell
+{
+  "compilerOptions": {
+    "module": "esnext",
+    "moduleResolution": "node",
+    ...
+  }
+}
+```
+
+With these options set up, you'll be able to leverage the [code splitting](https://webpack.js.org/guides/code-splitting/) feature.
+
+#### Lazy Loading controllers, gateways, and resolvers
+
+Since controllers (or resolvers in GraphQL applications) in Nest represent sets of routes/paths/topics (or queries/mutations), you **cannot lazy load them** using the `LazyModuleLoader` class.
+
+> **Warning** Controllers, [resolvers](https://docs.nestjs.com/graphql/resolvers), and [gateways](https://docs.nestjs.com/websockets/gateways) registered inside lazy-loaded modules will not behave as expected. Similarly, you cannot register middleware functions (by implementing the `MiddlewareConsumer` interface) on-demand.
+
+For example, let's say you're building a REST API (HTTP application) with a Fastify driver under the hood (using the `@nestjs/platform-fastify` package). Fastify does not let you register routes after the application is ready/successfully listening to messages. That means even if we analyzed route mappings registered in the module's controllers, all lazy-loaded routes wouldn't be accessible since there is no way to register them at runtime.
+
+Likewise, some transport strategies we provide as part of the `@nestjs/microservices` package (including Kafka, gRPC, or RabbitMQ) require to subscribe/listen to specific topics/channels before the connection is established. Once your application starts listening to messages, the framework would not be able to subscribe/listen to new topics.
+
+Lastly, the `@nestjs/graphql` package with the code first approach enabled automatically generates the GraphQL schema on-the-fly based on the metadata. That means, it requires all classes to be loaded beforehand. Otherwise, it would not be doable to create the appropriate, valid schema.
+
+##### Common Use Cases
+
+Most commonly, you will see lazy loaded modules in situations when your worker/cron job/lambda & serverless function/webhook must trigger different services (different logic) based on the input arguments (route path/date/query parameters, etc.). On the other hand, lazy-loading modules may not make too much sense for monolithic applications, where the startup time is rather irrelevant.
+
+### Execution Context
+
+Source: <https://docs.nestjs.com/fundamentals/execution-context>
+
+Nest provides several utility classes that help make it easy to write applications that function across multiple application contexts (e.g., Nest HTTP server-based, microservices and WebSockets application contexts). These utilities provide information about the current execution context which can be used to build generic [guards](https://docs.nestjs.com/guards), [filters](https://docs.nestjs.com/exception-filters), and [interceptors](https://docs.nestjs.com/interceptors) that can work across a broad set of controllers, methods, and execution contexts.
+
+We cover two such classes in this chapter: `ArgumentsHost` and `ExecutionContext`.
+
+#### ArgumentsHost Class
+
+Source: <https://docs.nestjs.com/fundamentals/execution-context#argumentshost-class>
+
+The `ArgumentsHost` class provides methods for retrieving the arguments being passed to a handler. It allows choosing the appropriate context (e.g., HTTP, RPC (microservice), or WebSockets) to retrieve the arguments from. The framework provides an instance of `ArgumentsHost`, typically referenced as a `host` parameter, in places where you may want to access it. For example, the `catch()` method of an [exception filter](https://docs.nestjs.com/exception-filters#arguments-host) is called with an `ArgumentsHost`instance.
+
+`ArgumentsHost` simply acts as an abstraction over a handler's arguments. For example, for HTTP server applications (when `@nestjs/platform-express` is being used), the `host` object encapsulates Express's `[request, response, next]` array, where `request` is the request object, `response` is the response object, and `next` is a function that controls the application's request-response cycle. On the other hand, for [GraphQL](https://docs.nestjs.com/graphql/quick-start) applications, the `host` object contains the `[root, args, context, info]` array.
+
+#### Current Application Context
+
+When building generic [guards](https://docs.nestjs.com/guards), [filters](https://docs.nestjs.com/exception-filters), and [interceptors](https://docs.nestjs.com/interceptors) which are meant to run across multiple application contexts, we need a way to determine the type of application that our method is currently running in. Do this with the `getType()` method of `ArgumentsHost`:
+
+```ts
+if (host.getType() === 'http') {
+  // do something that is only important in the context of regular HTTP requests (REST)
+} else if (host.getType() === 'rpc') {
+  // do something that is only important in the context of Microservice requests
+} else if (host.getType<GqlContextType>() === 'graphql') {
+  // do something that is only important in the context of GraphQL requests
+}
+```
+
+> **Hint** The `GqlContextType` is imported from the `@nestjs/graphql` package.
+
+#### Host handler arguments
+
+To retrieve the array of arguments being passed to the handler, one approach is to use the host object's `getArgs()` method.
+
+```typescript
+const [req, res, next] = host.getArgs();
+```
+
+You can pluck a particular argument by index using the `getArgByIndex()` method:
+
+```typescript
+const request = host.getArgByIndex(0);
+const response = host.getArgByIndex(1);
+```
+
+In these examples we retrieved the request and response objects by index, which is not typically recommended as it couples the application to a particular execution context. Instead, you can make your code more robust and reusable by using one of the `host` object's utility methods to switch to the appropriate application context for your application. The context switch utility methods are shown below.
+
+```typescript
+
+/**
+ * Switch context to RPC.
+ */
+switchToRpc(): RpcArgumentsHost;
+/**
+ * Switch context to HTTP.
+ */
+switchToHttp(): HttpArgumentsHost;
+/**
+ * Switch context to WebSockets.
+ */
+switchToWs(): WsArgumentsHost;
+```
+
+Let's rewrite the previous example using the `switchToHttp()` method. The `host.switchToHttp()` helper call returns an `HttpArgumentsHost` object that is appropriate for the HTTP application context. The `HttpArgumentsHost` object has two useful methods we can use to extract the desired objects. We also use the Express type assertions in this case to return native Express typed objects:
+
+```typescript
+const ctx = host.switchToHttp();
+const request = ctx.getRequest<Request>();
+const response = ctx.getResponse<Response>();
+```
+
+Similarly `WsArgumentsHost` and `RpcArgumentsHost` have methods to return appropriate objects in the microservices and WebSockets contexts. Here are the methods for `WsArgumentsHost`:
+
+```typescript
+export interface WsArgumentsHost {
+  /**
+   * Returns the data object.
+   */
+  getData<T>(): T;
+  /**
+   * Returns the client object.
+   */
+  getClient<T>(): T;
+}
+```
+
+Following are the methods for `RpcArgumentsHost`:
+
+```typescript
+export interface RpcArgumentsHost {
+  /**
+   * Returns the data object.
+   */
+  getData<T>(): T;
+
+  /**
+   * Returns the context object.
+   */
+  getContext<T>(): T;
+}
+```
+
+#### ExecutionContext class
+
+`ExecutionContext` extends `ArgumentsHost`, providing additional details about the current execution process. Like `ArgumentsHost`, Nest provides an instance of `ExecutionContext` in places you may need it, such as in the `canActivate()` method of a [guard](https://docs.nestjs.com/guards#execution-context) and the `intercept()` method of an [interceptor](https://docs.nestjs.com/interceptors#execution-context). It provides the following methods:
+
+```typescript
+export interface ExecutionContext extends ArgumentsHost {
+  /**
+   * Returns the type of the controller class which the current handler belongs to.
+   */
+  getClass<T>(): Type<T>;
+  /**
+   * Returns a reference to the handler (method) that will be invoked next in the
+   * request pipeline.
+   */
+  getHandler(): Function;
+}
+```
+
+The `getHandler()` method returns a reference to the handler about to be invoked. The `getClass()` method returns the type of the `Controller` class which this particular handler belongs to. For example, in an HTTP context, if the currently processed request is a `POST` request, bound to the `create()` method on the `CatsController`, `getHandler()` returns a reference to the `create()` method and `getClass()` returns the `CatsController`**type** (not instance).
+
+```typescript
+const methodKey = ctx.getHandler().name; // "create"
+const className = ctx.getClass().name; // "CatsController"
+```
+
+The ability to access references to both the current class and handler method provides great flexibility. Most importantly, it gives us the opportunity to access the metadata set through either decorators created via `Reflector#createDecorator` or the built-in `@SetMetadata()` decorator from within guards or interceptors. We cover this use case below.
