@@ -165,6 +165,13 @@
     - [Current Application Context](#current-application-context)
     - [Host handler arguments](#host-handler-arguments)
     - [ExecutionContext class](#executioncontext-class)
+  - [Lifecycle Events](#lifecycle-events)
+    - [Lifecycle sequence](#lifecycle-sequence)
+    - [Lifecycle events](#lifecycle-events-1)
+    - [Usage](#usage-1)
+    - [Asynchronous initialization](#asynchronous-initialization)
+    - [Application shutdown](#application-shutdown)
+  - [Platform agnosticism](#platform-agnosticism)
 
 <!-- /code_chunk_output -->
 
@@ -4456,3 +4463,149 @@ const className = ctx.getClass().name; // "CatsController"
 ```
 
 The ability to access references to both the current class and handler method provides great flexibility. Most importantly, it gives us the opportunity to access the metadata set through either decorators created via `Reflector#createDecorator` or the built-in `@SetMetadata()` decorator from within guards or interceptors. We cover this use case below.
+
+### Lifecycle Events
+
+A Nest application, as well as every application element, has a lifecycle managed by Nest. Nest provides **lifecycle hooks** that give visibility into key lifecycle events, and the ability to act (run registered code on your modules, providers or controllers) when they occur.
+
+#### Lifecycle sequence
+
+Source: <https://docs.nestjs.com/fundamentals/lifecycle-events#lifecycle-sequence>
+
+The following diagram depicts the sequence of key application lifecycle events, from the time the application is bootstrapped until the node process exits. We can divide the overall lifecycle into three phases: **initializing**, **running** and **terminating**. Using this lifecycle, you can plan for appropriate initialization of modules and services, manage active connections, and gracefully shutdown your application when it receives a termination signal.
+
+![Official Documentation](https://docs.nestjs.com/assets/lifecycle-events.png)
+
+#### Lifecycle events
+
+Source: <https://docs.nestjs.com/fundamentals/lifecycle-events#lifecycle-events-1>
+
+Lifecycle events happen during application bootstrapping and shutdown. Nest calls registered lifecycle hook methods on modules, providers and controllers at each of the following lifecycle events (**shutdown hooks** need to be enabled first, as described [below](https://docs.nestjs.com/fundamentals/lifecycle-events#application-shutdown)). As shown in the diagram above, Nest also calls the appropriate underlying methods to begin listening for connections, and to stop listening for connections.
+
+In the following table, `onModuleDestroy`, `beforeApplicationShutdown` and `onApplicationShutdown` are only triggered if you explicitly call `app.close()` or if the process receives a special system signal (such as SIGTERM) and you have correctly called `enableShutdownHooks` at application bootstrap (see below **Application shutdown** part).
+
+| Lifecycle hook method                                                                                          | Lifecycle event triggering the hook method call                                               |
+| -------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------- |
+| `onModuleInit()`                                                                                               | Called once the host module's dependencies have been resolved.                                |
+| `onApplicationBootstrap()`                                                                                     | Called once all modules have been initialized, but before listening for connections.          |
+| `onModuleDestroy()`\*                                                                                          | Called after a termination signal (e.g., `SIGTERM`) has been received.                        |
+| `beforeApplicationShutdown()`\*                                                                                | Called after all `onModuleDestroy()` handlers have completed (Promises resolved or rejected); |
+| once complete (Promises resolved or rejected), all existing connections will be closed (`app.close()` called). |
+| `onApplicationShutdown()`\*                                                                                    | Called after connections close (`app.close()` resolves).                                      |
+
+\* For these events, if you're not calling `app.close()` explicitly, you must opt-in to make them work with system signals such as `SIGTERM`. See [Application shutdown](https://docs.nestjs.com/fundamentals/lifecycle-events#application-shutdown) below.
+
+> **Warning** The lifecycle hooks listed above are not triggered for **request-scoped** classes. Request-scoped classes are not tied to the application lifecycle and their lifespan is unpredictable. They are exclusively created for each request and automatically garbage-collected after the response is sent.
+
+> **Hint** Execution order of `onModuleInit()` and `onApplicationBootstrap()` directly depends on the order of module imports, awaiting the previous hook.
+
+#### Usage
+
+Source: <https://docs.nestjs.com/fundamentals/lifecycle-events#usage>
+
+Each lifecycle hook is represented by an interface. Interfaces are technically optional because they do not exist after TypeScript compilation. Nonetheless, it's good practice to use them in order to benefit from strong typing and editor tooling. To register a lifecycle hook, implement the appropriate interface. For example, to register a method to be called during module initialization on a particular class (e.g., Controller, Provider or Module), implement the `OnModuleInit` interface by supplying an `onModuleInit()` method, as shown below:
+
+```typescript
+import { Injectable, OnModuleInit } from '@nestjs/common';
+
+@Injectable()
+export class UsersService implements OnModuleInit {
+  onModuleInit() {
+    console.log(`The module has been initialized.`);
+  }
+}
+```
+
+```typescript
+import { Injectable } from '@nestjs/common';
+
+@Injectable()
+export class UsersService {
+  onModuleInit() {
+    console.log(`The module has been initialized.`);
+  }
+}
+```
+
+#### Asynchronous initialization
+
+Source: <https://docs.nestjs.com/fundamentals/lifecycle-events#asynchronous-initialization>
+
+Both the `OnModuleInit` and `OnApplicationBootstrap` hooks allow you to defer the application initialization process (return a `Promise` or mark the method as `async` and `await` an asynchronous method completion in the method body).
+
+```typescript
+
+async onModuleInit(): Promise<void> {
+  await this.fetch();
+}
+```
+
+```typescript
+
+async onModuleInit() {
+  await this.fetch();
+}
+```
+
+#### Application shutdown
+
+Source: <https://docs.nestjs.com/fundamentals/lifecycle-events#application-shutdown>
+
+The `onModuleDestroy()`, `beforeApplicationShutdown()` and `onApplicationShutdown()` hooks are called in the terminating phase (in response to an explicit call to `app.close()` or upon receipt of system signals such as SIGTERM if opted-in). This feature is often used with [Kubernetes](https://kubernetes.io/) to manage containers' lifecycles, by [Heroku](https://www.heroku.com/) for dynos or similar services.
+
+Shutdown hook listeners consume system resources, so they are disabled by default. To use shutdown hooks, you **must enable listeners** by calling `enableShutdownHooks()`:
+
+```typescript
+import { NestFactory } from '@nestjs/core';
+import { AppModule } from './app.module';
+
+async function bootstrap() {
+  const app = await NestFactory.create(AppModule);
+
+  // Starts listening for shutdown hooks
+  app.enableShutdownHooks();
+
+  await app.listen(3000);
+}
+bootstrap();
+```
+
+> **warning** Due to inherent platform limitations, NestJS has limited support for application shutdown hooks on Windows. You can expect `SIGINT` to work, as well as `SIGBREAK` and to some extent `SIGHUP` - [read more](https://nodejs.org/api/process.html#process_signal_events). However `SIGTERM` will never work on Windows because killing a process in the task manager is unconditional, "i.e., there's no way for an application to detect or prevent it". Here's some [relevant documentation](https://docs.libuv.org/en/v1.x/signal.html) from libuv to learn more about how `SIGINT`, `SIGBREAK` and others are handled on Windows. Also, see Node.js documentation of [Process Signal Events](https://nodejs.org/api/process.html#process_signal_events)
+
+> **Info**`enableShutdownHooks` consumes memory by starting listeners. In cases where you are running multiple Nest apps in a single Node process (e.g., when running parallel tests with Jest), Node may complain about excessive listener processes. For this reason, `enableShutdownHooks` is not enabled by default. Be aware of this condition when you are running multiple instances in a single Node process.
+
+When the application receives a termination signal it will call any registered `onModuleDestroy()`, `beforeApplicationShutdown()`, then `onApplicationShutdown()` methods (in the sequence described above) with the corresponding signal as the first parameter. If a registered function awaits an asynchronous call (returns a promise), Nest will not continue in the sequence until the promise is resolved or rejected.
+
+```typescript
+@Injectable()
+class UsersService implements OnApplicationShutdown {
+  onApplicationShutdown(signal: string) {
+    console.log(signal); // e.g. "SIGINT"
+  }
+}
+```
+
+```typescript
+@Injectable()
+class UsersService implements OnApplicationShutdown {
+  onApplicationShutdown(signal) {
+    console.log(signal); // e.g. "SIGINT"
+  }
+}
+```
+
+> **Info** Calling `app.close()` doesn't terminate the Node process but only triggers the `onModuleDestroy()` and `onApplicationShutdown()` hooks, so if there are some intervals, long-running background tasks, etc. the process won't be automatically terminated.
+
+### Platform agnosticism
+
+Source: <https://docs.nestjs.com/fundamentals/platform-agnosticism>
+
+Nest is a platform-agnostic framework. This means you can develop **reusable logical parts** that can be used across different types of applications. For example, most components can be re-used without change across different underlying HTTP server frameworks (e.g., Express and Fastify), and even across different _types_ of applications (e.g., HTTP server frameworks, Microservices with different transport layers, and Web Sockets).
+
+The **Overview** section of the documentation primarily shows coding techniques using HTTP server frameworks (e.g., apps providing a REST API or providing an MVC-style server-side rendered app). However, all those building blocks can be used on top of different transport layers ([microservices](https://docs.nestjs.com/microservices/basics) or [websockets](https://docs.nestjs.com/websockets/gateways)).
+
+Furthermore, Nest comes with a dedicated [GraphQL](https://docs.nestjs.com/graphql/quick-start) module. You can use GraphQL as your API layer interchangeably with providing a REST API.
+
+In addition, the [application context](https://docs.nestjs.com/application-context) feature helps to create any kind of Node.js application - including things like CRON jobs and CLI apps - on top of Nest.
+
+Nest aspires to be a full-fledged platform for Node.js apps that brings a higher-level of modularity and reusability to your applications.
