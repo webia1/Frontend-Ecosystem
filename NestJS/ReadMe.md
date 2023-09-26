@@ -1,5 +1,7 @@
 # NestJS in a NxMonoRepo
 
+All Samples: <https://github.com/nestjs/nest/tree/master/sample/>
+
 <!-- @import "[TOC]" {cmd="toc" depthFrom=2 depthTo=6 orderedList=false} -->
 
 <!-- code_chunk_output -->
