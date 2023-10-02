@@ -1,28 +1,25 @@
-# Formly Cookbook
+# Field Appearance Changes (Common)
 
 <!-- @import "[TOC]" {cmd="toc" depthFrom=2 depthTo=6 orderedList=false} -->
 
 <!-- code_chunk_output -->
 
-- [Change Appearance of Formly Fields](#change-appearance-of-formly-fields)
-  - [Change the appearance of a field](#change-the-appearance-of-a-field)
-  - [Change the appearance of a field group](#change-the-appearance-of-a-field-group)
-  - [Change the appearance of a field array](#change-the-appearance-of-a-field-array)
-  - [Change the appearance of a field template](#change-the-appearance-of-a-field-template)
-  - [Change the appearance of a field expression](#change-the-appearance-of-a-field-expression)
-  - [Change the appearance of a field validation](#change-the-appearance-of-a-field-validation)
-  - [Change the appearance of a field wrapper](#change-the-appearance-of-a-field-wrapper)
-  - [Change the appearance of a field templateOptions](#change-the-appearance-of-a-field-templateoptions)
-  - [Change the appearance of a field type](#change-the-appearance-of-a-field-type)
-  - [Change appearance of a field type globally](#change-appearance-of-a-field-type-globally)
-  - [Change appereance globally at once](#change-appereance-globally-at-once)
-  - [Change default appearance globally at once](#change-default-appearance-globally-at-once)
+- [Field](#field)
+- [Field Group](#field-group)
+- [Field Array](#field-array)
+- [Change the appearance of a field template](#change-the-appearance-of-a-field-template)
+- [Field Expression](#field-expression)
+- [Field Validation](#field-validation)
+- [Field Wrapper](#field-wrapper)
+- [Field Props (templateOptions)](#field-props-templateoptions)
+- [Field Type](#field-type)
+- [Field Type (globally)](#field-type-globally)
+- [Field Type (globally, at once)](#field-type-globally-at-once)
+- [Default Appearance (globally, at once)](#default-appearance-globally-at-once)
 
 <!-- /code_chunk_output -->
 
-## Change Appearance of Formly Fields
-
-### Change the appearance of a field
+## Field
 
 ```typescript
 import { Component } from '@angular/core';
@@ -41,7 +38,7 @@ import { FieldType } from '@ngx-formly/core';
 export class FormlyFieldInput extends FieldType {}
 ```
 
-### Change the appearance of a field group
+## Field Group
 
 ```typescript
 import { Component } from '@angular/core';
@@ -61,7 +58,7 @@ import { FieldWrapper } from '@ngx-formly/core';
 export class FormlyWrapperPanel extends FieldWrapper {}
 ```
 
-### Change the appearance of a field array
+## Field Array
 
 ```typescript
 import { Component } from '@angular/core';
@@ -93,7 +90,7 @@ import { FieldArrayType } from '@ngx-formly/core';
 export class FormlyFieldArrayType extends FieldArrayType {}
 ```
 
-### Change the appearance of a field template
+## Change the appearance of a field template
 
 ```typescript
 import { Component } from '@angular/core';
@@ -115,7 +112,7 @@ import { FieldWrapper } from '@ngx-formly/core';
 export class FormlyWrapperHorizontal extends FieldWrapper {}
 ```
 
-### Change the appearance of a field expression
+## Field Expression
 
 ```typescript
 import { Component } from '@angular/core';
@@ -131,7 +128,7 @@ import { Component } from '@angular/core';
 export class FormlyExpression {}
 ```
 
-### Change the appearance of a field validation
+## Field Validation
 
 ```typescript
 import { Component } from '@angular/core';
@@ -147,7 +144,7 @@ import { Component } from '@angular/core';
 export class FormlyValidationMessage {}
 ```
 
-### Change the appearance of a field wrapper
+## Field Wrapper
 
 ```typescript
 import { Component } from '@angular/core';
@@ -175,7 +172,7 @@ export class FormlyWrapperValidationMessages extends FieldWrapper {
 }
 ```
 
-### Change the appearance of a field templateOptions
+## Field Props (templateOptions)
 
 ```typescript
 import { Component } from '@angular/core';
@@ -194,7 +191,7 @@ import { FieldType } from '@ngx-formly/core';
 export class FormlyFieldInput extends FieldType {}
 ```
 
-### Change the appearance of a field type
+## Field Type
 
 ```typescript
 import { Component } from '@angular/core';
@@ -213,7 +210,7 @@ import { FieldType } from '@ngx-formly/core';
 export class FormlyFieldInput extends FieldType {}
 ```
 
-### Change appearance of a field type globally
+## Field Type (globally)
 
 ```typescript
 import { Component } from '@angular/core';
@@ -256,7 +253,7 @@ import { FormlyFieldInput } from './formly-field-input';
 export class AppModule {}
 ```
 
-### Change appereance globally at once
+## Field Type (globally, at once)
 
 ```typescript
 import { FormlyConfig } from '@ngx-formly/core';
@@ -273,7 +270,7 @@ constructor(private formlyConfig: FormlyConfig) {
 }
 ```
 
-### Change default appearance globally at once
+## Default Appearance (globally, at once)
 
 ```typescript
 import { FormlyConfig } from '@ngx-formly/core';
