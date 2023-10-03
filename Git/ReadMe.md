@@ -150,10 +150,12 @@ shows the local branches and their upstream branches
 ## Git Diff
 
     git diff --stat commit1 commit2
-    git diff master --name-only     // list of different files
-    git diff master --name-status   // and what kind of differences
-    git diff master --stat          // my favorite
-    git diff master --shortstat
+    git diff develop --name-only     // list of different files
+    git diff develop --name-status   // and what kind of differences
+    git diff develop --stat          // <-  my favorite
+    git diff develop --numstat
+    git diff develop --shortstat
+    git diff develop --compact-summary
 
 ## Find
 
