@@ -1,4 +1,7 @@
 {
+  "[python]": {
+    "editor.defaultFormatter": "ms-python.black-formatter"
+  },
   "cSpell.ignoreWords": [
     "action",
     "actionreducermap",
@@ -70,8 +73,9 @@
   "grammarly.selectors": [
     {
       "language": "typescript",
-      "scheme": "file",
-      "pattern": "JavaScript/About/Asynchronicity/Examples/reject.ts"
+      "pattern": "JavaScript/About/Asynchronicity/Examples/reject.ts",
+      "scheme": "file"
     }
-  ]
+  ],
+  "python.formatting.provider": "none"
 }
