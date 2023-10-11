@@ -25,8 +25,9 @@
     - [Sometimes very important](#sometimes-very-important)
     - [Nice to have](#nice-to-have)
 - [Git](#git)
+  - [Profile Webia1](#profile-webia1)
 - [Settings](#settings)
-  - [Editor, Inline Suggestions, Minimap & Co.](#editor-inline-suggestions-minimap--co)
+  - [Editor, Inline Suggestions, Minimap & Co](#editor-inline-suggestions-minimap--co)
   - [Terminal & Co](#terminal--co)
   - [TypeScript](#typescript-1)
   - [Local Web Development](#local-web-development)
@@ -126,6 +127,8 @@ pdconsec.vscode-print           # Printing Code
 ryu1kn.partial-diff             # Compare Code parts with each other
 ryu1kn.text-marker              # Text Marker
 rebornix.toggle                 # Toggle Configs (see keybindings below)
+thiagocordeirooo.generate-translation # I18N Key Generator (Re-Check)
+hwencc.html-tag-wrapper         # Wrap HTML tags via shortcuts
 ```
 
 [>> See KeyBindings](./keybindings_MASTER.json)
@@ -234,9 +237,16 @@ Andreabbondanza.ignoregit         # Git Ignore
 "gitlens.views.branches.branches.layout": "list",
 ```
 
+### Profile Webia1
+
+```shell
+hwencc.html-tag-wrapper (HTML Tag Wrapper)
+thiagocordeirooo.generate-translation (I18N)
+```
+
 ## Settings
 
-### Editor, Inline Suggestions, Minimap & Co.
+### Editor, Inline Suggestions, Minimap & Co
 
 ```json
   "editor.codeActionsOnSave": {
@@ -351,37 +361,39 @@ Valid options:
 ### Workbench Color Customizations
 
 ```json
-  "workbench.colorCustomizations": {
-    "editor.background": "#202026",
-    "editor.selectionBackground": "#007bff",
-    "editorUnnecessaryCode.border": "#fd7403dc",
-    "tab.activeBackground": "#614a00",
-    "tab.activeBorder": "#ffc4006a",
-    "tab.activeBorderTop": "#ffc400",
-    "tab.activeForeground": "#ffffff",
-    "tab.border": "#ffc4006a",
-    "tab.inactiveForeground": "#01d9f5f2",
-    "tab.unfocusedInactiveForeground": "#01d9f5f2",
-    "terminal.ansiBlue": "#1a3563",
-    "terminal.ansiBrightGreen": "#6fff00",
-    "terminal.ansiBrightWhite": "#ffffff",
-    "terminal.ansiGreen": "#2b6d02",
-    "terminal.ansiRed": "#cd053e",
-    "terminal.ansiWhite": "#d1f7fd",
-    "terminal.ansiYellow": "#ffe600",
-    "terminal.background": "#131212",
-    "terminal.foreground": "#bcf487d7",
-    "titleBar.activeBackground": "#ffc4002a",
-    "titleBar.activeForeground": "#ffffff",
-    "titleBar.inactiveForeground": "#15202b99"
-  },
+"workbench.colorCustomizations": {
+  "editor.background": "#202026",
+  "editor.selectionBackground": "#007bff",
+  "editorUnnecessaryCode.border": "#fd7403dc",
+  "tab.activeBackground": "#614a00",
+  "tab.activeBorder": "#ffc4006a",
+  "tab.activeBorderTop": "#ffc400",
+  "tab.activeForeground": "#ffffff",
+  "tab.border": "#ffc4006a",
+  "tab.inactiveForeground": "#01d9f5f2",
+  "tab.unfocusedInactiveForeground": "#01d9f5f2",
+  "terminal.ansiBlue": "#1a3563",
+  "terminal.ansiBrightGreen": "#6fff00",
+  "terminal.ansiBrightWhite": "#ffffff",
+  "terminal.ansiGreen": "#2b6d02",
+  "terminal.ansiRed": "#cd053e",
+  "terminal.ansiWhite": "#d1f7fd",
+  "terminal.ansiYellow": "#ffe600",
+  "terminal.background": "#131212",
+  "terminal.foreground": "#bcf487d7",
+  "titleBar.activeBackground": "#ffc4002a",
+  "titleBar.activeForeground": "#ffffff",
+  "titleBar.inactiveForeground": "#15202b99"
+},
 ```
 
 ### Last but not least
 
 ```json
-"json.sortOnSave.enable": true,
+"json.sortOnSave.enable": true, # deprecated (see editor actions)
 "redhat.telemetry.enabled": false,
 "editor.formatOnSave": true,
 "explorer.confirmDelete": false,
+"printcode.fontSize": 11,
+"printcode.printFilePath": "relative",
 ```
