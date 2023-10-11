@@ -1,0 +1,14 @@
+{
+  "editor.semanticTokenColorCustomizations": {
+    "rules": {
+      "enum": "#aeff00ce",
+      "enumMember": "#fd87e0",
+      "namespace": {
+        "fontStyle": "bold",
+        "foreground": "#0099ff",
+        "tokenModifiers": ["Actions"]
+      },
+      "type.readonly": "#e796bb"
+    }
+  }
+}
