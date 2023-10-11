@@ -1,0 +1,176 @@
+// Place your key bindings in this file to override the defaults
+[
+    {
+      "args": {
+        "id": "toggleCodeLens",
+        "value": [
+          {
+            "diffEditor.codeLens": true,
+            "javascript.referencesCodeLens.showOnAllFunctions": true,
+            "typescript.implementationsCodeLens.enabled": true,
+            "typescript.referencesCodeLens.enabled": true,
+            "typescript.referencesCodeLens.showOnAllFunctions": true
+          },
+          {
+            "diffEditor.codeLens": false,
+            "javascript.referencesCodeLens.showOnAllFunctions": false,
+            "typescript.implementationsCodeLens.enabled": false,
+            "typescript.referencesCodeLens.enabled": false,
+            "typescript.referencesCodeLens.showOnAllFunctions": false
+          }
+        ]
+      },
+      "command": "toggle",
+      "key": "F3",
+      "when": "editorTextFocus"
+    },
+    {
+      "args": {
+        "id": "toggleCodeLens",
+        "value": [
+          {
+            "workbench.activityBar.visible": true
+          },
+          {
+            "workbench.activityBar.visible": false
+          }
+        ]
+      },
+      "command": "toggle",
+      "key": "F6",
+      "when": "editorTextFocus"
+    },
+    {
+      "args": {
+        "id": "toggleCodeLens",
+        "value": [
+          {
+            "editor.inlayHints.enabled": "on",
+            "typescript.inlayHints.functionLikeReturnTypes.enabled": true,
+            "typescript.inlayHints.parameterTypes.enabled": true,
+            "typescript.inlayHints.propertyDeclarationTypes.enabled": true,
+            "typescript.inlayHints.variableTypes.enabled": true
+          },
+          {
+            "editor.inlayHints.enabled": "offUnlessPressed",
+            "typescript.inlayHints.functionLikeReturnTypes.enabled": false,
+            "typescript.inlayHints.parameterTypes.enabled": false,
+            "typescript.inlayHints.propertyDeclarationTypes.enabled": false,
+            "typescript.inlayHints.variableTypes.enabled": false
+          }
+        ]
+      },
+      "command": "toggle",
+      "key": "F10",
+      "when": "editorTextFocus"
+    },
+    {
+      "command": "generateTranslation.fromSelectedText",
+      "key": "shift+alt+l"
+    },
+    {
+      "command": "workbench.action.navigateLast",
+      "key": "ctrl+alt+l"
+    },
+    {
+      "command": "editor.action.insertSnippet",
+      "key": "alt+tab"
+    },
+    {
+      "command": "extension.wrapTag",
+      "key": "shift+cmd+i",
+      "when": "editorTextFocus"
+    },
+    {
+      "command": "turboConsoleLog.displayLogMessage",
+      "key": "ctrl+shift+alt+l"
+    },
+    {
+      "command": "editor.action.jumpToBracket",
+      "key": "ctrl+shift+b",
+      "when": "editorTextFocus"
+    },
+    {
+      "command": "-editor.action.jumpToBracket",
+      "key": "ctrl+alt+cmd+7",
+      "when": "editorTextFocus"
+    },
+    {
+      "command": "editor.action.triggerSuggest",
+      "key": "ctrl+shift+t",
+      "when": "editorHasCompletionItemProvider && textInputFocus && !editorReadonly"
+    },
+    {
+      "command": "-editor.action.triggerSuggest",
+      "key": "cmd+i",
+      "when": "editorHasCompletionItemProvider && textInputFocus && !editorReadonly"
+    },
+    {
+      "command": "-workbench.action.terminal.focusNextPane",
+      "key": "alt+cmd+right",
+      "when": "terminalFocus && terminalHasBeenCreated || terminalFocus && terminalProcessSupported"
+    },
+    {
+      "command": "-workbench.action.nextEditor",
+      "key": "alt+cmd+right"
+    },
+    {
+      "command": "editor.action.inlineSuggest.showNext",
+      "key": "alt+cmd+right"
+    },
+    {
+      "command": "editor.action.inlineSuggest.showPrevious",
+      "key": "alt+cmd+left"
+    },
+    {
+      "command": "-editor.action.insertCursorAbove",
+      "key": "alt+cmd+up",
+      "when": "editorTextFocus"
+    },
+    {
+      "command": "-workbench.action.terminal.focusPreviousPane",
+      "key": "alt+cmd+up",
+      "when": "terminalFocus && terminalHasBeenCreated || terminalFocus && terminalProcessSupported"
+    },
+    {
+      "command": "editor.action.inlineSuggest.trigger",
+      "key": "alt+cmd+up"
+    },
+    {
+      "command": "-typescriptHero.imports.organize",
+      "key": "ctrl+alt+o",
+      "when": "editorTextFocus"
+    },
+    {
+      "command": "editor.action.peekDefinition",
+      "key": "ctrl+shift+p",
+      "when": "editorHasDefinitionProvider && editorTextFocus && !inReferenceSearchEditor && !isInEmbeddedEditor"
+    },
+    {
+      "command": "-editor.action.peekDefinition",
+      "key": "alt+f12",
+      "when": "editorHasDefinitionProvider && editorTextFocus && !inReferenceSearchEditor && !isInEmbeddedEditor"
+    },
+    {
+      "command": "npm-intellisense.import",
+      "key": "ctrl+shift+i"
+    },
+    {
+      "command": "-editor.action.organizeImports",
+      "key": "shift+alt+o",
+      "when": "textInputFocus && !editorReadonly && supportedCodeAction =~ /(\\s|^)source\\.organizeImports\\b/"
+    },
+    {
+      "command": "typescriptHero.imports.organize",
+      "key": "ctrl+shift+o"
+    },
+    {
+      "command": "github.copilot.interactiveEditor.generate",
+      "key": "ctrl+shift+[BracketRight]"
+    },
+    {
+      "command": "typescript.reloadProjects",
+      "key": "ctrl+shift+alt+cmd+l"
+    }
+  ]
+  
