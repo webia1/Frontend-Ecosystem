@@ -1,19 +1,6 @@
 {
-  "[dockerfile]": {
-    "editor.defaultFormatter": "ms-azuretools.vscode-docker"
-  },
-  "[dontSortTheseFiles]": {},
-  "[go]": {
-    "editor.defaultFormatter": "golang.go"
-  },
-  "[groovy]": {
-    "editor.defaultFormatter": "NicolasVuillamy.vscode-groovy-lint"
-  },
   "[html]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
-  },
-  "[ignore]": {
-    "editor.defaultFormatter": "foxundermoon.shell-format"
   },
   "[json]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
@@ -22,11 +9,7 @@
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
   "[markdown]": {
-    "editor.defaultFormatter": "DavidAnson.vscode-markdownlint",
-    "editor.formatOnSave": true
-  },
-  "[shellscript]": {
-    "editor.defaultFormatter": "foxundermoon.shell-format"
+    "editor.defaultFormatter": "DavidAnson.vscode-markdownlint"
   },
   "[svg]": {
     "editor.defaultFormatter": "redhat.vscode-xml"
@@ -38,35 +21,16 @@
     "editor.defaultFormatter": "redhat.vscode-xml"
   },
   "auto-close-tag.disableOnLanguage": ["typescript"],
-
-  "blockman.n04ColorComboPreset": "Lobelia (Gradients)",
-  "blockman.n04Sub05MinDistanceBetweenRightSideEdges": 10,
-  "blockman.n04Sub06AdditionalPaddingRight": 6,
-  "blockman.n05CustomColorOfDepth0": "none",
-  "blockman.n16EnableFocus": false,
-  "blockman.n20CustomColorOfDepth0Border": "none",
-  "blockman.n23AnalyzeSquareBrackets": true,
-  "blockman.n27B01HideBlockOfFocusedSingleLineArea": true,
-
-  "diffEditor.codeLens": false,
-  "diffEditor.ignoreTrimWhitespace": false,
-  "diffEditor.maxComputationTime": 0,
-  "diffEditor.wordWrap": "off",
-
-  "editor.accessibilitySupport": "off",
+  "editor.codeActionsOnSave": {
+    "source.sort.json": "always"
+  },
   "editor.codeLensFontFamily": "Jetbrains Mono",
-  "editor.defaultFormatter": "esbenp.prettier-vscode",
   "editor.fontFamily": "JetBrains Mono",
   "editor.fontLigatures": true,
   "editor.fontSize": 13.3,
   "editor.formatOnSave": true,
-  "editor.guides.bracketPairs": false,
-  "editor.guides.indentation": false,
-  "editor.inlayHints.enabled": "off",
   "editor.inlineSuggest.enabled": true,
   "editor.inlineSuggest.showToolbar": "always",
-  "editor.inlineSuggest.suppressSuggestions": true,
-  "editor.lineHeight": 1.6,
   "editor.minimap.enabled": false,
   "editor.semanticTokenColorCustomizations": {
     "rules": {
@@ -80,7 +44,6 @@
       "type.readonly": "#e796bb"
     }
   },
-  "editor.snippetSuggestions": "bottom",
   "editor.stickyScroll.enabled": false,
   "editor.tabSize": 2,
   "editor.tokenColorCustomizations": {
@@ -719,51 +682,16 @@
       }
     ]
   },
-  "editor.wordWrap": "off",
-  "eslint.workingDirectories": [],
   "explorer.confirmDelete": false,
   "git.autofetch": true,
   "git.confirmSync": false,
   "git.openRepositoryInParentFolders": "never",
-  "github.copilot-labs.showTestGenerationLenses": true,
-  "github.copilot.advanced": {},
-  "github.copilot.enable": {
-    "*": true,
-    "plaintext": true,
-    "markdown": true,
-    "scminput": false
-  },
-  "gitlens.codeLens.enabled": true,
   "gitlens.views.branches.branches.layout": "list",
-  "http.systemCertificates": false,
-  "javascript.preferences.importModuleSpecifier": "non-relative",
-  "javascript.referencesCodeLens.showOnAllFunctions": false,
-  "javascript.updateImportsOnFileMove.enabled": "always",
-  "js/ts.implicitProjectConfig.checkJs": true,
-  "js/ts.implicitProjectConfig.experimentalDecorators": true,
-  "json.sortOnSave.enable": true,
-  "liveServer.settings.donotShowInfoMsg": true,
-  "markdown-preview-enhanced.automaticallyShowPreviewOfMarkdownBeingEdited": true,
-  "markdown-preview-enhanced.mermaidTheme": "dark",
-  "markdown-preview-enhanced.pandocArguments": [
-    "--lua-filter",
-    "/Users/user7/.markdown-lua-filter/parse-html.lua",
-    "--from",
-    "markdown-markdown_in_html_blocks"
-  ],
-  "markdown-preview-enhanced.previewTheme": "atom-material.css",
-  "markdown-preview-enhanced.revealjsTheme": "moon.css",
-  "markdown-preview-enhanced.usePandocParser": true,
-  "markdown.preview.scrollEditorWithPreview": false,
-  "mergeEditor.diffAlgorithm": "advanced",
   "prettier.proseWrap": "never",
   "redhat.telemetry.enabled": false,
   "scss.lint.duplicateProperties": "warning",
   "scss.lint.emptyRules": "ignore",
   "scss.lint.float": "warning",
-  "search.searchEditor.doubleClickBehaviour": "goToLocation",
-  "security.workspace.trust.untrustedFiles": "open",
-  "svg.preview.mode": "img",
   "terminal.integrated.fontFamily": "Jetbrains Mono",
   "terminal.integrated.fontSize": 13.7,
   "terminal.integrated.gpuAcceleration": "off",
@@ -772,68 +700,11 @@
   "terminal.integrated.scrollback": 10000,
   "terminal.integrated.sendKeybindingsToShell": true,
   "terminal.integrated.smoothScrolling": true,
-  "typescript.preferences.importModuleSpecifier": "non-relative",
   "typescript.updateImportsOnFileMove.enabled": "always",
-  "vscode-angular-html.angularAnimationTriggerPrefix": "#2D67EE",
-  "vscode-angular-html.angularAnimationTriggerVariableName": "#AEFF00",
-  "vscode-angular-html.angularBindingAttributeDelimiter": "#2D67EE",
-  "vscode-angular-html.angularEventHandlerName": "#AEFF00",
-  "vscode-angular-html.angularExpression": "#2D67EE",
-  "vscode-angular-html.angularOneWayBindingFirstLevelDepth": "#AEFF00",
-  "vscode-angular-html.angularPrefixedAttributesRefPrefix": "#2D67EE",
-  "vscode-angular-html.angularPrefixedAttributesVariableName": "#FFD000",
-  "vscode-angular-html.angularSyntaxSugarAttributesName": "#AEFF00",
-  "vscode-angular-html.angularSyntaxSugarAttributesPrefix": "#2D67EE",
-  "vscode-angular-html.angularTemplateVariableName": "#AEFF00",
-  "vscode-angular-html.angularTemplateVariablePrefix": "#2D67EE",
-  "vscode-angular-html.ariaAttributeSuffix": "#FFD000",
-  "vscode-angular-html.colorCustomizations": true,
-  "vscode-angular-html.dataAttributePrefix": "#AEFF00",
-  "vscode-angular-html.dataAttributeSuffix": "#FFD000",
-  "vscode-angular-html.dtdDoctypeQuantifier": "#2D67EE",
-  "vscode-angular-html.htmlDoctypeAttributes": "#FFD000",
-  "vscode-angular-html.htmlEventsAttributes": "#FFD000",
-  "vscode-angular-html.htmlGenericAttributesFollowedByParameter": "#FFD000",
-  "vscode-angular-html.htmlLinkAttributesMimeType": "#AEFF00",
-  "vscode-angular-html.htmlScriptAttributesLanguageIdentifier": "#AEFF00",
-  "vscode-angular-html.htmlStyleAttributesLanguageIdentifier": "#AEFF00",
-  "vscode-angular-html.xmlAttributeNamespaceDivider": "#2D67EE",
-  "vscode-angular-html.xmlStylesheetAttributesLanguageIdentifier": "#AEFF00",
-  "vscode-angular-html.xmlTagNamespaceDivider": "#2D67EE",
-  "vscode_custom_css.imports": [
-    "file:///Users/user7/angular/__VSCODE/webia1Custom.css"
-  ],
-  "window.commandCenter": false,
-  "workbench.activityBar.visible": true,
   "workbench.colorCustomizations": {
-    "activityBar.activeBackground": "#00ff4444",
-    "activityBar.activeBorder": "#26ff00",
-    "activityBar.background": "#000000",
-    "activityBar.foreground": "#26ff0078",
-    "activityBar.inactiveForeground": "#9ca4936f",
-    "activityBarBadge.background": "#a6ff00",
-    "activityBarBadge.foreground": "#000000",
-    "commandCenter.border": "#2b152699",
-    "editor.background": "#001927",
-    "editor.lineHighlightBackground": "#1073cf2d",
-    "editor.lineHighlightBorder": "#9fced11f",
-    "editor.rulers": [80],
+    "editor.background": "#202026",
     "editor.selectionBackground": "#007bff",
-    "editor.wordHighlightBackground": "#d902c377",
-    "editor.wordHighlightStrongBackground": "#fc00e338",
-    "editor.wordHighlightStrongBorder": "#FFBBEA",
     "editorUnnecessaryCode.border": "#fd7403dc",
-    "listFilterWidget.noMatchesOutline": "#b800be",
-    "sideBar.background": "#001927",
-    "sideBar.border": "#007bff77",
-    "sideBar.dropBackground": "#a6ff00",
-    "statusBar.background": "#ffc40000",
-    "statusBar.foreground": "#3f6081",
-    "statusBarItem.errorHoverBackground": "#ea00ff",
-    "statusBarItem.errorHoverForeground": "#ffffff",
-    "statusBarItem.hoverBackground": "#ffc4006a",
-    "statusBarItem.remoteBackground": "#ffc4006a",
-    "statusBarItem.remoteForeground": "#15202b",
     "tab.activeBackground": "#614a00",
     "tab.activeBorder": "#ffc4006a",
     "tab.activeBorderTop": "#ffc400",
@@ -854,19 +725,9 @@
     "titleBar.activeForeground": "#ffffff",
     "titleBar.inactiveForeground": "#15202b99"
   },
+  "workbench.colorTheme": "Gitkraken Dark",
   "workbench.fontAliasing": "default",
   "workbench.iconTheme": "material-icon-theme",
   "workbench.productIconTheme": "fluent-icons",
-  "workbench.settings.applyToAllProfiles": [
-    "blockman.n33A03B1FromDepth0ToInwardForFocusTreeBorders"
-  ],
-  "workbench.startupEditor": "welcomePage",
-  "[python]": {
-    "editor.defaultFormatter": "ms-python.black-formatter"
-  },
-  "python.formatting.provider": "none",
-  "azureFunctions.showProjectWarning": false,
-  "typescript.implementationsCodeLens.enabled": false,
-  "typescript.referencesCodeLens.enabled": false,
-  "typescript.referencesCodeLens.showOnAllFunctions": false
+  "workbench.startupEditor": "welcomePage"
 }

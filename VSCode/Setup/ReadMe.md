@@ -11,13 +11,24 @@
   - [Production Theme &rarr; fluent-icons](#production-theme-rarr-fluent-icons)
 - [Extensions](#extensions)
   - [Basis Extensions](#basis-extensions)
-  - [Useful Coding Extensions](#useful-coding-extensions)
-    - [Auto Close Tag](#auto-close-tag)
+  - [Angular + Mono Repo](#angular--mono-repo)
+  - [TypeScript](#typescript)
+  - [Useful Extensions (Coding, Tasks, etc.)](#useful-extensions-coding-tasks-etc)
+    - [Time Saver + Design (Color etc)](#time-saver--design-color-etc)
+    - [SQL](#sql)
+    - [Debugger](#debugger)
+    - [Markdown, Pandoc, PDF etc](#markdown-pandoc-pdf-etc)
+    - [Design, Color, Img](#design-color-img)
+    - [Docker](#docker)
+    - [JSON](#json)
+    - [MS Playwright](#ms-playwright)
+    - [Sometimes very important](#sometimes-very-important)
+    - [Nice to have](#nice-to-have)
 - [Git](#git)
 - [Settings](#settings)
   - [Editor, Inline Suggestions, Minimap & Co.](#editor-inline-suggestions-minimap--co)
   - [Terminal & Co](#terminal--co)
-  - [TypeScript](#typescript)
+  - [TypeScript](#typescript-1)
   - [Local Web Development](#local-web-development)
   - [SCSS](#scss)
   - [Default Formatter](#default-formatter)
@@ -25,7 +36,7 @@
       - [Prose Wrap](#prose-wrap)
   - [Workbench](#workbench)
   - [Workbench Color Customizations](#workbench-color-customizations)
-  - [Miscellaneous](#miscellaneous)
+  - [Last but not least](#last-but-not-least)
 
 <!-- /code_chunk_output -->
 
@@ -67,34 +78,153 @@
 ```shell
 dbaeumer.vscode-eslint          # ESLint
 esbenp.prettier-vscode          # ESLint Prettier
+EditorConfig.EditorConfig       # EditorConfig
 firsttris.vscode-jest-runner    # Jest Runner
 miguelsolorio.fluent-icons      # Production Icons
 PKief.material-icon-theme       # Icon Theme
 
 DavidAnson.vscode-markdownlint  # Markdown Linter
 redhat.vscode-xml               # XML Linter
+redhat.vscode-yaml              # YAML
 ```
 
-### Useful Coding Extensions
-
-#### Auto Close Tag
+### Angular + Mono Repo
 
 ```shell
-formulahendry.auto-close-tag    # Auto Close Tag
+Angular.ng-template             # Angular Language Service
+cyrilletuzi.angular-schematics  # Angular Schematics
+obenjiro.arrr                   # Refactoring Angular (Create Templates..)
+tomwhite007.rename-angular-component  # Rename Angular Components
+johnpapa.Angular2               # John Papa Snippets
+nrwl.angular-console            # Nx Console
 ```
+
+### TypeScript
+
+```shell
+q.typescript-mono-repo-import-helper    # Check if really necessary
+qcz.restart-ts-server-button            # Check if really necessary
+rbbit.typescript-hero                   # OK (even deprecated)
+steoates.autoimport                     # Check if really necessary
+```
+
+### Useful Extensions (Coding, Tasks, etc.)
+
+#### Time Saver + Design (Color etc)
+
+> See Config Options below
+
+```shell
+Andreabbondanza.ignoregit       # Git Ignore
+formulahendry.auto-close-tag    # Auto Close Tag
+formulahendry.auto-rename-tag   # Auto Rename Tag
+chouzz.vscode-better-align      # Better align
+yo1dog.cursor-align             # Cursor Align (is better ? ReCheck)
+in4margaret.compareit           # Compare it
+jock.svg                        # Minify function is great
+pdconsec.vscode-print           # Printing Code
+ryu1kn.partial-diff             # Compare Code parts with each other
+ryu1kn.text-marker              # Text Marker
+rebornix.toggle                 # Toggle Configs (see keybindings below)
+```
+
+[>> See KeyBindings](./keybindings_MASTER.json)
 
 ```json
 "auto-close-tag.disableOnLanguage": ["typescript"],
 ```
 
-## Git
-
-- [Git Lens](https://marketplace.visualstudio.com/items?itemName=eamodio.gitlens)
-- [Git Graph](https://marketplace.visualstudio.com/items?itemName=mhutchie.git-graph)
+#### SQL
 
 ```shell
-eamodio.gitlens
-mhutchie.git-graph
+inferrinizzard.prettier-sql-vscode  # SQL Formatter (inkl. PostgreSQL)
+ms-ossdata.vscode-postgresql
+mtxr.sqltools
+```
+
+#### Debugger
+
+```shell
+effectful.debugger              # OK (rewind back possibility)
+kakumei.ts-debug
+```
+
+#### Markdown, Pandoc, PDF etc
+
+```shell
+shd101wyy.markdown-preview-enhanced   # Great!
+tomoki1207.pdf                        # PDF Viewer
+kzvi.pandoc-markdown-preview
+ChrisChinchilla.vscode-pandoc
+```
+
+#### Design, Color, Img
+
+```shell
+bierner.color-info              # Colors in CSS Files (not in SCSS)
+mrmlnc.vscode-scss              # OK
+naumovs.color-highlight         # OK
+pranaygp.vscode-css-peek        # Check if really necessary
+vscode-infra.image-viewer       # Check if really necessary
+Zignd.html-css-class-completion # Check if really necessary
+```
+
+#### Docker
+
+```shell
+ms-azuretools.vscode-docker
+ms-vscode-remote.remote-containers
+```
+
+#### JSON
+
+```shell
+nidu.copy-json-path             # Copy JSON Path
+oliversturm.fix-json            # Fix JSON
+quicktype.quicktype             # Paste JSON as Code (TypeDef Generator)
+```
+
+#### MS Playwright
+
+```shell
+ms-playwright.playwright
+mskelton.playwright-test-snippets
+ortoni.ortoni
+```
+
+#### Sometimes very important
+
+```shell
+ArturoDent.custom-language-syntax   # Custom Language Syntax
+paulomenezes.duplicated-code        # Duplicate Code Finder
+ukoloff.win-ca                      # CRT Converter
+```
+
+#### Nice to have
+
+```shell
+actboy168.tasks                   # VSCode Tasks
+anteprimorac.html-end-tag-labels  # End Tag labels
+be5invis.vscode-custom-css        # Custom CSS
+DotJoshJohnson.xml                # Useful XML Tools
+fabianlauer.vs-code-xml-format    # XML Formatter
+leodevbro.blockman                # Block Visualisations
+rvest.vs-code-prettier-eslint     # Re-check if necessary
+VisualStudioExptTeam.intellicode-api-usage-examples # Re-check if necessary
+VisualStudioExptTeam.vscodeintellicode # Re-check if necessary
+yo1dog.cursor-trim                # Trim, Re-check if necessary
+```
+
+## Git
+
+> See Config Options below:
+
+```shell
+eamodio.gitlens                   # Git Lens
+mhutchie.git-graph                # Git Graph
+donjayamanne.githistory           # Git History
+
+Andreabbondanza.ignoregit         # Git Ignore
 ```
 
 ```json
@@ -109,6 +239,9 @@ mhutchie.git-graph
 ### Editor, Inline Suggestions, Minimap & Co.
 
 ```json
+  "editor.codeActionsOnSave": {
+    "source.sort.json": "always"
+  },
   "editor.codeLensFontFamily": "Jetbrains Mono",
   "editor.fontFamily": "JetBrains Mono",
   "editor.fontLigatures": true,
@@ -158,36 +291,27 @@ mhutchie.git-graph
 
 ### Default Formatter
 
-Better `formatOnSave` seperately on each file type:
-
 ```json
   "[html]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode",
-    "editor.formatOnSave": true
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
   "[json]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode",
-    "editor.formatOnSave": true
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
   "[jsonc]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode",
-    "editor.formatOnSave": true
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
   "[markdown]": {
-    "editor.defaultFormatter": "DavidAnson.vscode-markdownlint",
-    "editor.formatOnSave": true
+    "editor.defaultFormatter": "DavidAnson.vscode-markdownlint"
   },
   "[svg]": {
-    "editor.defaultFormatter": "redhat.vscode-xml",
-    "editor.formatOnSave": true
+    "editor.defaultFormatter": "redhat.vscode-xml"
   },
   "[typescript]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode",
-    "editor.formatOnSave": true
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
   "[xml]": {
-    "editor.defaultFormatter": "redhat.vscode-xml",
-    "editor.formatOnSave": true
+    "editor.defaultFormatter": "redhat.vscode-xml"
   },
 ```
 
@@ -253,9 +377,11 @@ Valid options:
   },
 ```
 
-### Miscellaneous
+### Last but not least
 
 ```json
+"json.sortOnSave.enable": true,
 "redhat.telemetry.enabled": false,
+"editor.formatOnSave": true,
 "explorer.confirmDelete": false,
 ```
