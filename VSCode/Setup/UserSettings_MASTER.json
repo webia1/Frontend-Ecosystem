@@ -9,7 +9,8 @@
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
   "[markdown]": {
-    "editor.defaultFormatter": "DavidAnson.vscode-markdownlint"
+    "editor.defaultFormatter": "DavidAnson.vscode-markdownlint",
+    "editor.formatOnSave": true
   },
   "[svg]": {
     "editor.defaultFormatter": "redhat.vscode-xml"
@@ -21,6 +22,7 @@
     "editor.defaultFormatter": "redhat.vscode-xml"
   },
   "auto-close-tag.disableOnLanguage": ["typescript"],
+  "diffEditor.codeLens": false,
   "editor.codeActionsOnSave": {
     "source.sort.json": "always"
   },
@@ -29,6 +31,7 @@
   "editor.fontLigatures": true,
   "editor.fontSize": 13.3,
   "editor.formatOnSave": true,
+  "editor.inlayHints.enabled": "offUnlessPressed",
   "editor.inlineSuggest.enabled": true,
   "editor.inlineSuggest.showToolbar": "always",
   "editor.minimap.enabled": false,
@@ -309,7 +312,7 @@
         "scope": ["punctuation.definition.tag.end.html"],
         "settings": {
           "fontStyle": "bold",
-          "foreground": "#85dcf7"
+          "foreground": "#95e6ff"
         }
       },
       {
@@ -326,7 +329,7 @@
         ],
         "settings": {
           "fontStyle": "",
-          "foreground": "#93a764"
+          "foreground": "#af7dff"
         }
       },
       {
@@ -335,8 +338,7 @@
           "support.type.property-name.json.comments"
         ],
         "settings": {
-          "fontStyle": "bold",
-          "foreground": "#95ecf7c4"
+          "foreground": "#f785f7"
         }
       },
       {
@@ -683,10 +685,13 @@
     ]
   },
   "explorer.confirmDelete": false,
+  "generate-translation.path": "/apps-globals/global-assets/i18n",
+  "generate-translation.sort": true,
   "git.autofetch": true,
   "git.confirmSync": false,
   "git.openRepositoryInParentFolders": "never",
   "gitlens.views.branches.branches.layout": "list",
+  "javascript.referencesCodeLens.showOnAllFunctions": false,
   "prettier.proseWrap": "never",
   "redhat.telemetry.enabled": false,
   "scss.lint.duplicateProperties": "warning",
@@ -695,15 +700,21 @@
   "terminal.integrated.fontFamily": "Jetbrains Mono",
   "terminal.integrated.fontSize": 13.7,
   "terminal.integrated.gpuAcceleration": "off",
-  "terminal.integrated.inheritEnv": false,
   "terminal.integrated.localEchoStyle": "dim",
   "terminal.integrated.scrollback": 10000,
   "terminal.integrated.sendKeybindingsToShell": true,
   "terminal.integrated.smoothScrolling": true,
+  "typescript.implementationsCodeLens.enabled": false,
+  "typescript.inlayHints.functionLikeReturnTypes.enabled": false,
+  "typescript.inlayHints.parameterTypes.enabled": false,
+  "typescript.inlayHints.propertyDeclarationTypes.enabled": false,
+  "typescript.inlayHints.variableTypes.enabled": false,
+  "typescript.referencesCodeLens.enabled": false,
+  "typescript.referencesCodeLens.showOnAllFunctions": false,
   "typescript.updateImportsOnFileMove.enabled": "always",
+  "workbench.activityBar.visible": true,
   "workbench.colorCustomizations": {
     "editor.background": "#202026",
-    "editor.selectionBackground": "#007bff",
     "editorUnnecessaryCode.border": "#fd7403dc",
     "tab.activeBackground": "#614a00",
     "tab.activeBorder": "#ffc4006a",
