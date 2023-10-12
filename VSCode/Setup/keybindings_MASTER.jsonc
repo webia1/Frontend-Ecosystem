@@ -56,11 +56,6 @@
     "when": "editorHasCompletionItemProvider && textInputFocus && !editorReadonly"
   },
   {
-    "command": "-typescriptHero.imports.organize",
-    "key": "ctrl+alt+o",
-    "when": "editorTextFocus"
-  },
-  {
     "command": "github.copilot.interactiveEditor.generate",
     "key": "ctrl+shift+[BracketRight]"
   },
@@ -71,5 +66,15 @@
   {
     "command": "workbench.action.reloadWindow",
     "key": "alt+cmd+r"
+  },
+  {
+    "command": "typescriptHero.imports.organize",
+    "key": "ctrl+shift+o",
+    "when": "editorTextFocus"
+  },
+  {
+    "command": "-typescriptHero.imports.organize",
+    "key": "ctrl+alt+o",
+    "when": "editorTextFocus"
   }
 ]

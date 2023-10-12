@@ -87,6 +87,8 @@ PKief.material-icon-theme       # Icon Theme
 DavidAnson.vscode-markdownlint  # Markdown Linter
 redhat.vscode-xml               # XML Linter
 redhat.vscode-yaml              # YAML
+steoates.autoimport             # TypeScript Import Extension 1
+q.typescript-mono-repo-import-helper # TypeScript Import Extension 2
 ```
 
 ### Angular + Mono Repo
@@ -103,10 +105,10 @@ nrwl.angular-console            # Nx Console
 ### TypeScript
 
 ```shell
-q.typescript-mono-repo-import-helper    # Check if really necessary
+q.typescript-mono-repo-import-helper    # OK (NECESSARY)
 qcz.restart-ts-server-button            # Check if really necessary
 rbbit.typescript-hero                   # OK (even deprecated)
-steoates.autoimport                     # Check if really necessary
+steoates.autoimport                     # OK (NECESSARY)
 ```
 
 ### Useful Extensions (Coding, Tasks, etc.)
