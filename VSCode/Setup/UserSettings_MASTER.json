@@ -12,6 +12,9 @@
     "editor.defaultFormatter": "DavidAnson.vscode-markdownlint",
     "editor.formatOnSave": true
   },
+  "[scss]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
   "[svg]": {
     "editor.defaultFormatter": "redhat.vscode-xml"
   },
@@ -699,7 +702,7 @@
   "scss.lint.float": "warning",
   "terminal.integrated.fontFamily": "Jetbrains Mono",
   "terminal.integrated.fontSize": 13.7,
-  "terminal.integrated.gpuAcceleration": "off",
+  "terminal.integrated.gpuAcceleration": "on",
   "terminal.integrated.localEchoStyle": "dim",
   "terminal.integrated.scrollback": 10000,
   "terminal.integrated.sendKeybindingsToShell": true,
