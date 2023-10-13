@@ -91,8 +91,8 @@ async function bootstrap() {
   app.setGlobalPrefix('api');
 
   const options = new DocumentBuilder()
-    .setTitle('Ladder Audit Middleware')
-    .setDescription('The Ladder Audit Middleware API description')
+    .setTitle('My Middleware')
+    .setDescription('My Middleware API description')
     .setVersion('0.1.0')
     .addBearerAuth(
       {
