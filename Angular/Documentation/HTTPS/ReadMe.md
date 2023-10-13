@@ -131,6 +131,8 @@ NODE_TLS_REJECT_UNAUTHORIZED=0 nx serve <project-name>
 
 ## Mockserver (e.g. json-server)
 
+> `json-server` must be installed (e.g. as dev-dependency)
+
 ```typescript
 const jsonServer = require('json-server');
 const fs = require('fs');
