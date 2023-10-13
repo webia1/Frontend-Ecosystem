@@ -39,8 +39,8 @@ project.json -> serve -> options
 ```json
   "options": {
         "ssl": true,
-        "sslCert": "certificates/local/public-local-certificate.pem",
-        "sslKey": "certificates/local/private-local-key.pem"
+        "sslCert": ".certificates/local/public-local-certificate.pem",
+        "sslKey": ".certificates/local/private-local-key.pem"
       }
 ```
 
@@ -65,8 +65,8 @@ async function bootstrap() {
 /** HTTPS CONFIGURATION BEGINN */
 
   const httpsOptions = {
-    key: fs.readFileSync('certificates/local/local-private-key.pem'),
-    cert: fs.readFileSync('certificates/local/local-public-certificate.pem'),
+    key: fs.readFileSync('.certificates/local/local-private-key.pem'),
+    cert: fs.readFileSync('.certificates/local/local-public-certificate.pem'),
   };
 
   const app = await NestFactory.create(AppModule, {
@@ -148,8 +148,8 @@ server.use(middlewares);
 server.use(router);
 
 const httpsOptions = {
-  key: fs.readFileSync('certificates/local/local-private-key.pem'),
-  cert: fs.readFileSync('certificates/local/local-public-certificate.pem'),
+  key: fs.readFileSync('.certificates/local/local-private-key.pem'),
+  cert: fs.readFileSync('.certificates/local/local-public-certificate.pem'),
 };
 
 https.createServer(httpsOptions, server).listen(3333, () => {
