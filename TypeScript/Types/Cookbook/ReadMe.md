@@ -4,6 +4,7 @@
 
 <!-- code_chunk_output -->
 
+- [Type Definition Generator](#type-definition-generator)
 - [Use the values of an object as key type for another one](#use-the-values-of-an-object-as-key-type-for-another-one)
 - [Conversion between Objects](#conversion-between-objects)
 - [Sophisticated Type Guards](#sophisticated-type-guards)
@@ -11,6 +12,10 @@
 - [Type Guard + RunTime Check](#type-guard--runtime-check)
 
 <!-- /code_chunk_output -->
+
+## Type Definition Generator
+
+see here: [Type Definition Generator](../../Generators/TypeDefinitionGenerator/Readme.md)
 
 ## Use the values of an object as key type for another one
 
