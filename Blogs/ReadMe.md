@@ -1,5 +1,7 @@
 # Other Devs Blogs
 
+## Companies
+
 Airbnb: https://medium.com/airbnb-engineering
 
 Amazon: https://developer.amazon.com/blogs
@@ -75,3 +77,134 @@ Yahoo: https://yahooeng.tumblr.com
 Yelp: https://engineeringblog.yelp.com
 
 Zoom: https://medium.com/zoom-developer-blog
+
+## Individuals
+
+Adrian Colyer: https://blog.acolyer.org
+
+All Things Distributed: https://www.allthingsdistributed.com
+
+Aphyr: https://aphyr.com
+
+Dan Luu: https://danluu.com
+
+Eevee: https://eev.ee/blog
+
+Eli Bendersky: https://eli.thegreenplace.net
+
+Hillel Wayne: https://www.hillelwayne.com/post
+
+Huyenchip: https://huyenchip.com
+
+Ilya Grigorik: https://www.igvita.com
+
+Itamar Turner-Trauring: https://codewithoutrules.com
+
+James Golick: https://jamesgolick.com
+
+Jeff Knupp: https://jeffknupp.com/blog
+
+Julia Evans: https://jvns.ca
+
+Justin Weiss: https://www.justinweiss.com/articles
+
+Kamran Ahmed: https://kamranahmed.info/blog
+
+Kartar: https://blog.kartar.net
+
+Liz Rice: https://www.lizrice.com
+
+Martin Fowler: https://martinfowler.com
+
+Matt Might: http://matt.might.net/articles
+
+Michael Nielsen: http://michaelnielsen.org/blog
+
+Ned Batchelder: https://nedbatchelder.com/blog
+
+Nikita Sobolev: https://sobolevn.me
+
+Paul Graham: http://www.paulgraham.com/articles.html
+
+Peter Norvig: http://norvig.com
+
+Raganwald: https://raganwald.com
+
+Raph Levien: https://raphlinus.github.io
+
+Robert Heaton: https://robertheaton.com
+
+Russ Cox: https://research.swtch.com
+
+Sergio De Simone: https://www.infoq.com/profile/Sergio-De-Simone
+
+Steve Yegge: https://steve-yegge.blogspot.com
+
+The Morning Paper: https://blog.acolyer.org
+
+The Old New Thing: https://devblogs.microsoft.com/oldnewthing
+
+The Unit of Caring: https://theunitofcaring.tumblr.com
+
+Thomas Ptacek: https://sockpuppet.org/blog
+
+Travis Downs: https://travisdowns.github.io/blog
+
+Vicki Boykis: https://veekaybee.github.io
+
+Vlad Mihalcea: https://vladmihalcea.com/blog
+
+Will Larson: https://lethain.com
+
+## Podcasts
+
+Software Engineering Daily: https://softwareengineeringdaily.com
+
+Software Engineering Radio: http://www.se-radio.net
+
+The Changelog: https://changelog.com/podcast
+
+The InfoQ Podcast: https://www.infoq.com/podcasts
+
+The Stack Overflow Podcast: https://stackoverflow.blog/podcast
+
+## Newsletters
+
+Hacker Newsletter: https://hackernewsletter.com
+
+Hacker News Digest: https://hndigest.com
+
+## AI Blogs
+
+Andrej Karpathy: http://karpathy.github.io
+
+Distill: https://distill.pub
+
+FastML: http://fastml.com
+
+Google AI: https://ai.googleblog.com
+
+OpenAI: https://blog.openai.com
+
+## Data Science Blogs
+
+Data Science 101: https://datascience101.wordpress.com
+
+Data Science Central: https://www.datasciencecentral.com
+
+DataTau: https://www.datatau.com
+
+## DevOps Blogs
+
+DevOps Reactions: http://devopsreactions.tumblr.com
+
+DevOps Weekly: https://www.devopsweekly.com
+
+DevOpsGuys: https://www.devopsguys.com/blog
+
+DevOpsLinks: https://devopslinks.com
+
+## Misc Blogs
+
+> Under Construction
+Better Explained: https://betterexplained.com/articles
