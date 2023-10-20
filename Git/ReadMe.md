@@ -135,6 +135,12 @@ shows the local branches and their upstream branches
   - and the upstream branch
 - sorts by newest commit first
 
+## Prune Remote Branches
+
+If `git branch -a` shows remote branches that no longer exist on the remote, you can prune them with:
+
+    git remote prune origin
+
 ## Sort remote branched by up-to-dateness (committer date)
 
     // [credits prof. narebski](https://stackoverflow.com/questions/5188320/how-can-i-get-a-list-of-git-branches-ordered-by-most-recent-commit)
