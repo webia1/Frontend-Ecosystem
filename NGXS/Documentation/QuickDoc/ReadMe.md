@@ -273,10 +273,10 @@ Die simpliest way to use the state in a component is to use the `@Select` and `@
 // excerpt from the component above
 export class SomeComponentComponent implements OnInit {
   @Select(SomeStateNameState.msgSelector) msg$: Observable<string>;
-  @Dispatch() updateMsg = (msg: string) => new SomeStateNameActions.UpdateMsg(msg);
+  @Dispatch() updateMsgAction = (msg: string) => new SomeStateNameActions.UpdateMsg(msg);
 
   updateMsg(msg: string) {
-    this.updateMsg(msg);
+    this.updateMsgAction(msg); // updateMsg -> updateMsgAction
   }
 }
 
