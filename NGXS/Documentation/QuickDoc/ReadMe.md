@@ -5,19 +5,25 @@
 <!-- code_chunk_output -->
 
 - [Setup](#setup)
-- [Important Keynotes](#important-keynotes)
+- [Important Keynotes & Necessary Files](#important-keynotes--necessary-files)
+  - [1. **`<state-name>.model.ts`**](#1-state-namemodelts)
+  - [2. **`<state-name>.actions.ts`**](#2-state-nameactionsts)
+  - [3. **`<state-name>.state.ts`**](#3-state-namestatets)
   - [Optional: 4. File `<state-name>.service.ts`](#optional-4-file-state-nameservicets)
+  - [Using in a Component](#using-in-a-component)
 - [Basic Examples](#basic-examples)
-  - [Model](#model)
-  - [Actions](#actions)
-  - [State](#state)
-  - [Using Store in Components & Services](#using-store-in-components--services)
+  - [1. Model](#1-model)
+  - [2. Actions](#2-actions)
+  - [3. State](#3-state)
+  - [Using Store (in Components or Services)](#using-store-in-components-or-services)
     - [First of all: See the template](#first-of-all-see-the-template)
-    - [Using @Select and Store Methods in a Component](#using-select-and-store-methods-in-a-component)
-      - [Dispatching: Using additional RxJS Operators](#dispatching-using-additional-rxjs-operators)
-    - [Using @Select and @Dispatch Decorators in a Component](#using-select-and-dispatch-decorators-in-a-component)
-    - [Using @Select and @Dispatch Decorators in a Service](#using-select-and-dispatch-decorators-in-a-service)
-      - [Consume the Service in a Component](#consume-the-service-in-a-component)
+    - [Using in Components](#using-in-components)
+      - [@Select and Store Methods](#select-and-store-methods)
+        - [Dispatching: Using additional RxJS Operators](#dispatching-using-additional-rxjs-operators)
+      - [Using @Select and @Dispatch Decorators in a Component](#using-select-and-dispatch-decorators-in-a-component)
+    - [Using in a Service](#using-in-a-service)
+      - [@Select and @Dispatch Decorators in a Service](#select-and-dispatch-decorators-in-a-service)
+        - [Consume the Service in a Component](#consume-the-service-in-a-component)
 
 <!-- /code_chunk_output -->
 
@@ -33,44 +39,48 @@
   - `NgxsModule.forFeature([InitialStateOfTheApp])`
   - Important: **"forFeature"**.
 
-## Important Keynotes
+## Important Keynotes & Necessary Files
 
 - Do not compare it directly with @ngrx/store, NGXS does not need effects, there are "Action Handlers" for this purpose. (ignore `ngxs/effects` library).
-- Basic concepts are similar, **3 files would be enough**:
-  - **`<state-name>.model.ts`** (See examples chapter below)
-    - You need it first, because you need to define the type of the state.
-    - It contains:
-      - the type of the state: SomeStateModel
-      - the token of the state: SOME_STATE_TOKEN
-      - the default values of the state: SomeStateDefaults
-  - **`<state-name>.actions.ts`** (See examples chapter below)
-    - You need to create it, before creating the state.
-    - Create a namespace and create actions within it.
-    - Actions:
-      - Must be defined as **classes**, with a **static readonly type** property.
-      - The **type** property must be **unique**.
-      - The **constructor** is **optional**;
-        - **but necessary if** you want to pass **data (payload)** to the action.
-      - **Create TypeDefs** for the payload, **if** it is **not a primitive type**.
-        - In the basic example below it is a string (= no need for TypeDef)
-  - **`<state-name>.state.ts`** (See examples chapter below)
-    - State: Must be defined as classes, with a `@State` decorator.
-    - It is an @Injectable() class (A kind of Angular Service)
-    - The state class must have a `@Selector` decorator for each property.
-    - The state class must have a `@Action` decorator for each action.
-    - The constructor is optional, but can be used to initialize the state.
+- Basic concepts are similar, **3 files would be enough**.
 
-  - @Select and @Dispatch decorators will be used in components/services.
-    - @Select: To select a property from the state.
-    - @Dispatch: To dispatch an action.
-    - Both of them are **observables**.
-    - By using in templates: **async** pipe is needed.
+### 1. **`<state-name>.model.ts`**
+
+See examples chapter below.
+
+- You need it first, because you need to define the type of the state.
+- It contains:
+  - the type of the state: SomeStateModel
+  - the token of the state: SOME_STATE_TOKEN
+  - the default values of the state: SomeStateDefaults
+
+### 2. **`<state-name>.actions.ts`**
+
+See examples chapter below.
+
+- You need to create it, before creating the state.
+- Create a namespace and create actions within it.
+- Actions:
+  - Must be defined as **classes**, with a **static readonly type** property.
+  - The **type** property must be **unique**.
+  - The **constructor** is **optional**;
+    - **but necessary if** you want to pass **data (payload)** to the action.
+  - **Create TypeDefs** for the payload, **if** it is **not a primitive type**.
+    - In the basic example below it is a string (= no need for TypeDef)
+
+### 3. **`<state-name>.state.ts`**
+
+See examples chapter below.
+
+- State: Must be defined as classes, with a `@State` decorator.
+- It is an @Injectable() class (A kind of Angular Service)
+- The state class must have a `@Selector` decorator for each property.
+- The state class must have a `@Action` decorator for each action.
+- The constructor is optional, but can be used to initialize the state.
 
 ### Optional: 4. File `<state-name>.service.ts`
 
-If you need to use **Action Handlers**, you should create a new Service and consume it in the component.
-
-What are Action Handlers? See the examples below.
+If you need to use **Action Handlers**, you should create a new Service and consume it in the component. What are Action Handlers? See the examples below.
 
 Short explanation, they are similar to:
 
@@ -78,9 +88,19 @@ Short explanation, they are similar to:
 - Effects in @ngrx/store
 - Redux-Saga in Redux
 
+### Using in a Component
+
+See examples chapter below, here a short summary:
+
+- @Select and @Dispatch decorators will be used in components/services.
+  - @Select: To select a property from the state.
+  - @Dispatch: To dispatch an action.
+  - Both of them are **observables**.
+  - By using in templates: **async** pipe is needed.
+
 ## Basic Examples
 
-### Model
+### 1. Model
 
 ```ts
 import { StateToken } from '@ngxs/store';
@@ -103,7 +123,7 @@ export const SomeStateNameDefaults: SomeStateNameModel = {
 };
 ```
 
-### Actions
+### 2. Actions
 
 > - **payload** is the state property name, which will be updated.
     - In this case: `msg`
@@ -118,7 +138,7 @@ export namespace SomeStateNameActions {
 }
 ```
 
-### State
+### 3. State
 
 ```ts
 import { State, Action, StateContext, Selector } from '@ngxs/store';
@@ -149,7 +169,7 @@ export class SomeStateNameState {
 }
 ```
 
-### Using Store in Components & Services
+### Using Store (in Components or Services)
 
 #### First of all: See the template
 
@@ -160,7 +180,9 @@ It containts `msg$` observable, which is the state property, and `updateMsg()` m
 <button (click)="updateMsg('Hello World!')">Update Msg</button>
 ```
 
-#### Using @Select and Store Methods in a Component
+#### Using in Components
+
+##### @Select and Store Methods
 
 ```ts
 import { Component, OnInit } from '@angular/core';
@@ -211,7 +233,7 @@ export class SomeComponentComponent implements OnInit {
 }
 ```
 
-##### Dispatching: Using additional RxJS Operators
+###### Dispatching: Using additional RxJS Operators
 
 ```ts
   // excerpt from the component above
@@ -243,7 +265,7 @@ export class SomeComponentComponent implements OnInit {
   }
 ```
 
-#### Using @Select and @Dispatch Decorators in a Component
+##### Using @Select and @Dispatch Decorators in a Component
 
 Die simpliest way to use the state in a component is to use the `@Select` and `@Dispatch` decorators. See the example below, how easy it is:
 
@@ -260,7 +282,9 @@ export class SomeComponentComponent implements OnInit {
 
 ```
 
-#### Using @Select and @Dispatch Decorators in a Service
+#### Using in a Service
+
+##### @Select and @Dispatch Decorators in a Service
 
 **Best Practice:** If you handle with **Action Handlers**, you should use a service. See the example below, how easy it is:
 
@@ -337,7 +361,7 @@ export class SomeStateService {
 }
 ```
 
-##### Consume the Service in a Component
+###### Consume the Service in a Component
 
 ```ts
 import { Component, OnInit } from '@angular/core';
