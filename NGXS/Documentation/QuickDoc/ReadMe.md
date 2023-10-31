@@ -6,6 +6,7 @@
 
 - [Setup](#setup)
 - [Important Keynotes](#important-keynotes)
+  - [Optional: 4. File `<state-name>.service.ts`](#optional-4-file-state-nameservicets)
 - [Basic Examples](#basic-examples)
   - [Model](#model)
   - [Actions](#actions)
@@ -59,11 +60,23 @@
     - The state class must have a `@Action` decorator for each action.
     - The constructor is optional, but can be used to initialize the state.
 
-  - @Select and @Dispatch decorators are used in the components.
+  - @Select and @Dispatch decorators will be used in components/services.
     - @Select: To select a property from the state.
     - @Dispatch: To dispatch an action.
     - Both of them are **observables**.
     - By using in templates: **async** pipe is needed.
+
+### Optional: 4. File `<state-name>.service.ts`
+
+If you need to use **Action Handlers**, you should create a new Service and consume it in the component.
+
+What are Action Handlers? See the examples below.
+
+Short explanation, they are similar to:
+
+- Lifecycle Hooks in Angular,
+- Effects in @ngrx/store
+- Redux-Saga in Redux
 
 ## Basic Examples
 
@@ -162,6 +175,22 @@ import { SomeStateNameActions } from './somewhere/some-state-name.actions';
   styleUrls: ['./some-component.component.scss'],
 })
 export class SomeComponentComponent implements OnInit {
+
+  /**
+   * You can only @Select something, which is already defined
+   * in the state class before, by using a @Selector decorator.
+   *
+   * See the state class and the selector section above. Here an excerpt:
+   *
+   *   @Selector()
+   *   static msgSelector(state: SomeStateNameModel) {
+   *     return state.msg;
+   *     }
+   *
+   * Important: NO @Select WITHOUT @Selector!
+   */
+
+
   @Select(SomeStateNameState.msgSelector) msg$: Observable<string>;
 
   constructor(private store: Store) {}
@@ -232,6 +261,8 @@ export class SomeComponentComponent implements OnInit {
 ```
 
 #### Using @Select and @Dispatch Decorators in a Service
+
+**Best Practice:** If you handle with **Action Handlers**, you should use a service. See the example below, how easy it is:
 
 ```ts
 import { Injectable } from '@angular/core';
