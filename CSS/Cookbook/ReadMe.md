@@ -4,17 +4,18 @@
 
 <!-- code_chunk_output -->
 
-- [Google Fonts (Angular & Co.)](#google-fonts-angular-co)
+- [Google Fonts (Angular & Co.)](#google-fonts-angular--co)
 - [Background Image (Color Linear Gradient)](#background-image-color-linear-gradient)
 - [Using OK sign (&#10004;)](#using-ok-sign-10004)
 - [Working with Text in Scalable Vector Graphics (SVG)](#working-with-text-in-scalable-vector-graphics-svg)
 - [Breaking Words and Lines](#breaking-words-and-lines)
-- [Hypens (Bindestriche-Silbentrennung) & Breakpoints](#hypens-bindestriche-silbentrennung-breakpoints)
+- [Hypens (Bindestriche-Silbentrennung) & Breakpoints](#hypens-bindestriche-silbentrennung--breakpoints)
 - [Styling `hr`](#styling-hr)
 - [Min Font Size](#min-font-size)
 - [Simple TypeWriter Animation](#simple-typewriter-animation)
 - [Rotating an Image](#rotating-an-image)
 - [Defining Style Within Angular Template](#defining-style-within-angular-template)
+- [Textcolor with Gradient Trick (CSS)](#textcolor-with-gradient-trick-css)
 
 <!-- /code_chunk_output -->
 
@@ -211,4 +212,15 @@ Source Code:
     -moz-osx-font-smoothing: grayscale;
   }
 </style>
+```
+
+## Textcolor with Gradient Trick (CSS)
+
+```css
+position: relative;
+white-space: nowrap;
+background: var(--purple-to-blue-horizontal-gradient); /*  <-- */
+background-clip: text; /*  <-- */
+color: transparent; /*  <-- */
+max-width: max-content;
 ```
