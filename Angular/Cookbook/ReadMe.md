@@ -4,6 +4,7 @@
 
 <!-- code_chunk_output -->
 
+- [Install a certain Angular Version (without changing the existing angular/cli)](#install-a-certain-angular-version-without-changing-the-existing-angularcli)
 - [Route/Routing Issues on Server (useHash)](#routerouting-issues-on-server-usehash)
 - [Dividing a Form into multiple components](#dividing-a-form-into-multiple-components)
   - [PARENT](#parent)
@@ -24,6 +25,14 @@
 - [\*ngIfAnd with Observables in Templates](#ngifand-with-observables-in-templates)
 
 <!-- /code_chunk_output -->
+
+## Install a certain Angular Version (without changing the existing angular/cli)
+
+There is no parameter to set the version. The used angular/cli version determines the Angular version. If you don't want to change your current angular/cli version, you can use npx to install a certain Angular version.
+
+```shell
+npx -p @angular/cli@15 ng new project-name # Angular 15
+```
 
 ## Route/Routing Issues on Server (useHash)
 
