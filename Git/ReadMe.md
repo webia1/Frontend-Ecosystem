@@ -11,6 +11,7 @@
 - [Git Pull and reset/ignore local changes](#git-pull-and-resetignore-local-changes)
 - [Git Show Remote Git Repository Url](#git-show-remote-git-repository-url)
 - [List local and upstream branches](#list-local-and-upstream-branches)
+- [Prune Remote Branches](#prune-remote-branches)
 - [Sort remote branched by up-to-dateness (committer date)](#sort-remote-branched-by-up-to-dateness-committer-date)
 - [Git Cherry Pick](#git-cherry-pick)
 - [Git Diff](#git-diff)
@@ -95,6 +96,11 @@ Auto push of new branches
     generated/
     *.backup
     !someException.bak
+
+If something cannot be ignored, even it is in the .gitignore file, then it is probably already tracked by Git. In this case you have to remove it from the index:
+
+    git rm --cached folder/file.txt
+    git rm -r --cached .nx  // remove folder recursively
 
 ## Stop ignoring cases, just be insensitive
 
