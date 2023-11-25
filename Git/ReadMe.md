@@ -5,7 +5,7 @@
 <!-- code_chunk_output -->
 
 - [First Steps](#first-steps)
-- [.gitignore](#gitignore)
+- [.gitignore (CACHED vs. UNTRACKED)](#gitignore-cached-vs-untracked)
 - [Stop ignoring cases, just be insensitive](#stop-ignoring-cases-just-be-insensitive)
 - [Show just the current branch](#show-just-the-current-branch)
 - [Git Pull and reset/ignore local changes](#git-pull-and-resetignore-local-changes)
@@ -90,7 +90,7 @@ Auto push of new branches
 
     git config --global --add --bool push.autoSetupRemote true
 
-## .gitignore
+## .gitignore (CACHED vs. UNTRACKED)
 
     folder/file.txt
     generated/
