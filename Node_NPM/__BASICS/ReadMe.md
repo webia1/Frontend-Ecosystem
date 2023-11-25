@@ -244,7 +244,7 @@ npm config get msvs_version
 
 #### Installing directly from GitHub
 
-`npm install https://github.com/repo/npm_module.git --save`
+    npm install https://github.com/repo/npm_module.git --save
 
 ### Brew node / npm Problem: Error: Cannot find module ‘semver’
 
