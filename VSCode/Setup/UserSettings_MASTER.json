@@ -772,9 +772,7 @@
   "typescript.referencesCodeLens.showOnAllFunctions": false,
   "typescript.updateImportsOnFileMove.enabled": "always",
   "workbench.colorCustomizations": {
-    "activityBar.border": "#711173",
     "editor.background": "#202026",
-    "editorGroupHeader.tabsBorder": "#711173",
     "editorUnnecessaryCode.border": "#fd7403dc",
     "panel.border": "#711173",
     "panelTitle.activeBorder": "#ffc400",
@@ -795,7 +793,6 @@
     "terminal.ansiWhite": "#d1f7fd",
     "terminal.ansiYellow": "#ffe600",
     "terminal.background": "#131212",
-    "terminal.border": "#711173",
     "terminal.foreground": "#bcf487d7",
     "titleBar.activeBackground": "#ffc4002a",
     "titleBar.activeForeground": "#ffffff",
