@@ -13,6 +13,7 @@
 | Astonished | Erstaunt |
 | Awestruck | Ehrfürchtig |
 | Awkward | Peinlich |
+| Baffled | Verblüfft |
 | Bewildered | Verwirrt |
 | Bittersweet | Bittersüß |
 | Blissful | Glückselig |
@@ -20,6 +21,9 @@
 | Bored | Gelangweilt |
 | Calm | Ruhig |
 | Cautious | Vorsichtig |
+| Cheerful | Fröhlich |
+| Comfortable | Wohl |
+| Clueless | Ahnungslos |
 | Composed | Gelassen |
 | Confused | Verwirrt |
 | Content | Zufrieden |
@@ -44,6 +48,8 @@
 | Grumpy | Grantig |
 | Guilty | Schuldig |
 | Happy | Glücklich |
+| Heartbroken | Herzzerreißend |
+| Helpless | Hilflos |
 | Hopeful | Hoffnungsvoll |
 | Hopeless | Hoffnungslos |
 | Humbled | Demütig |
@@ -65,6 +71,8 @@
 | Overwhelmed | Überfordert |
 | Overwhelmed | Überwältigt |
 | Pensive | Nachdenklich |
+| Perplexed | Verblüfft |
+| Pessimistic | Pessimistisch |
 | Playful | Verspielt |
 | Proud | Stolz |
 | Regretful | Bedauernd |
