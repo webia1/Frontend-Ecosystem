@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0"
+    />
+    <title>SVG Examples</title>
+    <style>
+      .logo-container {
+        background-color: transparent;
+      }
+      .svg {
+        background-color: yellow;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="logo-container">
+      <svg
+        width="100%"
+        height="100%"
+        viewBox="0 0 100 100"
+        class="svg"
+        version="1.1"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          d="M 10 10 L 90 10"
+          stroke="black"
+          stroke-width="1"
+          fill="none"
+        >
+          <animate
+            attributeName="stroke-dasharray"
+            from="0,10"
+            to="10,0"
+            dur="3s"
+            fill="freeze"
+          />
+        </path>
+      </svg>
+    </div>
+  </body>
+</html>
