@@ -19,8 +19,7 @@ hr{
   width:105px;
   border:none;
   border-radius: 3px;
-  border-left:15px solid #f00000;
-  border-right:15px solid #300000;
+
   animation: kittAnimation 1s infinite ease-in-out alternate;
 }
 
@@ -29,8 +28,7 @@ hr:before{
   display:inline-block;
   width:15px;
   height:15px;
-  border-left:15px solid #c00000;
-  border-right:15px solid #600000;
+
   animation: kittAnimationBefore 1s infinite ease-in-out alternate;
 }
 
@@ -39,9 +37,8 @@ hr:after{
   display:inline-block;
   width:15px;
   height:15px;
-  border-left:15px solid #300000;
-  background-color:#300000;
-  border-right:15px solid #300000;
+  background-color: black;
+
   animation: kittAnimationAfter 1s infinite ease-in-out alternate;
 }
 
@@ -50,58 +47,58 @@ hr:after{
 
 @keyframes kittAnimation {
    0% {
-      background-color:#300000;
+      background-color: black;
       border-left:15px solid #f00000;
-      border-right:15px solid #300000;
+      border-right:15px solid  black;
    }
    10% {
-      background-color:#300000;
+      background-color: black;
       border-left:15px solid #f00000;
-      border-right:15px solid #300000;
+      border-right:15px solid  black;
    }
    20% {
-      background-color:#300000;
+      background-color: black;
       border-left:15px solid #c00000;
-      border-right:15px solid #300000;
+      border-right:15px solid  black;
    }
    30% {
-      background-color:#300000;
+      background-color: black;
       border-left:15px solid #a00000;
-      border-right:15px solid #300000;
+      border-right:15px solid  black;
    }
    40% {
-      background-color:#300000;
-      border-left:15px solid #600000;
-      border-right:15px solid #300000;
+      background-color: black;
+      border-left:15px solid #390202;
+      border-right:15px solid  black;
    }
    50% {
-      background-color:#600000;
-      border-left:15px solid #300000;
-      border-right:15px solid #300000;
+      background-color:#390202;
+      border-left:15px solid  black;
+      border-right:15px solid  black;
    }
    60% {
       background-color:#a00000;
-      border-left:15px solid #300000;
-      border-right:15px solid #600000;
+      border-left:15px solid  black;
+      border-right:15px solid #390202;
    }
    70% {
       background-color:#c00000;
-      border-left:15px solid #300000;
+      border-left:15px solid  black;
       border-right:15px solid #a00000;
    }
    80% {
       background-color:#f00000;
-      border-left:15px solid #300000;
+      border-left:15px solid  black;
       border-right:15px solid #c00000;
    }
    90% {
       background-color:#c00000;
-      border-left:15px solid #300000;
+      border-left:15px solid  black;
       border-right:15px solid #f00000;
    }
    100% {
       background-color:#c00000;
-      border-left:15px solid #300000;
+      border-left:15px solid  black;
       border-right:15px solid #f00000;
    }
 }
@@ -110,12 +107,12 @@ hr:after{
    0% {
       background-color:#a00000;
       border-left:15px solid #c00000;
-      border-right:15px solid #600000;
+      border-right:15px solid #390202;
    }
    10% {
       background-color:#a00000;
       border-left:15px solid #c00000;
-      border-right:15px solid #600000;
+      border-right:15px solid #390202;
    }
    20% {
       background-color:#c00000;
@@ -134,61 +131,61 @@ hr:after{
    }
    50% {
       background-color:#a00000;
-      border-left:15px solid #600000;
+      border-left:15px solid #390202;
       border-right:15px solid #c00000;
    }
    60% {
-      background-color:#600000;
-      border-left:15px solid #300000;
+      background-color:#390202;
+      border-left:15px solid  black;
       border-right:15px solid #a00000;
    }
    70% {
-      background-color:#300000;
-      border-left:15px solid #300000;
-      border-right:15px solid #600000;
+      background-color: black;
+      border-left:15px solid  black;
+      border-right:15px solid #390202;
    }
    80% {
-      background-color:#300000;
-      border-left:15px solid #300000;
-      border-right:15px solid #300000;
+      background-color: black;
+      border-left:15px solid  black;
+      border-right:15px solid  black;
    }
    90% {
-      background-color:#300000;
-      border-left:15px solid #300000;
-      border-right:15px solid #300000;
+      background-color: black;
+      border-left:15px solid  black;
+      border-right:15px solid  black;
    }
    100% {
-      background-color:#300000;
-      border-left:15px solid #300000;
-      border-right:15px solid #300000;
+      background-color: black;
+      border-left:15px solid  black;
+      border-right:15px solid  black;
    }
 }
 
 @keyframes kittAnimationAfter {
    0% {
-      background-color:#300000;
-      border-left:15px solid #300000;
-      border-right:15px solid #300000;
+      background-color: black;
+      border-left:15px solid  black;
+      border-right:15px solid  black;
    }
    10% {
-      background-color:#300000;
-      border-left:15px solid #300000;
-      border-right:15px solid #300000;
+      background-color: black;
+      border-left:15px solid  black;
+      border-right:15px solid  black;
    }
    20% {
-      background-color:#300000;
-      border-left:15px solid #600000;
-      border-right:15px solid #300000;
+      background-color: black;
+      border-left:15px solid #390202;
+      border-right:15px solid  black;
    }
    30% {
-      background-color:#600000;
+      background-color:#390202;
       border-left:15px solid #a00000;
-      border-right:15px solid #300000;
+      border-right:15px solid  black;
    }
    40% {
       background-color:#a00000;
       border-left:15px solid #c00000;
-      border-right:15px solid #600000;
+      border-right:15px solid #390202;
    }
    50% {
       background-color:#c00000;
@@ -207,17 +204,17 @@ hr:after{
    }
    80% {
       background-color:#a00000;
-      border-left:15px solid #600000;
+      border-left:15px solid #390202;
       border-right:15px solid #c00000;
    }
    90% {
-      background-color:#600000;
-      border-left:15px solid #300000;
+      background-color:#390202;
+      border-left:15px solid  black;
       border-right:15px solid #a00000;
    }
    100% {
-      background-color:#600000;
-      border-left:15px solid #300000;
+      background-color:#390202;
+      border-left:15px solid  black;
       border-right:15px solid #a00000;
    }
 }
