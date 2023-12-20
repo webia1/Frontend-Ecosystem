@@ -17,6 +17,7 @@
 - [Defining Style Within Angular Template](#defining-style-within-angular-template)
 - [Textcolor with Gradient Trick (CSS)](#textcolor-with-gradient-trick-css)
 - [Image Filters](#image-filters)
+- [Shake on Invalid Input](#shake-on-invalid-input)
 
 <!-- /code_chunk_output -->
 
@@ -232,5 +233,32 @@ max-width: max-content;
 .someImageClass {
   filter: brightness(0.8) contrast(1.2) saturate(1.2) blur(1px);
   filter: backdrop-shadow(0 0 0.75rem #000000);
+}
+```
+
+## Shake on Invalid Input
+
+```scss
+/**
+ * Shake on invalid input
+ */
+
+input:invalid {
+  animation: shake-on-invalid 100ms;
+}
+
+@keyframes shake-on-invalid {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+
+  25% {
+    transform: translateX(0.25rem);
+  }
+
+  75% {
+    transform: translateX(-0.25rem);
+  }
 }
 ```
