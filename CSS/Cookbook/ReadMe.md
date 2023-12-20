@@ -18,6 +18,7 @@
 - [Textcolor with Gradient Trick (CSS)](#textcolor-with-gradient-trick-css)
 - [Image Filters](#image-filters)
 - [Shake on Invalid Input](#shake-on-invalid-input)
+- [Online Links](#online-links)
 
 <!-- /code_chunk_output -->
 
@@ -262,3 +263,7 @@ input:invalid {
   }
 }
 ```
+
+## Online Links
+
+- [Footer Menu](https://www.tiktok.com/@www.coding97/video/7303679768359210273)
