@@ -16,6 +16,7 @@
 - [Rotating an Image](#rotating-an-image)
 - [Defining Style Within Angular Template](#defining-style-within-angular-template)
 - [Textcolor with Gradient Trick (CSS)](#textcolor-with-gradient-trick-css)
+- [Image Filters](#image-filters)
 
 <!-- /code_chunk_output -->
 
@@ -223,4 +224,13 @@ background: var(--purple-to-blue-horizontal-gradient); /*  <-- */
 background-clip: text; /*  <-- */
 color: transparent; /*  <-- */
 max-width: max-content;
+```
+
+## Image Filters
+
+```css
+.someImageClass {
+  filter: brightness(0.8) contrast(1.2) saturate(1.2) blur(1px);
+  filter: backdrop-shadow(0 0 0.75rem #000000);
+}
 ```
