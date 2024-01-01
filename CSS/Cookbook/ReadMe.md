@@ -4,7 +4,7 @@
 
 <!-- code_chunk_output -->
 
-- [Google Fonts (Angular & Co.)](#google-fonts-angular--co)
+- [Offline Google Fonts (Angular & Co.)](#offline-google-fonts-angular--co)
 - [Background Image (Color Linear Gradient)](#background-image-color-linear-gradient)
 - [Using OK sign (&#10004;)](#using-ok-sign-10004)
 - [Working with Text in Scalable Vector Graphics (SVG)](#working-with-text-in-scalable-vector-graphics-svg)
@@ -22,12 +22,12 @@
 
 <!-- /code_chunk_output -->
 
-## Google Fonts (Angular & Co.)
+## Offline Google Fonts (Angular & Co.)
 
 > See [Google Fonts Helper -> Example: EB Garamond](https://google-webfonts-helper.herokuapp.com/fonts/eb-garamond?subsets=latin)
 
-1. Download Fonts into e.g. assets/fonts/eb-garamond/.. (use the link above)
-2. Create a File e.g. assets/scss/fonts.scss and integrate font
+1) Download Fonts into e.g. assets/fonts/eb-garamond/.. (use the link above)
+2) Create a File e.g. assets/scss/fonts.scss and integrate font
 
 ```scss
 @font-face {
@@ -51,13 +51,26 @@
 }
 ```
 
-3. import into style.css
+BTW: Bulletproof Font Face Syntax in General (see [CSS Tricks](https://css-tricks.com/snippets/css/using-font-face/))
+
+```scss
+@font-face {
+	font-family: 'MyWebFont';
+	src: url('webfont.eot'); /* IE9 Compat Modes */
+	src: url('webfont.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+	     url('webfont.woff') format('woff'), /* Modern Browsers */
+	     url('webfont.ttf')  format('truetype'), /* Safari, Android, iOS */
+	     url('webfont.svg#svgFontName') format('svg'); /* Legacy iOS */
+	}
+```
+
+3) import into style.css
 
 ```scss
 @import 'assets/scss/fonts.scss';
 ```
 
-4. Use it e.g.
+4) Use it e.g.
 
 ```scss
 .cTitle1 {
@@ -91,6 +104,25 @@ Link2: https://stackoverflow.com/questions/9963576/ok-or-accepted-symbol-in-html
 [>> Here](https://www.hongkiat.com/blog/scalable-vector-graphics-text/)
 
 ## Breaking Words and Lines
+
+Use a simple SCSS Mixin:
+
+```scss
+@mixin wordBreakStd() {
+  word-break: normal;
+  hyphens: auto;
+  overflow-wrap: break-word;
+  white-space: normal;
+}
+```
+
+and use it like this:
+
+```scss
+.cSomeClass {
+  @include wordBreakStd();
+}
+```
 
 [Here is a long explanation](https://css-tricks.com/where-lines-break-is-complicated-heres-all-the-related-css-and-html/) and an excerpt here:
 
