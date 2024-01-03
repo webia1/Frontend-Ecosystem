@@ -19,7 +19,7 @@
 
 <!-- code_chunk_output -->
 
-- [TypeScript 5.2+ Support](#typescript-52-support)
+- [TypeScript 5.2+ Support (Currently 5.3.3)](#typescript-52-support-currently-533)
 - [New Syntax for Control Flow in Templates](#new-syntax-for-control-flow-in-templates)
 - [Automatic Migration to Build-in Control Flow](#automatic-migration-to-build-in-control-flow)
 - [SSR (Server Side Rendering) Improvements](#ssr-server-side-rendering-improvements)
@@ -39,7 +39,7 @@
 
 <!-- /code_chunk_output -->
 
-## TypeScript 5.2+ Support
+## TypeScript 5.2+ Support (Currently 5.3.3)
 
 Current Version at the time of writing is 5.3.3
 
