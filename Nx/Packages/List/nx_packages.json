@@ -1,0 +1,22 @@
+[
+  "@nx/angular",
+  "@nx/cypress",
+  "@nx/detox",
+  "@nx/devkit",
+  "@nx/eslint",
+  "@nx/expo",
+  "@nx/jest",
+  "@nx/js",
+  "@nx/linter",
+  "@nx/nest",
+  "@nx/next",
+  "@nx/node",
+  "@nx/nx-linux-x64-gnu",
+  "@nx/nx-linux-x64-musl",
+  "@nx/playwright",
+  "@nx/plugin",
+  "@nx/react",
+  "@nx/remix",
+  "@nx/vite",
+  "@nx/web"
+]
