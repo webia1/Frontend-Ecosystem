@@ -7,8 +7,10 @@
 <!-- code_chunk_output -->
 
 - [Overview](#overview)
+- [Introduction](#introduction)
 - [Getting Started](#getting-started)
   - [Install Nx CLI Globally](#install-nx-cli-globally)
+    - [Add Other Nx CLI's (Locally)](#add-other-nx-clis-locally)
   - [Create a workspace](#create-a-workspace)
   - [Add a project](#add-a-project)
   - [Rename a project](#rename-a-project)
@@ -60,12 +62,36 @@
 - Schematics
 - Executors
 
+## Introduction
+
+Short summary of the current NxMonoRepo packages and their purpose.
+
+1. **Storybook Integration**: Support for frameworks like React, Angular, Vue, configuration and interaction tests.
+2. **Cypress**: Component testing and migration guides.
+3. **Deno**: Project support and serverless deployment.
+4. **Next.js and Nuxt**: Plugin configuration and deployment support.
+5. **Vite and Webpack**: Configurations and plugins.
+6. **Module Federation**: Creating Host and Remote applications, module federation.
+7. **Enforce Module Boundaries**: Various tagging and import options.
+8. **Installation and Updates**: Installation guides for different repository types.
+9. **Tips and Tricks**: ESLint configuration with TypeScript, TypeScript Batch Mode, environment variables, etc.
+10. **Troubleshooting**: Solving circular dependencies, installation issues, cache misses.
+11. **Nx Console**: Telemetry, command generation, keyboard shortcuts.
+12. **Integration with Various Technologies**: Creating projects with Express, Lit, Solid, Qwik, Rust, .NET, Nuxt, Astro, Vue, Svelte, Fastify, and more.
+13. **Benchmarks**: Various performance measurements.
+
 ## Getting Started
 
 ### Install Nx CLI Globally
 
 ```shell
 npm i -g @nrwl/cli@latest
+```
+
+#### Add Other Nx CLI's (Locally)
+
+```shell
+npm i -D @nx/linter @nx/storybook @nx/workspace @nx/devkit @nx/eslint @nx/eslint-plugin @nx/jest @nx/js @nx/playwright @nx/workspace
 ```
 
 ### Create a workspace
