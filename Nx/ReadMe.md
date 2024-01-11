@@ -10,8 +10,9 @@
 - [Introduction](#introduction)
 - [Getting Started](#getting-started)
   - [Install Nx CLI Globally](#install-nx-cli-globally)
-    - [Add Other Nx CLI's (Locally)](#add-other-nx-clis-locally)
   - [Create a workspace](#create-a-workspace)
+    - [Basic Installation Packages](#basic-installation-packages)
+    - [Add Other Nx-Sub-Packages (DevDependencies)](#add-other-nx-sub-packages-devdependencies)
   - [Add a project](#add-a-project)
   - [Rename a project](#rename-a-project)
   - [Add Thirdpary](#add-thirdpary)
@@ -88,17 +89,29 @@ Short summary of the current NxMonoRepo packages and their purpose.
 npm i -g @nrwl/cli@latest
 ```
 
-#### Add Other Nx CLI's (Locally)
-
-```shell
-npm i -D @nx/linter @nx/storybook @nx/workspace @nx/devkit @nx/eslint @nx/eslint-plugin @nx/jest @nx/js @nx/playwright @nx/workspace
-```
-
 ### Create a workspace
 
 ```shell
 npx create-nx-workspace@latest
 npm i -g @nrwl/cli@latest
+```
+
+#### Basic Installation Packages
+
+Basic installation includes e.g. these packages:
+
+- @nx/devkit
+- @nx/eslint
+- @nx/eslint-plugin
+- @nx/jest
+- @nx/js
+- @nx/playwright (or @nx/cypress)
+- @nx/workspace
+
+#### Add Other Nx-Sub-Packages (DevDependencies)
+
+```shell
+npm i -D @nx/linter @nx/nest @nx/node @nx/plugin @nx/storybook @nx/web
 ```
 
 ### Add a project
