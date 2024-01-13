@@ -4,7 +4,7 @@
 
 <!-- code_chunk_output -->
 
-- [List of Packages](#list-of-packages)
+- [List of Nx Packages (Last Update: 2024-10-01)](#list-of-nx-packages-last-update-2024-10-01)
 - [Short Descriptions](#short-descriptions)
   - [@nx/angular](#nxangular)
   - [@nx/cypress](#nxcypress)
@@ -37,7 +37,7 @@
 
 <!-- /code_chunk_output -->
 
-## List of Packages
+## List of Nx Packages (Last Update: 2024-10-01)
 
 @import "List/nx_packages.json"
 
