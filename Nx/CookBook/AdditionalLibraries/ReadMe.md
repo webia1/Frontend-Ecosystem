@@ -15,7 +15,6 @@
 
 <!-- /code_chunk_output -->
 
-
 ## Standard Libraries
 
 They will be installed automatically when you create a new App.
@@ -49,6 +48,7 @@ npm i -D @types/passport
 npm i -D cross-env # for cross environment variables
 npm i -D ts-morph chroma-js # for generators
 npm i -D ts-loader # Import HTML for OpenAPI Method Descriptions
+npm i -D html-loader # Import HTML for OpenAPI Method Descriptions
 ```
 
 #### Use HTML Snippets in OpenAPI Method Descriptions
