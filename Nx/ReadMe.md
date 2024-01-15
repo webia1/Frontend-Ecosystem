@@ -15,7 +15,8 @@ npm i -S @angular/cdk @angular/material @auth0/angular-jwt
 # NestJS Dependencies
 npm i -S @nestjs/common @nestjs/core
 npm i -S @nestjs/jwt @nestjs/passport @nestjs/typeorm
-npm i -S @nestjs/mongoose  @nestjs/platform-express @nestjs/swagger
+npm i -S @nestjs/swagger
+npm i -S @nestjs/mongoose  @nestjs/platform-express
 npm i -S bcrypt bcryptjs passport passport-jwt
 npm i -S colorette
 npm i -S jsonwebtoken
@@ -30,5 +31,6 @@ npm i -D @nestjs/mapped-types
 npm i -D @types/bcrypt
 npm i -D @types/passport
 npm i -D cross-env # for cross environment variables
-npm i -D ts-morph # for generators
+npm i -D ts-morph chroma-js # for generators
+npm i -D ts-loader # Import HTML for OpenAPI Method Descriptions
 ```
