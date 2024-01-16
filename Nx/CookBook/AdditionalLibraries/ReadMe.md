@@ -11,6 +11,7 @@
       - [Use HTML Snippets in OpenAPI Method Descriptions](#use-html-snippets-in-openapi-method-descriptions)
         - [html.d.ts](#htmldts)
         - [tsconfig.json](#tsconfigjson)
+        - [tsconfig.app.json & tsconfig.spec.json](#tsconfigappjson--tsconfigspecjson)
         - [webpack.config.ts](#webpackconfigts)
 
 <!-- /code_chunk_output -->
@@ -30,14 +31,15 @@ npm i -S @angular/cdk @angular/material @auth0/angular-jwt
 # NestJS Dependencies
 npm i -S @nestjs/common @nestjs/core
 npm i -S @nestjs/jwt @nestjs/passport @nestjs/typeorm
-npm i -S @nestjs/swagger
+npm i -S @nestjs/swagger cookie-parser express-session
 npm i -S @nestjs/mongoose  @nestjs/platform-express
-npm i -S bcrypt bcryptjs passport passport-jwt
+npm i -S bcrypt bcryptjs passport passport-jwt @nestjs/jwt
 npm i -S colorette
 npm i -S jsonwebtoken
 npm i -S material-icons
 npm i -S ngx-cookie-service ngx-toastr
 npm i -S pg postgres typeorm
+npm i -S @ngx-translate/core @ngx-translate/http-loader
 # NestJS DevDependencies
 npm i -D @nestjs/devtools-integration
 npm i -D @nestjs/testing
@@ -79,6 +81,22 @@ npm i -D ts-loader
       }
     ]
   }
+}
+```
+
+##### tsconfig.app.json & tsconfig.spec.json
+
+```json
+{
+  "compilerOptions": {
+    "emitDecoratorMetadata": true,
+    "module": "commonjs",
+    "outDir": "../../../dist/out-tsc",
+    "target": "es2021"
+  },
+  "exclude": ["jest.config.ts", "src/**/*.spec.ts", "src/**/*.test.ts"],
+  "extends": "./tsconfig.json",
+  "include": ["src/**/*.ts", "html.d.ts"]
 }
 ```
 
