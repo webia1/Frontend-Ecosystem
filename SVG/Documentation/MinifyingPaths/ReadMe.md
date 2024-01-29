@@ -15,13 +15,22 @@ xmlns="http://www.w3.org/2000/svg">
   <path d="M25 43 L50 43 L50 30 L75 50 L50 70 L50 57 L25 57 Z"
     opacity="1" fill="#fff" paint-order="fill markers stroke" />
 </svg>
-````
+```
 
 ## Example of Minified Path
 
 ```plaintext
 d="M25 43 L50 43 L50 30 L75 50 L50 70 L50 57 L25 57 Z"
 d="M25 43h25V30l25 20-25 20V57H25z"
+
+1) x(25) y(43) -> x(50) y(43) (horizontal)
+2) x(50) y(43) -> x(50) y(30) (vertical)
+3) x(50) y(30) -> x(75) y(50) (diagonal)
+4) x(75) y(50) -> x(50) y(70) (diagonal)
+5) x(50) y(70) -> x(50) y(57) (vertical)
+6) x(50) y(57) -> x(25) y(57) (horizontal)
+7) x(25) y(57) -> x(25) y(43) (vertical)
+
 ```
 
 ### Erklärung
