@@ -1,0 +1,53 @@
+{
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "name": "<app-name>",
+  "projectType": "application",
+  "sourceRoot": "apps/middleware/<app-name>/src",
+  "tags": [],
+  "targets": {
+    "build": {
+      "configurations": {
+        "development": {},
+        "production": {}
+      },
+      "defaultConfiguration": "production",
+      "executor": "@nx/webpack:webpack",
+      "options": {
+        "assets": ["apps/middleware/<app-name>/src/assets"],
+        "compiler": "tsc",
+        "main": "apps/middleware/<app-name>/src/main.ts",
+        "outputPath": "dist/apps/middleware/<app-name>",
+        "target": "node",
+        "tsConfig": "apps/middleware/<app-name>/tsconfig.app.json",
+        "webpackConfig": "apps/middleware/<app-name>/webpack.config.ts"
+      },
+      "outputs": ["{options.outputPath}"]
+    },
+    "lint": {
+      "executor": "@nx/eslint:lint",
+      "outputs": ["{options.outputFile}"]
+    },
+    "serve": {
+      "configurations": {
+        "development": {
+          "buildTarget": "<app-name>:build:development"
+        },
+        "production": {
+          "buildTarget": "<app-name>:build:production"
+        }
+      },
+      "defaultConfiguration": "development",
+      "executor": "@nx/js:node",
+      "options": {
+        "buildTarget": "<app-name>:build"
+      }
+    },
+    "test": {
+      "executor": "@nx/jest:jest",
+      "options": {
+        "jestConfig": "apps/middleware/<app-name>/jest.config.ts"
+      },
+      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"]
+    }
+  }
+}

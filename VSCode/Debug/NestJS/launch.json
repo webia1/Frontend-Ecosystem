@@ -1,22 +1,10 @@
 {
   "configurations": [
     {
-      "console": "integratedTerminal",
-      "env": {
-        "NODE_TLS_REJECT_UNAUTHORIZED": "0",
-        "TS_NODE_PROJECT": "${workspaceFolder}/apps/middleware/<app-name>/tsconfig.app.json"
-      },
-      "name": "Debug NestJS",
-      "request": "launch",
-      "restart": true,
-      "runtimeArgs": [
-        "run",
-        "<name-of-npm-start-script>",
-        "--",
-        "--inspect-brk"
-      ],
-      "runtimeExecutable": "npm",
-      "skipFiles": ["<node_internals>/**"],
+      "cwd": "${workspaceFolder}/apps/middleware/ladder-mw",
+      "name": "Attach Ladder Middleware",
+      "port": 9229,
+      "request": "attach",
       "type": "node"
     }
   ],
