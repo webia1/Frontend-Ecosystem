@@ -103,10 +103,8 @@ npm i -D ts-loader
 ##### webpack.config.ts
 
 ```ts
-// webpack.config.ts
 import { composePlugins, withNx } from '@nx/webpack';
 
-// Nx plugins for webpack.
 module.exports = composePlugins(withNx(), (config) => {
   config.module = {
     rules: [
@@ -116,12 +114,18 @@ module.exports = composePlugins(withNx(), (config) => {
         use: [
           {
             loader: require.resolve('html-loader'),
-            options: { minimize: true, esModule: false },
+            options: { minimize: true, esModule: true },
           },
         ],
       },
     ],
   };
+  config.resolve = {
+    extensions: ['.ts', '.tsx', '.mjs', '.js', '.jsx', '.html'],
+  };
+  config.devtool = 'source-map';
+  // console.log(config);
   return config;
 });
+
 ```
