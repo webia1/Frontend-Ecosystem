@@ -20,57 +20,59 @@ This document is aimed at professionals with solid TypeScript knowledge. The ver
 
 ## Preface
 
-Here, I want to first address Types & special constructs because from time to time, I have colleagues who could write a doctoral thesis on Types, and I want to show how much simpler many things can function (and should).
+In the realms of TypeScript and its arcane constructs, I've witnessed colleagues nearly pen dissertations on Types alone. My mission? To unveil the elegance of simplicity in coding practices that often seems shrouded in unnecessary complexity.
 
-If I find time, I'll add more topics. **I'm also open to suggestions and contributions.**
+Time permitting, this tome shall expand its horizons. Your wisdom and contributions are not just welcome but eagerly awaited.
 
-Even though some basic topics are covered, this document starts where other books end. That is, you will not read this information in any other book in this way.
+Dare to venture where no book has before. Here, we transcend traditional boundaries, offering insights you won't find elsewhere. This narrative isn't about glorifying TypeScript; it's an ode to the art of Enterprise Architecture and Development through the TypeScript lens. Framework agnostic, the principles herein gracefully dance across domains.
 
-This document will not find great acceptance in a TypeScript community, because here TypeScript is not the star, but rather **it is the way** one approaches Enterprise Architecture or Development while using TypeScript. No matter which framework you use, the disciplines here are transferable to many areas.
+Targeting the connoisseurs of TypeScript, the title is a deliberate choice. Master the art of these opinionated guidelines, and you may just find yourself a coveted ally in our future endeavors.
 
-Since I want to address **TypeScript experts**, I have chosen the title accordingly. Anyone who masters these opinionated guidelines here, I might want to win over for our future projects.
+Should you spot an error, do enlighten me. Alternatively, your insights might just enrich our collective intellect, sparing us the ordeal of starting from scratch on every project.
 
-Thus, you could correct me if I'm wrong, and if not, I might gain additional colleagues with whom I don't have to start from Adam and Eve when setting up projects.
+Though not my daily desire, laying a robust foundation is pivotal for any architectural masterpiece. A shaky start promises a tremulous future. My aspirations for precision might border on the ambitious, yet I believe in setting the bar high – the higher, the merrier.
 
-While it's not necessarily the work I want to do every time, it is one of the very important foundational levels in the overall architecture, and if the foundation doesn't function properly, it's difficult to build upon it. I hope it doesn't sound arrogant, but at least this level of precision or understanding is what I expect. If someone offers higher precision than this, then it's even more desirable. My accuracy in this document should represent the minimum level.
+In this AI-dominated epoch, where machines outperform humans in repetitive tasks, we pivot towards models that resonate with human intellect. It's a return to the basics, executed with unwavering precision.
 
-The models that AIs generate, for example, are difficult for humans to understand. In the age of AI, where recurring processes can be handled much better and more efficiently by AIs and machines, we focus on models that are also comprehensible to humans. Here, we return to the foundation and want to carry out this work with meticulous precision.
-
-And the TypeScript type system and beyond is exactly what we need for this use case.
+Enter the TypeScript type system and beyond – our trusted companion in navigating the complexities of modern development paradigms.
 
 ## Introduction
 
-**TypeScript** encompasses more than just coding; it's a toolkit for crafting robust enterprise applications. In this guide, I'll highlight key practices and tools for leveraging TypeScript's power in enterprise development. While we can't cover every detail here, I'll focus on crucial elements like Types, Decorators, Mixins, and Tools. You can find further details in the [official TypeScript Handbook](https://www.typescriptlang.org/docs/handbook/intro.html)
+Venture into the world of **TypeScript**, and you'll discover it's more than a mere coding language; it's a craftsman's toolset for sculpting enterprise-level applications.
+
+Within these pages, I'll shine a light on the quintessential practices and instruments for harnessing the formidable capabilities of TypeScript in the realm of enterprise development.
+
+While it's ambitious to encapsulate every nuance, our journey will navigate through the essential territories of Types, Decorators, Mixins, and Tools. For those hungering for more, [official TypeScript Handbook](https://www.typescriptlang.org/docs/handbook/intro.html) awaits with its wealth of knowledge.
 
 ### TypeScript's Type System
 
-TypeScript's type system is the foundation of its power. We will cover this topic in detail in a separate chapter. For now, let's focus on the most important aspects.
+At the heart of TypeScript's might lies its type system, a topic we'll dissect in its own dedicated chapter. For the moment, let us concentrate on its most pivotal facets.
 
 #### Compile Time vs. Runtime
 
-We need to emphasize the first distinction: **Compile time vs. Runtime**.
+Here lies our primary bifurcation: the dichotomy between compile time and runtime.
 
-TypeScript's type system is defined as a compile-time feature, but in reality, it extends beyond that. This sentence alone will drive so many self-proclaimed TypeScript experts insane. :grin:
+TypeScript's type system is ostensibly a compile-time consort, yet it boldly traverses beyond. This very assertion might just ruffle the feathers of the self-anointed TypeScript cognoscenti. 😁
 
-Types can indeed exist at runtime; for instance, **Enums** and **Classes** used as types would also exist at runtime. When utilized correctly, this is a powerful construct. Many books advise avoiding Enums, **but I respectfully disagree**, as elaborated further.
+Indeed, types can traverse the boundary into runtime; Enums and Classes stand testament to this, serving as types beyond the compile-time curtain. Correctly harnessed, this phenomenon is not merely potent but revolutionary. Despite the chorus of caution against Enums, I stand on the side of dissent, with reasons I'll delve into shortly.
 
-Also **Decorators** and **Mixins** are powerful constructs that exist at runtime, but no worries, I won't suggest using them as types, what indeed would be possible too.
+Decorators and Mixins, too, hold their ground in the runtime realm, fear not, I shan't advocate for their use as types—though, intriguingly, the possibility exists.
 
-Though this doesn't mean the type information itself exists at runtime but rather that these constructs have runtime representations, ultimately, it amounts to the same thing.
+Yet, this doesn't equate to type information holding court at runtime. Rather, these constructs boast of tangible runtime embodiments—a distinction with a difference.
 
-That's more of a philosophical discussion topic than a technical one. The fact is, you can use certain constructs as types at runtime. And these constructs have existed since earlier versions, offering both better flexibility and backward compatibility and they are crucial for reusability.  (Examples will follow).
+Such musings edge more into the philosophical than the strictly technical. The truth is, specific constructs can indeed don the mantle of types at runtime. These stalwarts of flexibility and backward compatibility have graced earlier versions, essential for reusability. (Illustrative examples are on the horizon.)
 
-That's for instance is a typical community response:
+And thus, a common retort from the community unfolds:
 
-> It's correct that Enums, Classes, Decorators, and Mixins have runtime representations in JavaScript. However, saying that "types can indeed exist at runtime" might be misleading without clarification. Enums and Classes can be used as types in TypeScript and have corresponding runtime objects in JavaScript, but the TypeScript type information (like interface definitions) does not exist at runtime.
+While it's accurate that Enums, Classes, Decorators, and Mixins manifest within JavaScript's runtime fabric, to claim "types can indeed exist at runtime" may wander into the realms of ambiguity without further context. Enums and Classes, when wielded as types in TypeScript, do indeed have their counterparts in JavaScript's runtime. However, TypeScript's type lore—such as interface definitions—remains a compile-time relic.
 
-If I notice a TypeScript disciple is on the verge of a heart attack, I back off, after all, we don't want to make anyone sick or upset. :)
+Should I sense a TypeScript devotee teetering on the brink of apoplexy, I shall graciously retreat, for our mission is to enlighten, not to afflict. 😃
 
 ## Setup & tsconfig.json
 
-When using a TypeScript-based framework like **Angular** or setting up **Nx** as Monorepo, these frameworks automatically create all the necessary configuration files during setup. However, if you want to start with Vanilla TypeScript, you have to take care of the setup yourself.
+When diving into a TypeScript-based adventure, whether it's navigating the Angular universe or setting up an Nx Monorepo, these frameworks kindly roll out the red carpet, automatically conjuring up all the necessary configuration spells. But, if you're embarking on a journey with Vanilla TypeScript, the wand is in your hand to cast the setup enchantments.
 
-TypeScript-tooling can also assist you in automatically setting up a TypeScript environment:
+Fear not, for the TypeScript-tooling grimoire includes incantations to effortlessly summon a TypeScript environment:
 
 ```shell
 # Install TypeScript globally if not already installed
@@ -90,7 +92,7 @@ Created a new tsconfig.json with:
 
 ```
 
-After running the above commands, a `tsconfig.json` file will be created in the root directory. We need first of all a modern and strict configuration, so we have to update manually. ([See all details online](https://www.typescriptlang.org/tsconfig))
+Upon invoking the above spells, a tsconfig.json scroll will materialize in your root directory. Our quest begins with a need for a modern and stringent configuration; thus, manual enchantments are required. ([Unveil all secrets online](https://www.typescriptlang.org/tsconfig)).
 
 ```json
 {
