@@ -10,7 +10,7 @@
 - [In a NxMonoRepo](#in-a-nxmonorepo)
 - [Installation & Initialisation (Husky & Lint-Staged)](#installation--initialisation-husky--lint-staged)
 - [`pre-commit` Hook](#pre-commit-hook)
-  - [Configure Lin-Staged](#configure-lin-staged)
+  - [Configure Lint-Staged](#configure-lint-staged)
 
 <!-- /code_chunk_output -->
 
@@ -54,7 +54,7 @@ npx lint-staged && npm run lint:all
 
 ```
 
-### Configure Lin-Staged
+### Configure Lint-Staged
 
 Create `.lintstagedrc.json` and:
 
