@@ -50,7 +50,7 @@ Edit `.husky/pre-commit`:
 #!/usr/bin/env sh
 . "$(dirname -- "$0")/_/husky.sh"
 
-npm run lint:all && npx lint-staged
+npx lint-staged && npm run lint:all
 
 ```
 
