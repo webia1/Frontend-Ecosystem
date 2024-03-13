@@ -80,7 +80,7 @@ So finally, you can use this beautiful pandoc table format (You have to set **pa
                                     rows.
 -------------------------------------------------------------
 
-GitHub cannot render the table correctly.
+**GitHub cannot render the table correctly.**
 
 ### Pandoc Lua Filters
 
