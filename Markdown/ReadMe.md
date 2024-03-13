@@ -15,6 +15,14 @@ highlight-style: kate
 
 - [Frontmatter](#frontmatter)
 - [Simple Table Format for Pandoc](#simple-table-format-for-pandoc)
+  - [Pandoc Lua Filters](#pandoc-lua-filters)
+- [VSCode Extension](#vscode-extension)
+  - [Markdown Preview Enhanced](#markdown-preview-enhanced)
+    - [Install Pandoc](#install-pandoc)
+  - [Ebooks & Calibre](#ebooks--calibre)
+    - [Install Calibre on MacOS](#install-calibre-on-macos)
+    - [Set SymLink to ebook-convert](#set-symlink-to-ebook-convert)
+    - [Start writing eBook](#start-writing-ebookhttpsshd101wyygithubiomarkdown-preview-enhancedebookidstart-writing-ebook)
 
 <!-- /code_chunk_output -->
 
@@ -59,8 +67,6 @@ To be absolutely sure, that `prettier` ignores all markdown files, add the follo
 ```
 
 So finally, you can use this beautiful pandoc table format (You have to set **pandoc** as your **default markdown renderer** in `markdown-preview-enhanced`):
-
-```plaintext
 
 -------------------------------------------------------------
  Centered   Default           Right Left
