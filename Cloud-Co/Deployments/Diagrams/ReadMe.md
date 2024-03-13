@@ -51,3 +51,31 @@ digraph G {
     </TABLE> >]
 }
 ```
+
+### PlantUML Azure DevOps Symbols
+
+```plantuml
+@startuml
+title: Azure DevOps Example
+!define AzurePuml https://raw.githubusercontent.com/webia1/Azure-PlantUML/master/dist
+
+!includeurl AzurePuml/AzureCommon.puml
+!includeurl AzurePuml/DevOps/AzureArtifacts.puml
+!includeurl AzurePuml/DevOps/AzureDevOps.puml
+!includeurl AzurePuml/DevOps/AzurePipelines.puml
+!includeurl AzurePuml/DevOps/AzureRepos.puml
+
+AzureDevOps(azureDevOps,"Azure DevOps","Some Project")
+AzureRepos(git,"Azure Git Repo","some-repo")
+AzurePipelines(build_pipeline,"Azure Build Pipeline","name of the build pipeline(s)")
+AzurePipelines(release_pipeline,"Azure Release Pipeline","name of the release pipeline(s)")
+AzureArtifacts(build_artifact,"Build Artifacts","artifacts")
+AzureArtifacts(release_artifact,"Release Artifacts","artifacts")
+azureDevOps->git
+git->build_pipeline : Build
+build_pipeline -right->release_pipeline: Manually
+build_pipeline-->build_artifact : Push
+release_pipeline-->release_artifact : Push
+
+@enduml
+```
