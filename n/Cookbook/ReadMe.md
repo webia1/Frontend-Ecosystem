@@ -13,6 +13,10 @@
   - [Configure npm to use this directory](#configure-npm-to-use-this-directory)
   - [Update your environment variable](#update-your-environment-variable)
   - [Save & Restart your shell session](#save--restart-your-shell-session)
+- [Optional Homebrew Related Steps (if previously installed)](#optional-homebrew-related-steps-if-previously-installed)
+  - [Show Existing Symlinks](#show-existing-symlinks)
+  - [Remove Symlinks](#remove-symlinks)
+  - [Remove Homebrew Node Modules](#remove-homebrew-node-modules)
 
 <!-- /code_chunk_output -->
 
@@ -83,4 +87,24 @@ After completing these steps, you should be able to install global npm packages 
 
 ```shell
 npm i -g typescript
+```
+
+## Optional Homebrew Related Steps (if previously installed)
+
+### Show Existing Symlinks
+
+```shell
+ls -l /opt/homebrew/bin | grep '../lib/node_modules'
+```
+
+### Remove Symlinks
+
+```shell
+find /opt/homebrew/bin -lname '../lib/node_modules/*' -delete
+```
+
+### Remove Homebrew Node Modules
+
+```shell
+rm -rf /opt/homebrew/lib/node_modules
 ```

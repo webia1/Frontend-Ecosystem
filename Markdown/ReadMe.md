@@ -19,6 +19,10 @@ highlight-style: kate
 - [VSCode Extension](#vscode-extension)
   - [Markdown Preview Enhanced](#markdown-preview-enhanced)
     - [Install Pandoc](#install-pandoc)
+  - [Ebooks & Calibre](#ebooks--calibre)
+    - [Install Calibre on MacOS](#install-calibre-on-macos)
+    - [Set SymLink to ebook-convert](#set-symlink-to-ebook-convert)
+    - [Start writing eBook](#start-writing-ebookhttpsshd101wyygithubiomarkdown-preview-enhancedebookidstart-writing-ebook)
 
 <!-- /code_chunk_output -->
 
@@ -37,9 +41,11 @@ highlight-style: kate
 ---
 ```
 
+**TOC** is the table of contents.
+
 But it is better to generate `toc` by `markdown-preview-enchanced`, because you can set here not only the depts of the `toc`, but also the starting level and the end level, e.g. `depthFrom=2 depthTo=4`.
 
-"However, Pandoc can number the chapters and sub-chapters better, something that markdown-preview-enhanced doesn't do as well."
+However, **Pandoc** can **number the chapters and sub-chapters better**, something that markdown-preview-enhanced doesn't do as well.
 
 If you want to create a print document, use pandoc's toc, if you want to read at the internet, use markdown-preview-enhanced's toc. In this file, both are used.
 
@@ -110,3 +116,74 @@ pdflatex
 Further Details:
 
 - [Pandoc](https://pandoc.org/installing.html)
+
+##### Front Matter Example
+
+```yaml
+---
+title: "Document Title"
+output:
+  pdf_document:
+    toc: true
+    number_sections: true
+    highlight: tango
+    fontsize: 11pt
+    geometry: margin=1in
+    papersize: A4
+---
+```
+
+See more online: <https://pandoc.org/MANUAL.html#variables-for-latex>
+
+##### [Pandoc Arguments](https://shd101wyy.github.io/markdown-preview-enhanced/#/pandoc-word?id=pandoc-arguments)
+
+If there are pandoc features you want to use that lack equivalents in the YAML options described above you can still use them by passing custom `pandoc_args`. For example:
+
+```
+---
+title: "Habits"
+output:
+  word_document:
+    pandoc_args: ["--csl", "/var/csl/acs-nano.csl"]
+---
+```
+
+##### [Shared Options](https://shd101wyy.github.io/markdown-preview-enhanced/#/pandoc-word?id=shared-options)
+
+If you want to specify a set of default options to be shared by multiple documents within a directory you can include a file named `_output.yaml` within the directory. Note that no YAML delimiters or enclosing output object are used in this file. For example:
+
+**\_output.yaml**
+
+```
+word_document:
+  highlight: zenburn
+```
+
+All documents located in the same directory as `_output.yaml` will inherit it’s options. Options defined explicitly within documents will override those specified in the shared options file.
+
+### Ebooks & Calibre
+
+#### Install Calibre on MacOS
+
+```shell
+brew install --cask calibre
+```
+
+#### Set SymLink to ebook-convert
+
+```shell
+sudo ln -s /Applications/calibre.app/Contents/MacOS/ebook-convert /usr/local/bin
+```
+
+#### [Start writing eBook](https://shd101wyy.github.io/markdown-preview-enhanced/#/ebook?id=start-writing-ebook)
+
+You can set up a ebook configuration by simply adding `ebook front-matter` into your markdown file.
+
+```
+---
+ebook:
+  theme: github-light.css
+  title: My eBook
+  authors: shd101wyy
+---
+```
