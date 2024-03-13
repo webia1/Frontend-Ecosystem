@@ -15,14 +15,6 @@ highlight-style: kate
 
 - [Frontmatter](#frontmatter)
 - [Simple Table Format for Pandoc](#simple-table-format-for-pandoc)
-  - [Pandoc Lua Filters](#pandoc-lua-filters)
-- [VSCode Extension](#vscode-extension)
-  - [Markdown Preview Enhanced](#markdown-preview-enhanced)
-    - [Install Pandoc](#install-pandoc)
-  - [Ebooks & Calibre](#ebooks--calibre)
-    - [Install Calibre on MacOS](#install-calibre-on-macos)
-    - [Set SymLink to ebook-convert](#set-symlink-to-ebook-convert)
-    - [Start writing eBook](#start-writing-ebookhttpsshd101wyygithubiomarkdown-preview-enhancedebookidstart-writing-ebook)
 
 <!-- /code_chunk_output -->
 
@@ -80,7 +72,9 @@ So finally, you can use this beautiful pandoc table format (You have to set **pa
                                     rows.
 -------------------------------------------------------------
 
-On the other side: Chrome Puppeteer will ignore the alignments, but it will be rendered correctly in the pdf.
+GitHub cannot render the table correctly.
+
+```markdown
 
 ### Pandoc Lua Filters
 
