@@ -1,4 +1,4 @@
-# CSS Selectors (Except)
+# CSS Selectors (Excerpt)
 
 <!-- @import "[TOC]" {cmd="toc" depthFrom=2 depthTo=6 orderedList=false} -->
 
