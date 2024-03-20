@@ -1,15 +1,16 @@
-# Cloud Co - Google/Azure/AWS/CF/..
+# CloudFoundry
 
 <!-- @import "[TOC]" {cmd="toc" depthFrom=1 depthTo=6 orderedList=false} -->
 
 <!-- code_chunk_output -->
 
-- [Cloud Co - Google/Azure/AWS/CF/..](#cloud-co-googleazureawscf)
+- [CloudFoundry](#cloudfoundry)
   - [Cloud Foundry](#cloud-foundry)
     - [Login (MacOS/Zsh)](#login-macoszsh)
     - [Spaces](#spaces)
     - [Target](#target)
     - [Apps](#apps)
+    - [Logs](#logs)
 
 <!-- /code_chunk_output -->
 
@@ -35,27 +36,26 @@ sudo security add-generic-password -s \
 ### Spaces
 
 ```shell
-$ cf spaces
-$ cf t -s <egMYSPACE>          # changes the space (target set space <egMYSPACE>)
+cf spaces
+cf t -s <egMYSPACE>          # changes the space (target set space <egMYSPACE>)
 ```
 
 ### Target
 
 ```shell
-$ cf t                         # shows current target
+cf t                         # shows current target
 ```
 
 ### Apps
 
 ```shell
-$ cf apps                      # shows the apps in the current space
-$ cf delete <APPNAME>          # deletes the app
+cf apps                      # shows the apps in the current space
+cf delete <APPNAME>          # deletes the app
 ```
 
 ### Logs
 
 ```shell
-$ cf logs <APPNAME>            # shows logs for <APPNAME>
-$ cf logs <APPNAME> --recent   # shows recent logs for <APPNAME>
+cf logs <APPNAME>            # shows logs for <APPNAME>
+cf logs <APPNAME> --recent   # shows recent logs for <APPNAME>
 ```
-
