@@ -4,6 +4,7 @@
 
 <!-- code_chunk_output -->
 
+- [Other Documents](#other-documents)
 - [Show only file names without extension](#show-only-file-names-without-extension)
 - [Tree on Windows (cygwin)](#tree-on-windows-cygwin)
 - [Convert CRLFS to LFS](#convert-crlfs-to-lfs)
@@ -14,6 +15,10 @@
 - [Search for a file but exclude a directory](#search-for-a-file-but-exclude-a-directory)
 
 <!-- /code_chunk_output -->
+
+## Other Documents
+
+See also [Cloud Azure Shell-> Cloud-Co/Azure/Shell/ReadMe.md](/Cloud-Co/Azure/Shell/ReadMe.md)
 
 ## Show only file names without extension
 
