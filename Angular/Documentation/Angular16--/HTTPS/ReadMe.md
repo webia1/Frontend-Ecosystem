@@ -33,6 +33,7 @@ openssl x509 -req \
   -in local-certificate.csr \
   -signkey local-private-key.pem \
   -out local-public-certificate.pem
+  -days 3650 # 10 years
 ```
 
 ### Add it to configuration
