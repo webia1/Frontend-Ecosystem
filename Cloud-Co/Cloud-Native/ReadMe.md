@@ -26,7 +26,7 @@
 
 ## Introduction
 
-CloudNative refers to a set of practices and technologies used for developing and running scalable applications in modern, dynamic environments such as public, private, and hybrid clouds. Key characteristics include containerization, microservices, dynamic orchestration, and continuous delivery, allowing for faster development cycles, resilience, and manageability.
+**CloudNative** refers to a set of practices and technologies used for developing and running scalable applications in modern, dynamic environments such as public, private, and hybrid clouds. Key characteristics include containerization, microservices, dynamic orchestration, and continuous delivery, allowing for faster development cycles, resilience, and manageability.
 
 Below is a simplified Mermaid diagram that illustrates the core components of a CloudNative architecture:
 
