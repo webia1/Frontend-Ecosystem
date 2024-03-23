@@ -7,13 +7,12 @@
 - [Cloud Native](#cloud-native)
   - [Introduction](#introduction)
     - [Cloud Environments](#cloud-environments)
-    - [Containerization (Docker)](#containerization-docker)
-    - [Microservices (Service Mesh)](#microservices-service-mesh)
-    - [Dynamic Orchestration (Kubernetes)](#dynamic-orchestration-kubernetes)
-    - [Continuous Delivery (CI/CD Pipelines)](#continuous-delivery-cicd-pipelines)
+      - [Containerization (Docker)](#containerization-docker)
+      - [Microservices (Service Mesh)](#microservices-service-mesh)
+      - [Dynamic Orchestration (Kubernetes)](#dynamic-orchestration-kubernetes)
+      - [Continuous Delivery (CI/CD Pipelines)](#continuous-delivery-cicd-pipelines)
 
 <!-- /code_chunk_output -->
-
 
 ## Introduction
 
@@ -50,19 +49,19 @@ This diagram showcases the relationship between cloud environments and the found
 
 The foundational layer where CloudNative applications are deployed, including public, private, and hybrid clouds.
 
-### Containerization (Docker)
+#### Containerization (Docker)
 
 Encapsulates the application and its dependencies in a container for consistency across development, testing, and production environments.
 
-### Microservices (Service Mesh)
+#### Microservices (Service Mesh)
 
 Splits applications into smaller, interconnected services, improving modularity and making it easier to update and scale parts of the application independently.
 
-### Dynamic Orchestration (Kubernetes)
+#### Dynamic Orchestration (Kubernetes)
 
 Manages the deployment and scaling of containerized applications, ensuring they run efficiently and resiliently across multiple servers.
 
-### Continuous Delivery (CI/CD Pipelines)
+#### Continuous Delivery (CI/CD Pipelines)
 
 Automates the deployment process, allowing for frequent updates to applications with minimal manual intervention, enhancing agility and reducing time to market.
 
