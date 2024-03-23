@@ -9,9 +9,8 @@
   - [Login](#login)
   - [Install Packages 📦](#install-packages-)
     - [Add additional Repositories](#add-additional-repositories)
-      - [EPEL](#epel)
-      - [Remi](#remi)
-      - [RPM Fusion](#rpm-fusion)
+    - [List Repositories](#list-repositories)
+    - [List Packages](#list-packages)
 
 <!-- /code_chunk_output -->
 
@@ -19,14 +18,14 @@
 
 Via Hetzner Cloud Console and
 
-&#128204; upload your SSH key:
+create & upload your 🔑 SSH key:
 
 ```shell
 ssh-keygen -t rsa -b 4096 -C "my@email.domain" -f ~/.ssh/path key-name
 pbcopy < ~/.ssh/path/key-name.pub
 ```
 
-Add **no** `server init config` first.
+&#128204; Add **no** `server init config` first.
 
 ## Login
 
@@ -38,23 +37,21 @@ ssh -i ~/.ssh/key root@<IP>
 
 ### Add additional Repositories
 
-⚠️ Add at the beginning **only the EPEL repository**. The other repositories will be added if needed.
-
-#### EPEL
+⚠️ Add at the beginning **only the EPEL repository**. The other repositories (Remi or RPM) will be added if needed.
 
 ```shell
 dnf install epel-release
 ```
 
-#### Remi
+### List Repositories
 
 ```shell
-dnf install https://rpms.remirepo.net/enterprise/remi-release-8.rpm
+dnf repolist
 ```
 
-#### RPM Fusion
+### List Packages
 
 ```shell
-dnf install https://download1.rpmfusion.org/free/el/rpmfusion-free-release-8.noarch.rpm
-dnf install https://download1.rpmfusion.org/nonfree/el/rpmfusion-nonfree-release-8.noarch.rpm
+dnf list # All
+dnf list installed # Installed
 ```
