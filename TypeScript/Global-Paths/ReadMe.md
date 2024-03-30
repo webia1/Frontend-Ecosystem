@@ -2,6 +2,18 @@
 
 > See `tsx` version of this example further down.
 
+<!-- @import "[TOC]" {cmd="toc" depthFrom=1 depthTo=6 orderedList=false} -->
+
+<!-- code_chunk_output -->
+
+- [Global Paths in Vanilla TypeScript](#global-paths-in-vanilla-typescript)
+  - [ts-node & tsconfig-paths](#ts-node--tsconfig-paths)
+  - [Achieving the Same Goal with the `tsx` Compiler](#achieving-the-same-goal-with-the-tsx-compiler)
+    - [Use Symlinks for a Cleaner Approach](#use-symlinks-for-a-cleaner-approach)
+
+<!-- /code_chunk_output -->
+
+
 ## ts-node & tsconfig-paths
 
 In TypeScript, defining **custom module paths**, such as `@some-lib/whatever`, greatly enhances the readability of import statements and avoids the complexity of dealing with relative paths. This is achieved by configuring the `baseUrl` and `paths` options in your `tsconfig.json` file.
@@ -122,4 +134,12 @@ With the project structure remaining unchanged, make the following adjustments:
 
 ```shell
 tsx --tsconfig example/src/folder/tsconfig.json example/src/folder/index.ts
+```
+
+### Use Symlinks for a Cleaner Approach
+
+Another simple yet effective solution could have been creating a symbolic link named `tsconfig.json` that points to `tsconfig.base.json`. This would allow tools that expect a `tsconfig.json` by default to work seamlessly:
+
+```shell
+ln -s tsconfig.base.json tsconfig.json
 ```
