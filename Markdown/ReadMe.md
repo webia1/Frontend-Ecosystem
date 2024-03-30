@@ -9,10 +9,14 @@ highlight-style: kate
 
 # Markdown
 
+E.g. **Markdown Preview Enhanced** is a powerful extension that enables you to preview markdown files, but also to export them in different formats, e.g. pdf, html, docx, etc.
+
 <!-- @import "[TOC]" {cmd="toc" depthFrom=2 depthTo=4 orderedList=false} -->
 
 <!-- code_chunk_output -->
 
+- [Customize CSS](#customize-css)
+- [Line Numbers in Code Blocks](#line-numbers-in-code-blocks)
 - [Frontmatter](#frontmatter)
 - [Simple Table Format for Pandoc](#simple-table-format-for-pandoc)
   - [Pandoc Lua Filters](#pandoc-lua-filters)
@@ -25,6 +29,32 @@ highlight-style: kate
     - [Start writing eBook](#start-writing-ebookhttpsshd101wyygithubiomarkdown-preview-enhancedebookidstart-writing-ebook)
 
 <!-- /code_chunk_output -->
+
+## Customize CSS
+
+F1 -> Markdown Preview Enhanced: Customize CSS
+
+```css
+/* Please visit the URL below for more information: */
+/*   https://shd101wyy.github.io/markdown-preview-enhanced/#/customize-css */
+
+.markdown-preview.markdown-preview {
+  pre, code {
+    white-space: pre-wrap;
+  }
+}
+```
+
+## Line Numbers in Code Blocks
+
+See source code of this markdown file for more details.
+
+```sh{.line-numbers}
+# See white-space: pre-wrap; in the css above
+$ for i in $(seq 1 10); do
+    echo "The quick brown fox jumps over the lazy dog. The quick brown fox jumps over the lazy dog. The quick brown fox jumps over the lazy dog."
+done
+```
 
 ## Frontmatter
 
