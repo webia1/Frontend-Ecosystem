@@ -88,3 +88,7 @@ executes your TypeScript code, resolving custom module paths according to your t
 ```shell
 Logging One: 1
 ```
+
+without any runtime errors.
+
+An important point to note is that instead of using `tsconfig.json` as the global TypeScript configuration file, I opted for `tsconfig.base.json`. The rationale behind this choice was to explicitly specify this file for the project. Had I used `tsconfig.json`, there would have been no need to employ the `-P` project parameter.
