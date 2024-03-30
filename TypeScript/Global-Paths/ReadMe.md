@@ -1,5 +1,9 @@
 # Global Paths in Vanilla TypeScript
 
+> See `tsx` version of this example further down.
+
+## ts-node & tsconfig-paths
+
 In TypeScript, defining **custom module paths**, such as `@some-lib/whatever`, greatly enhances the readability of import statements and avoids the complexity of dealing with relative paths. This is achieved by configuring the `baseUrl` and `paths` options in your `tsconfig.json` file.
 
 This approach not only makes your codebase cleaner but also allows for more flexibility in file organization, as moving files around does not necessitate updating all related import statements. However, they are not natively understood by Node.js, will lead to module resolution errors during runtime.
@@ -92,3 +96,30 @@ Logging One: 1
 without any runtime errors.
 
 An important point to note is that instead of using `tsconfig.json` as the global TypeScript configuration file, I opted for `tsconfig.base.json`. The rationale behind this choice was to explicitly specify this file for the project. Had I used `tsconfig.json`, there would have been no need to employ the `-P` project parameter.
+
+## Achieving the Same Goal with the `tsx` Compiler
+
+`tsx` is a CLI command (alternative to node) for seamlessly running TypeScript & ESM in both commonjs & module package types. It is a drop-in replacement for node, with the added benefit of supporting TypeScript and ESM out of the box.
+
+With the project structure remaining unchanged, make the following adjustments:
+
+- Remove the path configuration from `tsconfig.base.json`.
+- Include the path configuration in `tsconfig.json`, by using relative paths as shown below:
+
+```json
+{
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@lib/one": ["../../../lib/one"]
+    }
+  },
+  "extends": "../../../tsconfig.base.json"
+}
+```
+
+- Execute the TypeScript code using the tsx compiler along with the --tsconfig flag:
+
+```shell
+tsx --tsconfig example/src/folder/tsconfig.json example/src/folder/index.ts
+```
