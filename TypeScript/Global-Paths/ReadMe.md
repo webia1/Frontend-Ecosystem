@@ -118,7 +118,7 @@ With the project structure remaining unchanged, make the following adjustments:
 }
 ```
 
-- Execute the TypeScript code using the tsx compiler along with the --tsconfig flag:
+- From the project root directory, execute the TypeScript code using the `tsx` compiler along with the `--tsconfig` flag:
 
 ```shell
 tsx --tsconfig example/src/folder/tsconfig.json example/src/folder/index.ts
