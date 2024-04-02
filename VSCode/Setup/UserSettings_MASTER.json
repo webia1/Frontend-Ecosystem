@@ -1,5 +1,14 @@
 {
+  "[css]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[dockerfile]": {
+    "editor.codeLens": false
+  },
   "[html]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[javascript]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
   "[json]": {
@@ -27,8 +36,12 @@
   "[xml]": {
     "editor.defaultFormatter": "redhat.vscode-xml"
   },
+  "[yaml]": {
+    "editor.defaultFormatter": "redhat.vscode-yaml"
+  },
   "auto-close-tag.disableOnLanguage": ["typescript"],
   "autoimport.showNotifications": true,
+  "css.lint.validProperties": ["rx", "ry"],
   "custom-language-properties": {
     "markdown.autoClosingPairs": [
       {
@@ -54,6 +67,10 @@
       },
       {
         "close": "",
+        "open": "``"
+      },
+      {
+        "close": "",
         "open": "```"
       }
     ]
@@ -63,6 +80,7 @@
   "editor.codeActionsOnSave": {
     "source.sort.json": "always"
   },
+  "editor.codeLens": false,
   "editor.codeLensFontFamily": "Jetbrains Mono",
   "editor.fontFamily": "JetBrains Mono",
   "editor.fontLigatures": true,
@@ -92,11 +110,9 @@
       {
         "scope": [
           "variable.other.constant.property.ts",
-          "meta.brace.square.ts",
-          "support.type.object.html-attribute"
+          "meta.brace.square.ts"
         ],
         "settings": {
-          "fontStyle": "bold",
           "foreground": "#ffd000"
         }
       },
@@ -333,6 +349,17 @@
         }
       },
       {
+        "scope": [
+          "entity.other.ng-binding-name.form.html",
+          "entity.other.ng-binding-name.fields.html",
+          "entity.other.ng-binding-name.model.html"
+        ],
+        "settings": {
+          "fontStyle": "bold underline",
+          "foreground": "#8296fe"
+        }
+      },
+      {
         "scope": ["punctuation.definition.tag.begin.html"],
         "settings": {
           "fontStyle": "bold",
@@ -455,14 +482,14 @@
         "scope": ["entity.other.attribute-name.html"],
         "settings": {
           "fontStyle": "bold",
-          "foreground": "#ffd000"
+          "foreground": "#d582ff"
         }
       },
       {
         "scope": ["entity.name.function.pipe.ng"],
         "settings": {
           "fontStyle": "italic",
-          "foreground": "#f753f7"
+          "foreground": "#c53bc5"
         }
       },
       {
@@ -527,8 +554,7 @@
       {
         "scope": ["string.quoted.double.html"],
         "settings": {
-          "fontStyle": "bold",
-          "foreground": "#ffd000"
+          "foreground": "#ffc401"
         }
       },
       {
@@ -725,26 +751,55 @@
   "explorer.confirmDelete": false,
   "generate-translation.path": "/apps-globals/global-assets/i18n",
   "generate-translation.sort": true,
+  "git-graph.dialog.fetchRemote.prune": true,
+  "git-graph.dialog.fetchRemote.pruneTags": true,
+  "git-graph.repository.fetchAndPrune": true,
+  "git-graph.repository.fetchAndPruneTags": true,
   "git.autofetch": true,
   "git.confirmSync": false,
   "git.openRepositoryInParentFolders": "never",
+  "git.pruneOnFetch": true,
   "github.copilot.enable": {
     "*": true,
     "markdown": true,
     "plaintext": true,
     "scminput": false
   },
+  "gitlens.advanced.blame.customArguments": [
+    "-M",
+    "-C",
+    "--show-stats"
+  ],
+  "gitlens.advanced.commitOrdering": "author-date",
+  "gitlens.advanced.fileHistoryShowMergeCommits": true,
+  "gitlens.advanced.similarityThreshold": 70,
+  "gitlens.ai.experimental.openai.model": "gpt-4",
+  "gitlens.currentLine.scrollable": false,
+  "gitlens.detectNestedRepositories": true,
+  "gitlens.sortRepositoriesBy": "lastFetched:desc",
+  "gitlens.telemetry.enabled": false,
   "gitlens.views.branches.branches.layout": "list",
   "gitlens.views.worktrees.files.layout": "list",
   "javascript.referencesCodeLens.showOnAllFunctions": false,
   "javascript.updateImportsOnFileMove.enabled": "always",
-  "markdown-preview-enhanced.previewTheme": "github-dark.css",
+  "json-consolidator.supportedDirectories": [
+    "ladder-i18n",
+    "locales",
+    "i18n",
+    "app-i18n"
+  ],
+  "json-consolidator.suppressInitNotification": true,
+  "markdown-preview-enhanced.plantumlJarPath": "/Users/user7/plantuml/plantuml.jar",
+  "markdown-preview-enhanced.previewTheme": "atom-light.css",
+  "markdown-preview-enhanced.usePandocParser": true,
+  "markdown.preview.typographer": true,
   "powershell.codeFormatting.useConstantStrings": true,
   "powershell.debugging.createTemporaryIntegratedConsole": true,
   "powershell.powerShellAdditionalExePaths": {
     "exePath": "/opt/homebrew/bin/pwsh",
     "versionName": "PowerShell 7+ (macOS)"
   },
+  "powershell.promptToUpdatePowerShell": false,
   "prettier.proseWrap": "never",
   "python.analysis.autoImportCompletions": true,
   "python.condaPath": "/opt/homebrew/anaconda3/bin/anaconda",
@@ -756,6 +811,8 @@
   "scss.lint.duplicateProperties": "warning",
   "scss.lint.emptyRules": "ignore",
   "scss.lint.float": "warning",
+  "scss.lint.unknownProperties": "ignore",
+  "svg.preview.mode": "svg",
   "terminal.integrated.fontFamily": "Jetbrains Mono",
   "terminal.integrated.fontSize": 13,
   "terminal.integrated.gpuAcceleration": "on",
@@ -763,6 +820,7 @@
   "terminal.integrated.scrollback": 10000,
   "terminal.integrated.sendKeybindingsToShell": true,
   "terminal.integrated.smoothScrolling": true,
+  "typelens.decorateunused": true,
   "typescript.implementationsCodeLens.enabled": false,
   "typescript.inlayHints.functionLikeReturnTypes.enabled": false,
   "typescript.inlayHints.parameterTypes.enabled": false,
@@ -771,13 +829,14 @@
   "typescript.referencesCodeLens.enabled": false,
   "typescript.referencesCodeLens.showOnAllFunctions": false,
   "typescript.updateImportsOnFileMove.enabled": "always",
+  "typescriptHero.imports.disableImportRemovalOnOrganize": true,
   "workbench.colorCustomizations": {
     "editor.background": "#202026",
     "editorUnnecessaryCode.border": "#fd7403dc",
-    "panel.border": "#711173",
+    "panel.border": "#117366",
     "panelTitle.activeBorder": "#ffc400",
     "panelTitle.activeForeground": "#ffc400",
-    "sideBar.border": "#711173",
+    "sideBar.border": "#117366",
     "tab.activeBackground": "#614a00",
     "tab.activeBorder": "#ffc4006a",
     "tab.activeBorderTop": "#ffc400",
@@ -802,5 +861,6 @@
   "workbench.fontAliasing": "default",
   "workbench.iconTheme": "material-icon-theme",
   "workbench.productIconTheme": "fluent-icons",
-  "workbench.startupEditor": "welcomePage"
+  "workbench.startupEditor": "welcomePage",
+  "workbench.tree.enableStickyScroll": false
 }

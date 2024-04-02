@@ -1,44 +1,18 @@
 [
-  // F3 Toogle - References
   {
     "args": {
-      "id": "toggleCodeLens",
+      "id": "ref",
       "value": [
         {
-          "diffEditor.codeLens": true,
-          "javascript.referencesCodeLens.showOnAllFunctions": true,
-          "typescript.implementationsCodeLens.enabled": true,
-          "typescript.referencesCodeLens.enabled": true,
-          "typescript.referencesCodeLens.showOnAllFunctions": true
+          "editor.codeLens": true
         },
         {
-          "diffEditor.codeLens": false,
-          "javascript.referencesCodeLens.showOnAllFunctions": false,
-          "typescript.implementationsCodeLens.enabled": false,
-          "typescript.referencesCodeLens.enabled": false,
-          "typescript.referencesCodeLens.showOnAllFunctions": false
+          "editor.codeLens": false
         }
       ]
     },
     "command": "toggle",
     "key": "F3",
-    "when": "editorTextFocus"
-  },
-  // F6 Toogle - Acitivity Bar
-  {
-    "args": {
-      "id": "toggleCodeLens",
-      "value": [
-        {
-          "workbench.activityBar.visible": true
-        },
-        {
-          "workbench.activityBar.visible": false
-        }
-      ]
-    },
-    "command": "toggle",
-    "key": "F6",
     "when": "editorTextFocus"
   },
   {
@@ -76,5 +50,26 @@
     "command": "-typescriptHero.imports.organize",
     "key": "ctrl+alt+o",
     "when": "editorTextFocus"
+  },
+  {
+    "command": "editor.action.sortLinesAscending",
+    "key": "ctrl+shift+s"
+  },
+  {
+    "command": "workbench.action.terminal.new",
+    "key": "shift+cmd+c"
+  },
+  {
+    "command": "-workbench.action.terminal.openNativeConsole",
+    "key": "shift+cmd+c",
+    "when": "!terminalFocus"
+  },
+  {
+    "command": "syncScroll.changeMode",
+    "key": "ctrl+shift+[Period]"
+  },
+  {
+    "command": "workbench.action.terminal.relaunch",
+    "key": "ctrl+shift+delete"
   }
 ]
