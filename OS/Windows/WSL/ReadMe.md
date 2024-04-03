@@ -16,10 +16,7 @@ If you want to use Windows as your primary development environment, you can use 
   - [Edit resolv.conf](#edit-resolvconf)
   - [Restart Shell](#restart-shell)
 - [Create a personal access token (Azure DevOps)](#create-a-personal-access-token-azure-devops)
-- [Additional Recommended Programms](#additional-recommended-programms)
-  - [Additional Software for Markdown Preview Enhanced](#additional-software-for-markdown-preview-enhanced)
-    - [Install Pandoc](#install-pandoc)
-  - [Screenshots with Greenshot](#screenshots-with-greenshot)
+- [Set VSCode as Standard Editor as Superuser in WSL Terminal](#set-vscode-as-standard-editor-as-superuser-in-wsl-terminal)
 
 <!-- /code_chunk_output -->
 
@@ -186,14 +183,13 @@ git commit -m "Your Message"
 git push # Will ask for your password, use your personal access token
 ```
 
-## Additional Recommended Programms
+## Set VSCode as Standard Editor as Superuser in WSL Terminal
 
-### Additional Software for Markdown Preview Enhanced
+Not recommended (Because of security risks and temporary write issues)! But if you want to set VSCode as the standard editor in WSL, you can do it as follows:
 
-#### Install Pandoc
-
-Download here: <https://github.com/jgm/pandoc/releases/>
-
-### Screenshots with Greenshot
-
-Donwload here: <https://getgreenshot.org/downloads/>
+```shell
+sudo apt install whereis
+whereis code # Find the path to the code executable
+sudo update-alternatives --install /usr/bin/editor editor "<path zu vscode>" 50
+sudo update-alternatives --config editor
+```

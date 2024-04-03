@@ -14,6 +14,10 @@
 - [Install Build Tools for NPM](#install-build-tools-for-npm)
 - [Set Proxy for NPM](#set-proxy-for-npm)
 - [Set Proxy for Git](#set-proxy-for-git)
+- [Additional Recommended Programms](#additional-recommended-programms)
+  - [Additional Software for Markdown Preview Enhanced](#additional-software-for-markdown-preview-enhanced)
+    - [Install Pandoc](#install-pandoc)
+  - [Screenshots with Greenshot](#screenshots-with-greenshot)
 
 <!-- /code_chunk_output -->
 
@@ -81,3 +85,15 @@ Start Powershell with admin rights and:
 ## Set Proxy for Git
 
     git config --global http.proxy http://---myproxy---:PORT
+
+## Additional Recommended Programms
+
+### Additional Software for Markdown Preview Enhanced
+
+#### Install Pandoc
+
+Download here: <https://github.com/jgm/pandoc/releases/>
+
+### Screenshots with Greenshot
+
+Donwload here: <https://getgreenshot.org/downloads/>
