@@ -17,6 +17,12 @@ If you want to use Windows as your primary development environment, you can use 
   - [Restart Shell](#restart-shell)
 - [Create a personal access token (Azure DevOps)](#create-a-personal-access-token-azure-devops)
 - [Set VSCode as Standard Editor as Superuser in WSL Terminal](#set-vscode-as-standard-editor-as-superuser-in-wsl-terminal)
+- [Install NVM](#install-nvm)
+  - [Install and Activate Node.js](#install-and-activate-nodejs)
+- [Install Rust Compiler (Needed for WebiaAI)](#install-rust-compiler-needed-for-webiaai)
+- [Install Anaconda](#install-anaconda)
+  - [Modified .zshrc](#modified-zshrc)
+  - [Conda Create & Activate Environment](#conda-create--activate-environment)
 
 <!-- /code_chunk_output -->
 
@@ -192,4 +198,173 @@ sudo apt install whereis
 whereis code # Find the path to the code executable
 sudo update-alternatives --install /usr/bin/editor editor "<path zu vscode>" 50
 sudo update-alternatives --config editor
+```
+
+## Install NVM
+
+```shell
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash
+```
+
+```shell
+=> If you wish to uninstall them at a later point (or re-install them under your
+=> `nvm` Nodes), you can remove them from the system Node as follows:
+
+     $ nvm use system
+     $ npm uninstall -g a_module
+
+=> Close and reopen your terminal to start using nvm or run the following to use it now:
+
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+```
+
+and restart the terminal:
+
+```shell
+zsh -l
+```
+
+### Install and Activate Node.js
+
+```shell
+nvm install --lts
+nvm use --lts
+
+# Now using node v20.12.1 (npm v10.5.0)
+```
+
+## Install Rust Compiler (Needed for WebiaAI)
+
+```shell
+curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+info: downloading installer
+
+Welcome to Rust!
+
+This will download and install the official compiler for the Rust
+programming language, and its package manager, Cargo.
+
+Rustup metadata and toolchains will be installed into the Rustup
+home directory, located at:
+
+  /home/webia2/.rustup
+
+This can be modified with the RUSTUP_HOME environment variable.
+
+The Cargo home directory is located at:
+
+  /home/webia2/.cargo
+
+This can be modified with the CARGO_HOME environment variable.
+
+The cargo, rustc, rustup and other commands will be added to
+Cargo's bin directory, located at:
+
+  /home/webia2/.cargo/bin
+
+This path will then be added to your PATH environment variable by
+modifying the profile files located at:
+
+  /home/webia2/.profile
+  /home/webia2/.bashrc
+  /home/webia2/.zshenv
+
+You can uninstall at any time with rustup self uninstall and
+these changes will be reverted.
+
+Current installation options:
+
+
+   default host triple: x86_64-unknown-linux-gnu
+     default toolchain: stable (default)
+               profile: default
+  modify PATH variable: yes
+
+1) Proceed with standard installation (default - just press enter)
+2) Customize installation
+3) Cancel installation
+
+Rust is installed now. Great!
+
+To get started you may need to restart your current shell.
+This would reload your PATH environment variable to include
+Cargo's bin directory ($HOME/.cargo/bin).
+
+To configure your current shell, you need to source
+the corresponding env file under $HOME/.cargo.
+
+This is usually done by running one of the following (note the leading DOT):
+. "$HOME/.cargo/env"            # For sh/bash/zsh/ash/dash/pdksh
+source "$HOME/.cargo/env.fish"  # For fish
+
+```
+
+```shell
+. "$HOME/.cargo/env"
+
+```
+
+executes the `env` script located in the `.cargo` directory within your home directory, in the current shell session. This script sets up environment variables so that Rust commands like `rustc`, `cargo`, and others that come with your Rust installation, are available directly in the shell. The dot (.) at the beginning is an alias for the source command in Bash and other Bourne-like shells, meaning it executes the script in the current shell environment without starting a new subshell.
+
+This command is particularly useful for activating the Rust environment in your current terminal session, especially after installing Rust with rustup, or when opening a new terminal window and finding Rust commands are not available because the environment variables have not yet been set.
+
+## Install Anaconda
+
+Download here: <https://www.anaconda.com/download#downloads>
+
+and copy it into `~/downloads` and install it:
+
+```shell
+bash Anaconda3-2024.02-1-Linux-x86_64.sh
+
+Welcome to Anaconda3 2024.02-1
+
+In order to continue the installation process, please review the license
+agreement. Please, press ENTER to continue
+...
+...
+Do you accept the license terms? [yes|no]
+
+yes
+
+Anaconda3 will now be installed into this location:
+/home/<username>/anaconda3
+
+  - Press ENTER to confirm the location
+  - Press CTRL-C to abort the installation
+  - Or specify a different location below
+
+enter
+
+[/home/webia2/anaconda3] >>>
+PREFIX=/home/webia2/anaconda3
+```
+
+### Modified .zshrc
+
+```shell
+# >>> conda initialize >>>
+# !! Contents within this block are managed by 'conda init' !!
+__conda_setup="$('/home/<user>/anaconda3/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
+if [ $? -eq 0 ]; then
+    eval "$__conda_setup"
+else
+    if [ -f "/home/<user>/anaconda3/etc/profile.d/conda.sh" ]; then
+        . "/home/<user>/anaconda3/etc/profile.d/conda.sh"
+    else
+        export PATH="/home/<user>/anaconda3/bin:$PATH"
+    fi
+fi
+unset __conda_setup
+# <<< conda initialize <<<
+```
+
+### Conda Create & Activate Environment
+
+```shell
+conda create --name myenv python=3
+
+conda activate myenv
 ```
