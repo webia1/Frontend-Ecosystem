@@ -7,6 +7,8 @@
 - [First Steps](#first-steps)
 - [.gitignore (CACHED vs. UNTRACKED)](#gitignore-cached-vs-untracked)
 - [Stop ignoring cases, just be insensitive](#stop-ignoring-cases-just-be-insensitive)
+- [Show Number of Commits](#show-number-of-commits)
+- [Rebase (Merging Commits)](#rebase-merging-commits)
 - [Show just the current branch](#show-just-the-current-branch)
 - [Git Pull and reset/ignore local changes](#git-pull-and-resetignore-local-changes)
 - [Git Show Remote Git Repository Url](#git-show-remote-git-repository-url)
@@ -57,7 +59,7 @@
   - [Merge: Abort if conflicts (2)](#merge-abort-if-conflicts-2)
   - [Make a branch master or replace/overwrite master with an old branch](#make-a-branch-master-or-replaceoverwrite-master-with-an-old-branch)
 - [Statistics](#statistics)
-- [Rebase (Merging Commits)](#rebase-merging-commits)
+- [Rebase (Merging Commits)](#rebase-merging-commits-1)
   - [Interactive](#interactive)
 - [Bisect](#bisect)
 - [Miscellaneous](#miscellaneous)
@@ -105,6 +107,20 @@ If something cannot be ignored, even it is in the .gitignore file, then it is pr
 ## Stop ignoring cases, just be insensitive
 
     sudo sudo git config --unset-all core.ignorecase && git config --system core.ignorecase false
+
+## Show Number of Commits
+
+    # comparison to origin/HEAD (same branch on remote)
+    git rev-list --count HEAD
+
+    # comparison to origin/develop
+    git rev-list --count HEAD ^origin/develop
+
+## Rebase (Merging Commits)
+
+    # Interactive Rebase. Use the number above
+    # -show number of commits- to squash commits
+    alias squash='function _squash() { git rebase -i HEAD~$1; }; _squash'
 
 ## Show just the current branch
 
