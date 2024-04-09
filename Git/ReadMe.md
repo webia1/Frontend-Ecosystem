@@ -64,6 +64,9 @@
 - [Bisect](#bisect)
 - [Miscellaneous](#miscellaneous)
 - [ERRORS & SOLUTIONS](#errors--solutions)
+  - [⚠ lint-staged prevented an empty git commit.](#lint-staged-prevented-an-empty-git-commit)
+    - [Reason](#reason)
+    - [Solution](#solution)
   - [Your configuration specifies to merge with the <branch name> from the remote, but no such ref was fetched](#your-configuration-specifies-to-merge-with-the-branch-name-from-the-remote-but-no-such-ref-was-fetched)
   - [Git autocomplete on Windows Visual Studio Code integrated Terminal (VSCode/Cygwin/Git/Autocomplete)](#git-autocomplete-on-windows-visual-studio-code-integrated-terminal-vscodecygwingitautocomplete)
     - [Install Cygwin and following cygwin packages](#install-cygwin-and-following-cygwin-packages)
@@ -538,9 +541,44 @@ git config diff.renames true  // Rename Detection = true
 
 ## ERRORS & SOLUTIONS
 
+### ⚠ lint-staged prevented an empty git commit.
+
+```shell
+ ⚠ lint-staged prevented an empty git commit.
+  Use the --allow-empty option to continue, or check your task configuration
+
+husky - pre-commit script failed (code 1)
+```
+
+#### Reason
+
+The "empty git commit" error indicates that after the tasks configured in the pre-commit hook (such as linting or formatting by tools like Prettier) have been executed, no changes to the code have been detected that could be included in the commit. This can happen if the changes you are trying to commit are exclusively whitespace or line-ending changes that have been reverted or normalized by the tasks executed in the hook.
+
+If your team uses different operating systems, line ending changes (LF vs CRLF) may actually be the reason for this behavior. Git can automatically convert line endings based on the configuration (core.autocrlf), which can lead to seemingly "empty" commits if the only changes are reverted by tools in the pre-commit hook.
+
+#### Solution
+
+First create a `.gitattributes` file in the root of your repository and add the following line to it:
+
+```shell
+* text=auto eol=lf
+```
+
+And then run the following commands:
+
+> use **`--allow-empty`** & **`--no-verify`** to bypass the pre-commit hook that is preventing the empty commit and **do so only in exceptional cases** like Windows/Linux/MacOS mixed environments, etc.
+
+```shell
+git add .gitattributes
+git commit --allow-empty -m "Add .gitattributes file to normalize line endings" --no-verify
+```
+
+This will ensure that all text files in your repository are normalized to use LF line endings.
+
 ### Your configuration specifies to merge with the <branch name> from the remote, but no such ref was fetched
 
-    Reason: Most probably the remote branch has been deleted.
+Reason: Most probably the remote branch has been deleted.
+
     git config --global --unset-all remote.origin.url
     git fetch
 
