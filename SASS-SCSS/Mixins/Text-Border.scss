@@ -1,0 +1,18 @@
+@function textBorder($stroke, $color, $minUnit: 1px) {
+  $shadow: ();
+  $from: $stroke * -1;
+  @for $i from $from through $stroke {
+    @for $j from $from through $stroke {
+      $shadow: append(
+        $shadow,
+        $i * $minUnit $j * $minUnit 0 $color,
+        comma
+      );
+    }
+  }
+  @return $shadow;
+}
+
+@mixin textBorder($stroke, $color) {
+  text-shadow: textBorder($stroke, $color);
+}
