@@ -35,6 +35,10 @@
   - [Delete the Deployment](#delete-the-deployment)
   - [Delete the Service](#delete-the-service)
   - [Delete the AKS Cluster](#delete-the-aks-cluster)
+- [Monitoring and Managing AKS](#monitoring-and-managing-aks)
+  - [Other Integrations](#other-integrations)
+- [Best Practices](#best-practices)
+- [Summary](#summary)
 
 <!-- /code_chunk_output -->
 
@@ -366,7 +370,7 @@ kubectl delete service myapp
 
 ```bash
 az aks delete --resource-group myResourceGroup --name myAKSCluster
-
+```
 
 ## Monitoring and Managing AKS
 
@@ -423,7 +427,6 @@ az aks delete --resource-group myResourceGroup --name myAKSCluster
 - [Azure Monitor for Containers with Azure Relay](https://docs.microsoft.com/en-us/azure/azure-monitor/insights/container-insights-relay)
 - [Azure Monitor for Containers with Azure Notification Hubs](https://docs.microsoft.com/en-us/azure/azure-monitor/insights/container-insights-notification-hubs)
 
-
 ## Best Practices
 
 [Azure Kubernetes Service Best Practices](https://docs.microsoft.com/en-us/azure/aks/best-practices)
@@ -445,18 +448,6 @@ az aks delete --resource-group myResourceGroup --name myAKSCluster
   - Keep Track of Depracations
 
 ## Summary
-
-This document provides a quick reference to deploying an application on Azure Kubernetes Service (AKS). It covers the following topics:
-
-- Setup (Azure CLI, Kubernetes CLI)
-- Resource Groups
-- AKS Cluster
-- Deploy Application
-- Monitoring and Managing AKS
-- Best Practices
-- Some important CLI Commands Overview
-
-
 
 - [Azure Kubernetes Service (AKS)](https://docs.microsoft.com/en-us/azure/aks/)
 - [Azure CLI](https://docs.microsoft.com/en-us/cli/azure/)
