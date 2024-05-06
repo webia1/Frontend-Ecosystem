@@ -9,6 +9,9 @@
 - [Beatiful Zsh - OhMyZsh](#beatiful-zsh---ohmyzsh)
   - [Install Plugins](#install-plugins)
 - [Change Default Shell (if an older apple machine)](#change-default-shell-if-an-older-apple-machine)
+- [Command Line](#command-line)
+  - [Show Start-Up Apps](#show-start-up-apps)
+  - [Remove Start-Up Apps](#remove-start-up-apps)
 - [Prevent Indexing External Hard Disks](#prevent-indexing-external-hard-disks)
   - [Delete Existing Spotlight Index](#delete-existing-spotlight-index)
   - [Disable Creating .ds_store Files on external drives](#disable-creating-ds_store-files-on-external-drives)
@@ -90,6 +93,23 @@ New machines have all zsh already!.
     chsh -s /bin/zsh
     chsh -s /bin/bash
     ...
+
+## Command Line
+
+### Show Start-Up Apps
+
+```shell
+launchctl list # or
+osascript -e 'tell application "System Events" to get every login item'
+```
+
+### Remove Start-Up Apps
+
+```shell
+launchctl remove com.apple.finder
+osascript -e 'tell application "System Events" to delete login item "App Name"' # e.g.
+tell application "System Events" to delete login item "FigmaAgent"
+```
 
 ## Prevent Indexing External Hard Disks
 
