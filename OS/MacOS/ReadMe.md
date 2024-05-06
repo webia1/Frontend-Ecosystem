@@ -9,6 +9,9 @@
 - [Beatiful Zsh - OhMyZsh](#beatiful-zsh---ohmyzsh)
   - [Install Plugins](#install-plugins)
 - [Change Default Shell (if an older apple machine)](#change-default-shell-if-an-older-apple-machine)
+- [Prevent Indexing External Hard Disks](#prevent-indexing-external-hard-disks)
+  - [Delete Existing Spotlight Index](#delete-existing-spotlight-index)
+  - [Disable Creating .ds_store Files on external drives](#disable-creating-ds_store-files-on-external-drives)
 - [Replace Python 2 through Python 3](#replace-python-2-through-python-3)
 - [Python & tcl-tk](#python--tcl-tk)
 - [Turn Off Screen if connected to external monitors](#turn-off-screen-if-connected-to-external-monitors)
@@ -87,6 +90,21 @@ New machines have all zsh already!.
     chsh -s /bin/zsh
     chsh -s /bin/bash
     ...
+
+## Prevent Indexing External Hard Disks
+
+      sudo mdutil -i off /Volumes/ExternalDriveName
+      sudo touch /Volumes/EXTERNAL/.metadata_never_index
+
+### Delete Existing Spotlight Index
+
+    sudo mdutil -E /Volumes/ExternalDriveName # or
+    sudo rm -rfv /.Spotlight-V100 # on the external drive
+
+### Disable Creating .ds_store Files on external drives
+
+    defaults write com.apple.desktopservices DSDontWriteNetworkStores -bool true
+    defaults write com.apple.desktopservices DSDontWriteUSBStores -bool true
 
 ## Replace Python 2 through Python 3
 
