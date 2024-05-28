@@ -64,6 +64,8 @@
 - [Bisect](#bisect)
 - [Miscellaneous](#miscellaneous)
 - [ERRORS & SOLUTIONS](#errors--solutions)
+  - [Trying to push (New Repository) without any commits](#trying-to-push-new-repository-without-any-commits)
+    - [Solution: Make a break, you're tired :)](#solution-make-a-break-youre-tired-)
   - [⚠ lint-staged prevented an empty git commit.](#lint-staged-prevented-an-empty-git-commit)
     - [Reason](#reason)
     - [Solution](#solution)
@@ -540,6 +542,17 @@ git config diff.renames true  // Rename Detection = true
 ```
 
 ## ERRORS & SOLUTIONS
+
+### Trying to push (New Repository) without any commits
+
+If you do so, you will get the following error(s):
+
+    error: src refspec main does not match any
+    error: failed to push some refs to
+
+#### Solution: Make a break, you're tired :)
+
+Then add a file, commit and push again. :)
 
 ### ⚠ lint-staged prevented an empty git commit.
 
