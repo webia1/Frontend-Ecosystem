@@ -1,1 +1,0 @@
-export PS1="\n\n\w\n "
