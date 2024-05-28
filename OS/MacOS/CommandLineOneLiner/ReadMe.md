@@ -1,4 +1,4 @@
-# MacOs CommandLine OneLiner
+# CommandLine OneLiner
 
 <!-- @import "[TOC]" {cmd="toc" depthFrom=2 depthTo=6 orderedList=false} -->
 
@@ -6,6 +6,7 @@
 
 - [Other Shell Documents in this Repository](#other-shell-documents-in-this-repository)
 - [Rename all files in a folder](#rename-all-files-in-a-folder)
+- [Delete all Files and Directories (including .files) in current directory](#delete-all-files-and-directories-including-files-in-current-directory)
 - [Show only file names without extension](#show-only-file-names-without-extension)
 - [Tree on Windows (cygwin)](#tree-on-windows-cygwin)
 - [Convert CRLFS to LFS](#convert-crlfs-to-lfs)
@@ -16,7 +17,6 @@
 - [Search for a file but exclude a directory](#search-for-a-file-but-exclude-a-directory)
 
 <!-- /code_chunk_output -->
-
 
 ## Other Shell Documents in this Repository
 
@@ -32,6 +32,12 @@ for f in *; do mv "$f" "$f.jpg"; done
 for file in old-word.*; \
   do mv "$file" "${file/old-word/new-word}"; \
   done
+```
+
+## Delete all Files and Directories (including .files) in current directory
+
+```shell
+find . -mindepth 1 -delete
 ```
 
 ## Show only file names without extension
