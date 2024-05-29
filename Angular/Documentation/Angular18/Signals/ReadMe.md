@@ -1,6 +1,8 @@
 # Signals
 
-Official Documentation: [Signals](https://angular.dev/guide/signals)
+> **Source:** Official Documentation &rarr; [Signals](https://angular.dev/guide/signals)
+
+>**Effective:** June 2024
 
 A **signal** is a wrapper around a value that notifies interested consumers when that value changes. Signals can contain any value, from primitives to complex data structures.
 
@@ -13,7 +15,6 @@ Signals may be either **_writable_** or **_read-only_**.
 Writable signals provide an API for updating their values directly. You create writable signals by calling the `signal` function with the signal's initial value:
 
 ```ts
-
 const count = signal(0);
 // Signals are getter functions - calling them reads their value.
 console.log('The count is: ' + count());
@@ -30,7 +31,6 @@ or use the `.update()` operation to compute a new value from the previous one:
 ```ts
 // Increment the count by 1.
 count.update(value => value + 1);
-
 ```
 
 Writable signals have the type `WritableSignal`.
@@ -40,10 +40,8 @@ Writable signals have the type `WritableSignal`.
 **Computed signal** are read-only signals that derive their value from other signals. You define computed signals using the `computed` function and specifying a derivation:
 
 ```ts
-
 const count: WritableSignal<number> = signal(0);
 const doubleCount: Signal<number> = computed(() => count() * 2);
-
 ```
 
 The `doubleCount` signal depends on the `count` signal. Whenever `count` updates, Angular knows that `doubleCount` needs to update as well.
@@ -71,7 +69,6 @@ produces a compilation error, because `doubleCount` is not a `WritableSignal`.
 Only the signals actually read during the derivation are tracked. For example, in this computed the `count` signal is only read if the `showCount` signal is true:
 
 ```ts
-
 const showCount = signal(false);
 const count = signal(0);
 const conditionalCount = computed(() => {
@@ -82,7 +79,6 @@ const conditionalCount = computed(() => {
     return 'Nothing to see here!';
   }
 });
-
 ```
 
 When you read `conditionalCount`, if `showCount` is `false` the "Nothing to see here!" message is returned _without_ reading the `count` signal. This means that if you later update `count` it will _not_ result in a recomputation of `conditionalCount`.
@@ -100,7 +96,6 @@ When you read a signal within an `OnPush` component's template, Angular tracks t
 Signals are useful because they notify interested consumers when they change. An **effect** is an operation that runs whenever one or more signal values change. You can create an effect with the `effect` function:
 
 ```ts
-
 effect(() => {
   console.log(`The current count is: ${count()}`);
 });
@@ -133,7 +128,6 @@ Instead, use `computed` signals to model state that depends on other state.
 By default, you can only create an `effect()` within an [injection contexthave access to the `inject` function). The easiest way to satisfy this requirement is to call `effect` within a component, directive, or service `constructor`:
 
 ```ts
-
 @Component({...})
 
 export class EffectiveCounterComponent {
@@ -164,7 +158,6 @@ export class EffectiveCounterComponent {
 To create an effect outside of the constructor, you can pass an `Injector` to `effect` via its options:
 
 ```ts
-
 @Component({...})
 export class EffectiveCounterComponent {
   readonly count = signal(0);
@@ -191,7 +184,6 @@ Effects return an `EffectRef` that you can use to destroy them manually, by call
 When creating a signal, you can optionally provide an equality function, which will be used to check whether the new value is actually different than the previous one.
 
 ```ts
-
 import _ from 'lodash';
 const data = signal(['test'], {equal: _.isEqual});
 
@@ -224,7 +216,6 @@ This example will log a message when _either_ `currentUser` or `counter` changes
 You can prevent a signal read from being tracked by calling its getter with `untracked`:
 
 ```ts
-
 effect(() => {
   console.log(`User set to ${currentUser()} and the counter is ${untracked(counter)}`);
 });
@@ -234,7 +225,6 @@ effect(() => {
 `untracked` is also useful when an effect needs to invoke some external code which shouldn't be treated as a dependency:
 
 ```ts
-
 effect(() => {
   const user = currentUser();
   untracked(() => {
@@ -260,5 +250,4 @@ effect((onCleanup) => {
     clearTimeout(timer);
   });
 });
-
 ```
