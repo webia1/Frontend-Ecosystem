@@ -6,6 +6,8 @@
 
 - [Other Shell Documents in this Repository](#other-shell-documents-in-this-repository)
 - [Rename all files in a folder](#rename-all-files-in-a-folder)
+  - [Search and replace in file names](#search-and-replace-in-file-names)
+  - [Set extension to jpg](#set-extension-to-jpg)
 - [Delete all Files and Directories (including .files) in current directory](#delete-all-files-and-directories-including-files-in-current-directory)
 - [Show only file names without extension](#show-only-file-names-without-extension)
 - [Tree on Windows (cygwin)](#tree-on-windows-cygwin)
@@ -24,14 +26,26 @@ See also [Cloud Azure Shell-> Cloud-Co/Azure/Shell/ReadMe.md](/Cloud-Co/Azure/Sh
 
 ## Rename all files in a folder
 
+### Search and replace in file names
+
+```shell
+for file in $(find . -name '*search-sub-string*'); \
+  do mv "$file" "${file/old-sub-string/search-sub-string}"; done
+
+# shorter
+for file in old-word.*; \
+  do mv "$file" "${file/old-word/new-word}"; \
+  done
+
+```
+
+### Set extension to jpg
+
 ```shell
 # set extension to jpg
 for f in *; do mv "$f" "$f.jpg"; done
 
-# replace old-word with new-word in all files of current folder
-for file in old-word.*; \
-  do mv "$file" "${file/old-word/new-word}"; \
-  done
+
 ```
 
 ## Delete all Files and Directories (including .files) in current directory
