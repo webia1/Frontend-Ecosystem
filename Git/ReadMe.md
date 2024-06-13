@@ -5,7 +5,7 @@
 <!-- code_chunk_output -->
 
 - [First Steps](#first-steps)
-- [.gitignore (CACHED vs. UNTRACKED)](#gitignore-cached-vs-untracked)
+- [.gitignore (CACHED vs. UNTRACKED, Mostly .nx Issues)](#gitignore-cached-vs-untracked-mostly-nx-issues)
 - [Stop ignoring cases, just be insensitive](#stop-ignoring-cases-just-be-insensitive)
 - [Show Number of Commits](#show-number-of-commits)
 - [Rebase (Merging Commits)](#rebase-merging-commits)
@@ -97,7 +97,7 @@ Auto push of new branches
 
     git config --global --add --bool push.autoSetupRemote true
 
-## .gitignore (CACHED vs. UNTRACKED)
+## .gitignore (CACHED vs. UNTRACKED, Mostly .nx Issues)
 
     folder/file.txt
     generated/
