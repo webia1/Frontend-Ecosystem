@@ -1,5 +1,11 @@
 # AWK Cookbook
 
+## Show Sentences with specific words
+
+```bash
+awk 'BEGIN{RS="\\. "; FS="\n"} /foo\/bar\/|baz/{print $0"."}' textdatei.txt
+```
+
 ## Find Book Recommendations
 
 ```bash
