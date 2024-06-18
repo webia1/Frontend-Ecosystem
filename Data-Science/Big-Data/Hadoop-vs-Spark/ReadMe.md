@@ -16,9 +16,12 @@ Capabilities Comparison
 
 1. **In-Memory Computing**:
 
+Uses Resilient Distributed Datasets (RDDs) for efficient, fault-tolerant, in-memory data processing, enabling faster data operations compared to Hadoop's disk-based approach.
+
     - **Speed**: Spark processes data in memory, making it significantly faster for many data processing tasks compared to Hadoop, which writes intermediate results to disk.
     - **Real-Time Processing**: Spark’s in-memory computation is ideal for real-time data processing, stream processing, and iterative algorithms.
-2. **Unified Engine**:
+
+1. **Unified Engine**:
 
     - **Versatile Data Processing**: Spark provides a unified engine for batch processing, interactive querying, real-time processing, machine learning, and graph processing.
     - **Ease of Use**: Spark has user-friendly APIs in multiple languages (Java, Scala, Python, R) which make it more accessible for developers.
