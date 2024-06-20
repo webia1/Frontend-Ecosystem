@@ -15,6 +15,7 @@
   - [Rename Conda Environment](#rename-conda-environment)
   - [Clone/Duplicate Conda Environment](#cloneduplicate-conda-environment)
   - [Disable Automatic Activation of `base`ENV](#disable-automatic-activation-of-baseenv)
+- [Update Base Environment](#update-base-environment)
 
 <!-- /code_chunk_output -->
 
@@ -31,7 +32,7 @@ conda init
 ### Change Conda Prompt Format
 
 ```shell
-conda config --set env_prompt '{name} |'
+conda config --set env_prompt '{name} '
 ```
 
 ### List Environments
@@ -82,4 +83,12 @@ conda create --name new_name --clone old_name
 
 ```shell
 conda config --set auto_activate_base false
+```
+
+## Update Base Environment
+
+```shell
+conda install python=3.11 # e.g. update to 3.11
+conda update --all
+python --version # Re-check version
 ```
