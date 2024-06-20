@@ -10,10 +10,11 @@
   - [Activate Conda Environment](#activate-conda-environment)
   - [Deactivate Conda Environment](#deactivate-conda-environment)
   - [Remove Conda Environment](#remove-conda-environment)
-- [Rename Conda Environment](#rename-conda-environment)
+  - [Rename Conda Environment](#rename-conda-environment)
+  - [Clone/Duplicate Conda Environment](#cloneduplicate-conda-environment)
+  - [Disable Automatic Activation of `base`ENV](#disable-automatic-activation-of-baseenv)
 
 <!-- /code_chunk_output -->
-
 
 ## Setup Conda (Anaconda)
 
@@ -50,9 +51,21 @@ conda deactivate
 conda env remove --name <env_name>
 ```
 
-## Rename Conda Environment
+### Rename Conda Environment
 
 ```shell
 conda create --name new_name --clone old_name
 conda remove --name old_name --all
+```
+
+### Clone/Duplicate Conda Environment
+
+```shell
+conda create --name new_name --clone old_name
+```
+
+### Disable Automatic Activation of `base`ENV
+
+```shell
+conda config --set auto_activate_base false
 ```
