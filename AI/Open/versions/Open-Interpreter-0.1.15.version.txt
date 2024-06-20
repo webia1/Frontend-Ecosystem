@@ -1,0 +1,52 @@
+
+usage: interpreter [-h] [-s SYSTEM_MESSAGE] [-l] [-y] [-d] [-dp] [-m MODEL]
+                   [-t TEMPERATURE] [-c CONTEXT_WINDOW] [-x MAX_TOKENS]
+                   [-xo MAX_OUTPUT] [-b MAX_BUDGET] [-ab API_BASE]
+                   [-ak API_KEY] [-safe {off,ask,auto}] [-cf CONFIG_FILE] [-v]
+                   [--config] [--conversations] [-f] [--version]
+
+Open Interpreter
+
+options:
+  -h, --help            show this help message and exit
+  -s SYSTEM_MESSAGE, --system_message SYSTEM_MESSAGE
+                        prompt / custom instructions for the language model
+  -l, --local           experimentally run the language model locally (via LM
+                        Studio)
+  -y, --auto_run        automatically run generated code
+  -d, --debug_mode      run in debug mode
+  -dp, --disable_procedures
+                        disables procedures (RAG of some common OI use-cases).
+                        disable to shrink system message. auto-disabled for
+                        non-OpenAI models
+  -m MODEL, --model MODEL
+                        language model to use
+  -t TEMPERATURE, --temperature TEMPERATURE
+                        optional temperature setting for the language model
+  -c CONTEXT_WINDOW, --context_window CONTEXT_WINDOW
+                        optional context window size for the language model
+  -x MAX_TOKENS, --max_tokens MAX_TOKENS
+                        optional maximum number of tokens for the language
+                        model
+  -xo MAX_OUTPUT, --max_output MAX_OUTPUT
+                        optional maximum number of characters for code outputs
+  -b MAX_BUDGET, --max_budget MAX_BUDGET
+                        optionally set the max budget (in USD) for your llm
+                        calls
+  -ab API_BASE, --api_base API_BASE
+                        optionally set the API base URL for your llm calls
+                        (this will override environment variables)
+  -ak API_KEY, --api_key API_KEY
+                        optionally set the API key for your llm calls (this
+                        will override environment variables)
+  -safe {off,ask,auto}, --safe_mode {off,ask,auto}
+                        optionally enable safety mechanisms like code
+                        scanning; valid options are off, ask, and auto
+  -cf CONFIG_FILE, --config_file CONFIG_FILE
+                        optionally set a custom config file to use
+  -v, --vision          experimentally use vision for supported languages
+                        (HTML)
+  --config              open config.yaml file in text editor
+  --conversations       list conversations to resume
+  -f, --fast            run `interpreter --model gpt-3.5-turbo`
+  --version             get Open Interpreter's version number

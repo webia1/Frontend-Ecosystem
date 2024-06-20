@@ -1,0 +1,83 @@
+usage: interpreter [options]
+
+Open Interpreter
+
+options:
+  -h, --help            show this help message and exit
+  -p PROFILE, --profile PROFILE
+                        name of profile. run `--profiles` to open profile
+                        directory
+  -ci CUSTOM_INSTRUCTIONS, --custom_instructions CUSTOM_INSTRUCTIONS
+                        custom instructions for the language model. will be
+                        appended to the system_message
+  -s SYSTEM_MESSAGE, --system_message SYSTEM_MESSAGE
+                        (we don't recommend changing this) base prompt for the
+                        language model
+  -y, --auto_run        automatically run generated code
+  -v, --verbose         print detailed logs
+  -m MODEL, --model MODEL
+                        language model to use
+  -t TEMPERATURE, --temperature TEMPERATURE
+                        optional temperature setting for the language model
+  -lsv, --llm_supports_vision, --no-llm_supports_vision
+                        inform OI that your model supports vision, and can
+                        receive vision inputs
+  -lsf, --llm_supports_functions, --no-llm_supports_functions
+                        inform OI that your model supports OpenAI-style
+                        functions, and can make function calls
+  -cw CONTEXT_WINDOW, --context_window CONTEXT_WINDOW
+                        optional context window size for the language model
+  -x MAX_TOKENS, --max_tokens MAX_TOKENS
+                        optional maximum number of tokens for the language
+                        model
+  -b MAX_BUDGET, --max_budget MAX_BUDGET
+                        optionally set the max budget (in USD) for your llm
+                        calls
+  -ab API_BASE, --api_base API_BASE
+                        optionally set the API base URL for your llm calls
+                        (this will override environment variables)
+  -ak API_KEY, --api_key API_KEY
+                        optionally set the API key for your llm calls (this
+                        will override environment variables)
+  -av API_VERSION, --api_version API_VERSION
+                        optionally set the API version for your llm calls
+                        (this will override environment variables)
+  -xo MAX_OUTPUT, --max_output MAX_OUTPUT
+                        optional maximum number of characters for code outputs
+  --loop                runs OI in a loop, requiring it to admit to
+                        completing/failing task
+  -dt, --disable_telemetry
+                        disables sending of basic anonymous usage stats
+  -o, --offline         turns off all online features (except the language
+                        model, if it's hosted)
+  -sm, --speak_messages
+                        (Mac only, experimental) use the applescript `say`
+                        command to read messages aloud
+  -safe {off,ask,auto}, --safe_mode {off,ask,auto}
+                        optionally enable safety mechanisms like code
+                        scanning; valid options are off, ask, and auto
+  -debug, --debug       debug mode for open interpreter developers
+  -f, --fast            runs `interpreter --model gpt-3.5-turbo` and asks OI
+                        to be extremely concise (shortcut for `interpreter
+                        --profile fast`)
+  -ml, --multi_line     enable multi-line inputs starting and ending with ```
+  -l, --local           setup a local model (shortcut for `interpreter
+                        --profile local`)
+  --codestral           shortcut for `interpreter --profile codestral`
+  --assistant           shortcut for `interpreter --profile assistant.py`
+  --llama3              shortcut for `interpreter --profile llama3`
+  -vi, --vision         experimentally use vision for supported languages
+                        (shortcut for `interpreter --profile vision`)
+  -os, --os             experimentally let Open Interpreter control your mouse
+                        and keyboard (shortcut for `interpreter --profile os`)
+  --reset_profile [RESET_PROFILE]
+                        reset a profile file. run `--reset_profile` without an
+                        argument to reset all default profiles
+  --profiles            opens profiles directory
+  --local_models        opens local models directory
+  --conversations       list conversations to resume
+  --server              start open interpreter as a server
+  --version             get Open Interpreter's version number
+  --contribute_conversation
+                        let Open Interpreter use the current conversation to
+                        train an Open-Source LLM

@@ -6,6 +6,8 @@
 
 - [Setup Conda (Anaconda)](#setup-conda-anaconda)
 - [Conda Cheatsheet](#conda-cheatsheet)
+  - [Change Conda Prompt Format](#change-conda-prompt-format)
+  - [List Environments](#list-environments)
   - [Create Conda Environment](#create-conda-environment)
   - [Activate Conda Environment](#activate-conda-environment)
   - [Deactivate Conda Environment](#deactivate-conda-environment)
@@ -25,6 +27,18 @@ conda init
 ```
 
 ## Conda Cheatsheet
+
+### Change Conda Prompt Format
+
+```shell
+conda config --set env_prompt '{name} |'
+```
+
+### List Environments
+
+```shell
+conda env list
+```
 
 ### Create Conda Environment
 
