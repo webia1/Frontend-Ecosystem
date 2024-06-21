@@ -5,6 +5,8 @@
 <!-- code_chunk_output -->
 
 - [Setup Conda (Anaconda)](#setup-conda-anaconda)
+  - [Delete Existing Anaconda Installation (if applicable)](#delete-existing-anaconda-installation-if-applicable)
+  - [Install Anaconda](#install-anaconda)
 - [Conda Cheatsheet](#conda-cheatsheet)
   - [Change Conda Prompt Format](#change-conda-prompt-format)
   - [List Environments](#list-environments)
@@ -20,6 +22,21 @@
 <!-- /code_chunk_output -->
 
 ## Setup Conda (Anaconda)
+
+### Delete Existing Anaconda Installation (if applicable)
+
+```shell
+brew uninstall --cask anaconda
+brew cleanup
+rm -rf ~/opt/anaconda3
+rm -rf ~/anaconda3
+rm -rf ~/.anaconda_backup
+rm -rf ~/.condarc ~/.conda ~/.continuum
+rm -rf ~/Library/Caches/pip
+rm -rf ~/Library/Application\ Support/pip
+```
+
+### Install Anaconda
 
 ```shell
 brew install --cask anaconda
