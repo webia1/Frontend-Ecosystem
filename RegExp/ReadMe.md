@@ -10,7 +10,6 @@
   }
 }
 
-
 @media print, screen {
   pre[class*="language-"] {
     background-color: #EBEBEB;
@@ -67,8 +66,6 @@
   }
 }
 
-
-
 </style>
 
 # Regular Expressions in JavaScript
@@ -89,7 +86,7 @@
   - [`exec` use sticky flag to set lastIndex manually](#exec-use-sticky-flag-to-set-lastindex-manually)
   - [`match` (do not forget to use `g` flag)](#match-do-not-forget-to-use-g-flag)
 - [Beispiele](#beispiele)
-  - [Zeichenklassen & Wiederholungen](#zeichenklassen-wiederholungen)
+  - [Zeichenklassen & Wiederholungen](#zeichenklassen--wiederholungen)
   - [Wordboundary](#wordboundary)
   - [UTF8/16/..](#utf816)
   - [Miscellaneous](#miscellaneous)
@@ -99,10 +96,10 @@
     - [n'te Gruppe (naive Annahme: Zwischen Quotes)](#nte-gruppe-naive-annahme-zwischen-quotes)
     - [n'te Gruppe (besser)](#nte-gruppe-besser)
     - [Benannte Gruppen `(?<name>X)` &centerdot;&centerdot;&centerdot; `\k<name>`](#benannte-gruppen-namex-centerdotcenterdotcenterdot-kname)
-    - [Keine Gruppe trotz `(` `)` &rarr; `(?:` &centerdot;&centerdot;&centerdot; `)`](#keine-gruppe-trotz-rarr-centerdotcenterdotcenterdot)
+    - [Keine Gruppe trotz `(` `)` &rarr; `(?:` &centerdot;&centerdot;&centerdot; `)`](#keine-gruppe-trotz---rarr--centerdotcenterdotcenterdot-)
     - [Simple Gruppen (weitere Beispiele)](#simple-gruppen-weitere-beispiele)
       - [With `exec` 1](#with-exec-1)
-      - [With `exec` 2 - while loop](#with-exec-2-while-loop)
+      - [With `exec` 2 - while loop](#with-exec-2---while-loop)
       - [With `match` (Notice the changed order)](#with-match-notice-the-changed-order)
       - [With `match` ohne result](#with-match-ohne-result)
       - [With `match` mit result (am/pm optional)](#with-match-mit-result-ampm-optional)
