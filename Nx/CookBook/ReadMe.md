@@ -44,6 +44,7 @@
 - [Backup](#backup)
   - [Useful Commands](#useful-commands)
   - [Standard Tags](#standard-tags)
+  - [Nx Cloud](#nx-cloud)
 
 <!-- /code_chunk_output -->
 
@@ -310,3 +311,14 @@ type:data-access
 type:util
 type:feature
 ```
+
+### Nx Cloud
+
+Connect a repository on Bitbucket, Azure or GitLab
+Run the following command in your terminal from your workspace root:
+
+  ```shell
+npx nx connect-to-nx-cloud
+```
+
+This command will verify and update your workspace configuration, and make sure you have the Nx Cloud runner installed. It will also generate a unique access token, which you will need in the next step.

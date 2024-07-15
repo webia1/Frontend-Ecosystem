@@ -1,53 +1,57 @@
-# Debugging TypeScript within VSCode
+# Debug TS in VSCode
 
-## launch.json
+## Easiest Configuration
+
+No other configuration is needed. As simple as it is:
+
+### Create a special tsconfig.json for debugging, e.g. "tsconfig-debug.json"
+
+```json
+{
+  "compilerOptions": {
+    "baseUrl": ".",
+    "importHelpers": true,
+    "lib": ["ESNext", "DOM"],
+    "paths": {
+      "@some-app/configuration": ["apps-config/some-app/index.ts"]
+    },
+    "target": "ESNext",
+    "types": ["node"]
+  },
+
+  "lib": ["ESNext"]
+}
+```
+
+### Install the following packages
+
+Install `ts-node` globally and "tsconfig-paths" as a dev dependency.
+
+```bash
+npm i -g ts-node
+npm i -D tsconfig-paths
+```
+
+### Add a launch configuration to your `.vscode/launch.json`
 
 ```json
 {
   "version": "0.2.0",
   "configurations": [
     {
-      "name": "TypeScript Debugging",
+      "name": "TypeScript Debugging (ts-node)",
       "type": "node",
       "request": "launch",
-      "args": ["${relativeFile}"],
+      "args": [
+        "-P",
+        "tsconfig-debug.json",
+        "-r",
+        "tsconfig-paths/register",
+        "${relativeFile}"
+      ],
       "cwd": "${workspaceRoot}",
-      "runtimeExecutable": "/opt/homebrew/bin/ts-node"
+      "runtimeExecutable": "ts-node"
     }
   ]
-}
-```
-
-## tsconfig.json
-
-```json
-{
-  "compilerOptions": {
-    "target": "esnext",
-    "lib": ["ESNext", "DOM"],
-    "module": "esnext",
-    "esModuleInterop": true,
-    "experimentalDecorators": true,
-    "emitDecoratorMetadata": true,
-    "forceConsistentCasingInFileNames": true,
-    "strict": true,
-    "skipDefaultLibCheck": true,
-    "skipLibCheck": true,
-    "sourceMap": true
-  },
-  "ts-node": {
-    "esm": true,
-    "experimentalSpecifierResolution": "node"
-  }
-}
-```
-
-## package.json
-
-```json
-{
-  "devDependencies": {
-    "@types/node": "^18.0.3"
-  }
 }
 ```

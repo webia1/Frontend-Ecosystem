@@ -10,11 +10,17 @@
 
 <!-- /code_chunk_output -->
 
-
 ## VSCode
 
 ## JSON
 
 ### Replace blank spaces with underscores in JSON Keys
 
-Find: `("[^"\n]*?)\s([^"\n]*?":)` and replace with `$1_$2`.
+Find: `("[^"\n]*?)\s([^"\n]*?":)` and replace with `$1_$2`. You have to repeat this operation until all blank spaces are replaced with underscores.
+
+```json
+{
+  "key with blank spaces": "value",
+  "another key with blank spaces": "value"
+}
+```
