@@ -15,6 +15,8 @@
 
 ## Detect Safari via JavaScript
 
+Not reliable in some edge cases, but it works in most cases.
+
 ```javascript
 function isSafari() {
   const userAgent = window.navigator.userAgent;
