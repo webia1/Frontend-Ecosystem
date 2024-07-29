@@ -5,7 +5,7 @@
  ```css
 @media not all and (min-resolution:.001dpcm) {
   @supports (-webkit-appearance:none) {
-    .main {
+    .e-g-main {
       overflow: auto;
       -webkit-overflow-scrolling: auto;
     }
