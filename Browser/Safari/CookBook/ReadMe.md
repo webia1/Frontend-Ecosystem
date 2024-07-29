@@ -1,6 +1,6 @@
- # Safari Cookbook
+# Safari Cookbook
 
- ## Detect Safari via CSS
+## Detect Safari via CSS
 
  ```css
 @media not all and (min-resolution:.001dpcm) {
