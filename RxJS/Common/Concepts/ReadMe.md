@@ -109,3 +109,34 @@ how **Angular Signals use Proxies to track and update reactive state**.
 
 For more complex scenarios and reactive programming, you can explore
 **RxJS** and **Angular Signals** to leverage their respective features and capabilities.
+
+**Regarding to the Types (A Side Note)**
+
+During the analysis of the code snippet, you see an another concept (not related to RxJS or Angular
+Signals or Proxies) about Types: **`"a wider union does not extend a narrower one"`**
+
+Explained in a simplest example:
+
+```ts
+
+type Narrow = "x" | "y";
+type Wide = "x" | "y" | "z";
+```
+
+- `Narrow` is a union type that includes `"x"` and `"y"`.
+- `Wide` is a union type that includes `"x"`, `"y"`, and `"z"`.
+
+```ts
+type Check1 = Narrow extends Wide ? true : false; // true
+type Check2 = Wide extends Narrow ? true : false; // false
+```
+
+**Explanation:**
+
+- **`Check1`**: Here, `Narrow` (`"x" | "y"`) is being checked to see if it extends `Wide` (`"x" | "y" | "z"`). Since `"x" | "y"` is a subset of `"x" | "y" | "z"`, `Check1` evaluates to `true`.
+
+- **`Check2`**: Here, `Wide` (`"x" | "y" | "z"`) is being checked to see if it extends `Narrow` (`"x" | "y"`). Since `"z"` is not included in `Narrow`, `Wide` cannot extend `Narrow`, so `Check2` evaluates to `false`.
+
+**Summary:**
+
+This example demonstrates that a narrower union type (`Narrow`) can extend a wider union type (`Wide`), but the reverse is not true—hence, "a wider union does not extend a narrower one."
