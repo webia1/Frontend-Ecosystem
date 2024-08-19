@@ -115,7 +115,7 @@ For more complex scenarios and reactive programming, you can explore
 During the analysis of the code snippet, you see an another concept (not related to RxJS or Angular
 Signals or Proxies) about Types: **`"a wider union does not extend a narrower one"`**
 
-Explained in a simplest example:
+Explained in a simplest example (See online: <https://stackoverflow.com/questions/78888773/how-to-correctly-type-a-javascript-proxy-handler-in-typescript-for-angular-sign>)
 
 ```ts
 
