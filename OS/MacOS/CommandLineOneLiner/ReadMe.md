@@ -4,8 +4,17 @@
 
 <!-- code_chunk_output -->
 
-- [Other Shell Documents in this Repository](#other-shell-documents-in-this-repository)
+- [LogFiles](#logfiles)
+  - [Show](#show)
+  - [Sort](#sort)
+- [Change or Add Environment Variables](#change-or-add-environment-variables)
+- [Show OS Version](#show-os-version)
+- [Kill Port](#kill-port)
+- [Show Running Webserver](#show-running-webserver)
+- [Command Timing](#command-timing)
 - [Rename all files in a folder](#rename-all-files-in-a-folder)
+  - [Search for video files containing a specific string on a specific volume or folder](#search-for-video-files-containing-a-specific-string-on-a-specific-volume-or-folder)
+  - [Search for video files](#search-for-video-files)
   - [Search and replace in file names](#search-and-replace-in-file-names)
   - [Set extension to jpg](#set-extension-to-jpg)
 - [Delete all Files and Directories (including .files) in current directory](#delete-all-files-and-directories-including-files-in-current-directory)
@@ -20,11 +29,111 @@
 
 <!-- /code_chunk_output -->
 
-## Other Shell Documents in this Repository
+## LogFiles
 
-See also [Cloud Azure Shell-> Cloud-Co/Azure/Shell/ReadMe.md](/Cloud-Co/Azure/Shell/ReadMe.md)
+After Deployment via SSH
+
+### Show
+
+```shell
+tail -f /home/LogFiles/application.log # <- replace with your log file
+```
+
+### Sort
+
+```shell
+ls -l --time-style=+%d-%m | grep `date +%d-%m` # Assumed date format: dd-mm
+```
+
+or
+
+```shell
+cd /home/LogFiles
+find . -type f -mtime 0 # Files modified today
+```
+
+## Change or Add Environment Variables
+
+```shell
+echo 'export PORT=8080' >> ~/.profile
+```
+
+and restart the Web App.
+
+## Show OS Version
+
+```shell
+cat /etc/os-release
+```
+
+## Kill Port
+
+```shell
+sudo kill $(sudo lsof -t -i:4200) # MacOS
+sudo kill $(sudo lsof -t -i:4200) -s TCP:LISTEN # Linux
+sudo fuser -k 4200/tcp # Linux
+
+# or
+
+sudo netstat -tulnvp | grep 4200 # detect PID
+sudo kill -9 <PID>
+
+```
+
+## Show Running Webserver
+
+```shell
+sudo netstat -tulnvp | grep 8080 # or
+sudo lsof -i -P -n | grep LISTEN # or
+sudo ss -tulw # or
+ps -aux | grep -E 'nginx|apache2|httpd' # or
+sudo systemctl status nginx # if using systemd and nginx
+```
+
+## Command Timing
+
+To delay the execution of a command in a Unix-based operating system like macOS, you can use the at command. The at command allows you to schedule commands to run at a specific time in the future.
+
+Here's an example of how you could use at to schedule a command to run on a specific date and time:
+
+```shell
+at 12:00 AM Saturday
+```
+
+This will open the at prompt, where you can enter the command you want to run. After entering the command, press CTRL + D to save and exit. The scheduled command will run at the specified time.
+
+You can also use the at command with the -f option to specify a script file that contains multiple commands. For example:
+
+```shell
+at 12:00 AM Saturday -f script.sh
+```
+
+This will run the commands contained in the script.sh file at the specified time.
+
+Note that you need to have the proper permissions to use the at command. If you're logged in as a regular user, you may need to use sudo to run at with superuser privileges.
 
 ## Rename all files in a folder
+
+### Search for video files containing a specific string on a specific volume or folder
+
+```shell
+# e.g. "formly"
+find /Volumes/NAME_EXTERNAL_DRIVE -type f \( -iname '*formly*.mp4' -o -iname '*formly*.avi' -o -iname '*formly*.mov' -o -iname
+  '*formly*.mkv' -o -iname '*formly*.flv' -o -iname '*formly*.wmv' \)
+```
+
+### Search for video files
+
+```shell
+ find /Volumes/NAME_EXTERNAL_DRIVE -type f \( -iname '*.mp4' -o -iname '*.avi' -o -iname '*.mov' -o -iname '*.mkv' -o -iname
+  '*.flv' -o -iname '*.wmv' \)
+```
+
+or
+
+```shell
+find /Volumes/NAME_EXTERNAL_DRIVE -type f -iregex '.*\.\(mp4\|avi\|mov\|mkv\|flv\|wmv\)'
+```
 
 ### Search and replace in file names
 
