@@ -157,6 +157,18 @@ scene.add(axesHelper);
 
 ## Glossary
 
+### Device Orientation
+
+In the latest versions of Three.js, DeviceOrientationControls has been removed because a reliable implementation across all devices was not possible. Instead, you can use the DeviceOrientation API directly to get the device's orientation data and use it to control the camera or other objects in your scene.
+
+```js
+window.addEventListener('deviceorientation', (event) => {
+  const alpha = event.alpha; // rotation around the z-axis
+  const beta = event.beta; // rotation around the x-axis
+  const gamma = event.gamma; // rotation around the y-axis
+});
+```
+
 ### Gimbal Lock
 
 **Gimbal lock** is a problem that occurs when using Euler angles to represent 3D rotations. It happens when two of the three axes of rotation become aligned, making it impossible to rotate around one of the axes without affecting the others. This can lead to unexpected behavior and make it difficult to control the orientation of an object.
@@ -180,3 +192,5 @@ scene.add(axesHelper);
 ## Feedback
 
 - [ ] Use better `MeshMatcapMaterial` instead of `MeshBasicMaterial` for better lighting.
+- [ ] Use prettier.
+- [ ] Optional: Use git, gitignore
