@@ -8,12 +8,14 @@
 
 - [Backup (TODO: Move to the end)](#backup-todo-move-to-the-end)
   - [Getting Support](#getting-support)
+  - [Convert TTF to JSON](#convert-ttf-to-json)
 - [Introduction](#introduction)
 - [Basic Concepts](#basic-concepts)
   - [Setup](#setup)
   - [Transformations](#transformations)
   - [Axes Helper](#axes-helper)
 - [Glossary](#glossary)
+  - [Device Orientation](#device-orientation)
   - [Gimbal Lock](#gimbal-lock)
   - [Z-fighting](#z-fighting)
 - [Feedback](#feedback)
@@ -27,6 +29,8 @@
 Use **`#threejsJourney`** on X and/or tag **`@bruno_simon`** (<https://threejs-journey.com/>) or join discord server "three.js Journey".
 
 See threejs project here: TODO coming soon.
+
+### Convert TTF to JSON
 
 ## Introduction
 
