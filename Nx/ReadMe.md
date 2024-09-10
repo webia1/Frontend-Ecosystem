@@ -20,6 +20,7 @@
       - [tsconfig.json](#tsconfigjson)
       - [tsconfig.app.json & tsconfig.spec.json](#tsconfigappjson--tsconfigspecjson)
       - [webpack.config.ts](#webpackconfigts)
+- [Further Reading](#further-reading)
 
 <!-- /code_chunk_output -->
 
@@ -272,3 +273,16 @@ module.exports = composePlugins(withNx(), (config) => {
 });
 
 ```
+
+## Further Reading
+
+- Nx Api Angular
+  - <https://nx.dev/nx-api/angular>
+- Nx Angular Recipes
+  - <https://nx.dev/recipes/angular>
+    - Advanced Angular Micro Frontends with Dynamic Module Federation
+      - <https://nx.dev/recipes/angular/dynamic-module-federation-with-angular>
+- Nx Devkit
+  - <https://nx.dev/nx-api/devkit>
+- Extending Nx
+  - <https://nx.dev/extending-nx/intro/getting-started>
