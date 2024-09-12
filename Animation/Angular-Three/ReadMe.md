@@ -20,6 +20,8 @@
     - [Outputs](#outputs-1)
 - [HowTos](#howtos)
   - [Integrate OrbitControls](#integrate-orbitcontrols)
+  - [Points](#points)
+  - [Line](#line)
 
 <!-- /code_chunk_output -->
 
@@ -190,3 +192,7 @@ npm i -S @pmndrs/vanilla angular-three angular-three-soba camera-controls
 npm i -S maath ngxtension three three-mesh-bvh three-orbit-controls
 npm i -S three-stdlib
 ```
+
+### Points
+
+### Line
