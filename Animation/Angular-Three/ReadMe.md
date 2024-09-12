@@ -521,6 +521,27 @@ export class ExperienceComponent {
 
 - **`mesh`** - The THREE.js Mesh instance
 
+## HowTos
+
+### Integrate OrbitControls
+
+Install `angular-three-soba`:
+
+```shell
+npm install angular-three-soba
+```
+
+Add the following to your **`app.module.ts`**:
+
+```ts
+import { OrbitControls } from 'angular-three-soba';
+```
+
+```
+
+
+
+
 ## Reference
 
 ### Getting Started
