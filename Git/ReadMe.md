@@ -6,6 +6,8 @@
 
 - [First Steps](#first-steps)
 - [.gitignore (CACHED vs. UNTRACKED, Mostly .nx Issues)](#gitignore-cached-vs-untracked-mostly-nx-issues)
+  - [Remove ignored files from remote repository](#remove-ignored-files-from-remote-repository)
+- [Undo add](#undo-add)
 - [Stop ignoring cases, just be insensitive](#stop-ignoring-cases-just-be-insensitive)
 - [Show Number of Commits](#show-number-of-commits)
 - [Rebase (Merging Commits)](#rebase-merging-commits)
@@ -28,8 +30,6 @@
   - [Short version](#short-version)
   - [Long Version](#long-version)
 - [Git Search Strings in Code](#git-search-strings-in-code)
-- [Remove ignored files from remote repository](#remove-ignored-files-from-remote-repository)
-- [Undo add](#undo-add)
 - [Restore deleted file](#restore-deleted-file)
 - [Create and connect to remote repository](#create-and-connect-to-remote-repository)
   - [Remote add & pull](#remote-add--pull)
@@ -108,6 +108,20 @@ If something cannot be ignored, even it is in the .gitignore file, then it is pr
 
     git rm --cached folder/file.txt
     git rm -r --cached .nx  // remove folder recursively
+    # Re-check
+    git diff --cached  // should be empty
+
+### Remove ignored files from remote repository
+
+    git rm -r --cached .
+    git add .
+    git commit -am "Removed ignored files"
+    git push
+
+## Undo add
+
+    git reset --hard      // to last commit
+    git rm --cached .     // undo add
 
 ## Stop ignoring cases, just be insensitive
 
@@ -299,18 +313,6 @@ git log --pretty="%H" --author="authorname" |
 git log --format="%H" -S"mySearchString"   # give me the commit IDs (last time added)
 git --no-pager grep "mySearchString" $(git rev-list --all) # checking
 ```
-
-## Remove ignored files from remote repository
-
-    git rm -r --cached .
-    git add .
-    git commit -am "Removed ignored files"
-    git push
-
-## Undo add
-
-    git reset --hard      // to last commit
-    git rm --cached .     // undo add
 
 ## Restore deleted file
 
