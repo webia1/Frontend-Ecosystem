@@ -21,6 +21,10 @@
   - [Remove VSCode from MacOS Completely](#remove-vscode-from-macos-completely)
   - [Export/Import Extensions](#exportimport-extensions)
   - [Unknown SCSS Properties](#unknown-scss-properties)
+  - [Fixing JSON (Search and Replace)](#fixing-json-search-and-replace)
+    - [Replace blank spaces with underscores in JSON Keys](#replace-blank-spaces-with-underscores-in-json-keys)
+    - [Add Missing Commas Between Objects in an JSON Array](#add-missing-commas-between-objects-in-an-json-array)
+    - [Every Object is embedded in an Array and commas are missing too.](#every-object-is-embedded-in-an-array-and-commas-are-missing-too)
 
 <!-- /code_chunk_output -->
 
@@ -114,3 +118,63 @@ Update your workspace settings to include the following:
   "scss.lint.validProperties": ["rx", "ry", "cx", "cy", "r"],
 }
 ```
+
+### Fixing JSON (Search and Replace)
+
+#### Replace blank spaces with underscores in JSON Keys
+
+Find: `("[^"\n]*?)\s([^"\n]*?":)` and replace with `$1_$2`. You have to repeat this operation until all blank spaces are replaced with underscores.
+
+```json
+{
+  "key with blank spaces": "value",
+  "another key with blank spaces": "value"
+}
+```
+
+#### Add Missing Commas Between Objects in an JSON Array
+
+Search for: `\}[\s\n\r]*\{` and replace with `},\n{`.
+
+```plaintext
+// Before:
+[{"key": "value"}{"key": "value"}]
+
+// After:
+[{"key": "value"},{"key": "value"}]
+```
+
+**Search Pattern explanation:**
+
+```plaintext
+
+}              - Closing curly brace of a JSON object
+[\s\n\r]       - Any whitespace characters (spaces, tabs, line breaks)
+*              - Zero or more of the previous characters
+{              - Opening curly brace of the next object
+
+Replace Pattern explanation:
+},             - Closing brace followed by a comma
+\n             - Line break for better readability
+{              - Opening brace of the next object
+```
+
+#### Every Object is embedded in an Array and commas are missing too.
+
+Following situation:
+
+```plaintext
+// Example before:
+[{"id": 1}]
+[{"id": 2}]
+[{"id": 3}]
+
+// Example after:
+[
+  {"id": 1},
+  {"id": 2},
+  {"id": 3}
+]
+```
+
+Search for `\](\s*\r*\n*)\[` and replace with `,\n`. Everything between opening and closing square brackets will be replaced with a comma and a line break.
