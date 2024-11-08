@@ -1,0 +1,18 @@
+{
+  "compilerOptions": {
+    "baseUrl": ".",
+    "importHelpers": true,
+    "lib": ["ESNext", "DOM"],
+    "paths": {
+      "@app-one-app/configuration": [
+        "apps-config/app-one-app/index.ts"
+      ],
+      "@app-two-app/configuration": [
+        "apps-config/app-two-app/index.ts"
+      ]
+    },
+    "target": "ESNext",
+    "types": ["node"]
+  },
+  "lib": ["ESNext"]
+}

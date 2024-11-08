@@ -20,18 +20,22 @@
       - [tsconfig.json](#tsconfigjson)
       - [tsconfig.app.json & tsconfig.spec.json](#tsconfigappjson--tsconfigspecjson)
       - [webpack.config.ts](#webpackconfigts)
+- [Details](#details)
+  - [Creating a Workspace](#creating-a-workspace)
 - [Further Reading](#further-reading)
 
 <!-- /code_chunk_output -->
 
 ## Getting Started
 
+See all details: [Creating a Workspace](#creating-a-workspace) below. (November 2024)
+
 ```shell
 # Install Nx CLI
 npm i -g nx@latest
 
 # Create a new workspace
-npx create-nx-workspace@latest my-workspace --preset=empty --cli=nx
+npx create-nx-workspace@latest my-workspace
 
 # Install packages you need (See online)
 # E.g. Angular/Nest/..
@@ -272,6 +276,45 @@ module.exports = composePlugins(withNx(), (config) => {
   return config;
 });
 
+```
+
+## Details
+
+### Creating a Workspace
+
+```shell
+create-nx-workspace [name] [options]
+
+Create a new Nx workspace
+
+Options:
+      --help                  Show help  [boolean]
+      --version               Show version  [boolean]
+      --name                  Workspace name (e.g. org name).  [string]
+      --preset                Customizes the initial content of your workspace. Default presets include: ["apps", "npm", "ts", "web-components", "angular-monorepo", "angular-standalone", "react-monorepo", "react-standalone", "vue-monorepo", "vue-standalone", "nuxt", "nuxt-standalone", "next", "nextjs-standalone", "remix-monorepo", "remix-standalone", "react-native", "expo", "nest", "express", "react", "vue", "angular", "node-standalone", "node-monorepo", "ts-standalone"]. To build your own see https://nx.dev/extending-nx/recipes/create-preset.  [string]
+      --interactive           Enable interactive mode with presets.  [boolean] [default: true]
+      --workspaceType         The type of workspace to create.  [string] [choices: "integrated", "package-based", "standalone"]
+      --appName               The name of the app when using a monorepo with certain stacks.  [string]
+      --style                 Stylesheet type to be used with certain stacks.  [string]
+      --standaloneApi         Use Standalone Components if generating an Angular app.  [boolean] [default: true]
+      --routing               Add a routing setup for an Angular app.  [boolean] [default: true]
+      --bundler               Bundler to be used to build the app.  [string]
+      --framework             Framework option to be used with certain stacks.  [string]
+      --docker                Generate a Dockerfile for the Node API.  [boolean]
+      --nextAppDir            Enable the App Router for Next.js.  [boolean]
+      --nextSrcDir            Generate a 'src/' directory for Next.js.  [boolean]
+      --e2eTestRunner         Test runner to use for end to end (E2E) tests.  [string] [choices: "playwright", "cypress", "none"]
+      --ssr                   Enable Server-Side Rendering (SSR) and Static Site Generation (SSG/Prerendering) for the Angular application.  [boolean]
+      --prefix                Prefix to use for Angular component and directive selectors.  [string]
+      --defaultBase           Default base to use for new projects.  [string] [default: main]
+  -g, --skipGit               Skip initializing a git repository.  [boolean] [default: false]
+      --commit.name           Name of the committer.  [string]
+      --commit.email          E-mail of the committer.  [string]
+      --commit.message        Commit message.  [string] [default: "Initial commit"]
+      --packageManager, --pm  Package manager to use.  [string] [choices: "bun", "npm", "pnpm", "yarn"] [default: npm]
+  -a, --allPrompts            Show all prompts.  [boolean] [default: false]
+      --useGitHub             Will you be using GitHub as your git hosting provider?  [boolean] [default: false]
+      --nxCloud, --ci         Which CI provider would you like to use?  [string] [choices: "github", "gitlab", "azure", "bitbucket-pipelines", "circleci", "skip", "yes"]
 ```
 
 ## Further Reading

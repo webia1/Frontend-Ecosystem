@@ -6,30 +6,38 @@
 
 <!-- code_chunk_output -->
 
-- [Overview](#overview)
-  - [Secondary Bar](#secondary-bar)
-- [Quick Open](#quick-open)
-- [Editing](#editing)
-  - [Side by Side Editing](#side-by-side-editing)
-- [Excluding Folders](#excluding-folders)
-- [Shortcuts](#shortcuts)
-  - [MacOS](#macos)
-  - [Windows](#windows)
+- [Getting Started](#getting-started)
+  - [Shortcuts](#shortcuts)
+    - [Secondary Bar](#secondary-bar)
+    - [Quick Open](#quick-open)
+    - [Editing](#editing)
+      - [Side by Side Editing](#side-by-side-editing)
+      - [Multi-Cursor Editing](#multi-cursor-editing)
+  - [Excluding Folders](#excluding-folders)
+  - [Shortcuts Overview (Image)](#shortcuts-overview-image)
+    - [MacOS](#macos)
+    - [Windows](#windows)
+- [Trouble Shooting](#trouble-shooting)
+  - [Remove VSCode from MacOS Completely](#remove-vscode-from-macos-completely)
+  - [Export/Import Extensions](#exportimport-extensions)
+  - [Unknown SCSS Properties](#unknown-scss-properties)
 
 <!-- /code_chunk_output -->
 
-## Overview
+## Getting Started
 
 ![Overview](https://code.visualstudio.com/assets/docs/getstarted/userinterface/hero.png)
 
-### Secondary Bar
+### Shortcuts
+
+#### Secondary Bar
 
 ```plaintext
 Show: ⌥ ⌘ B
 Toggle: ⌘ B
 ```
 
-## Quick Open
+#### Quick Open
 
 ```plaintext
 Quick Open: ⌘ P
@@ -37,19 +45,19 @@ Quick Open Symbols: ⌘ T
 Command Palette: ⇧ ⌘ P
 ```
 
-## Editing
+#### Editing
 
-### Side by Side Editing
+##### Side by Side Editing
 
 ```plaintext
 Split active Editor:      ⌘ \           Editor
 Open to the Side:         ⌥ + Click     File in Explorer
 ```
 
-### Multi-Cursor Editing
+##### Multi-Cursor Editing
 
 ```plaintext
-Add Cursor                    ⌥ + Click  
+Add Cursor                    ⌥ + Click
 Add Cursor to Next Line:      ⌥ ⌘ ↓
 Add Cursor to Previous Line:  ⌥ ⌘ ↑
 Add Cursor Above:             ⇧ ⌥ ↑
@@ -59,18 +67,50 @@ Add Next Occurrence:          ⌘ D
 Add All Occurrences:          ⌘ ⇧ L
 ```
 
-## Excluding Folders
+### Excluding Folders
 
 By default, VS Code excludes some folders from the Explorer (for example. `.git`). Use the `files.exclude` [setting](https://code.visualstudio.com/docs/getstarted/settings) to configure rules for hiding files and folders from the Explorer.
 
 **Tip:** This is really useful to hide derived resources files, like `\*.meta` in Unity, or `\*.js` in a TypeScript project. For Unity to exclude the `\*.cs.meta` files, the pattern to choose would be: `"**/*.cs.meta": true`. For TypeScript, you can exclude generated JavaScript for TypeScript files with: `"**/*.js": {"when": "$(basename).ts"}`.
 
-## Shortcuts
+### Shortcuts Overview (Image)
 
-### MacOS
+#### MacOS
 
 ![MacOS](assets/keyboard-shortcuts-macos.png)
 
-### Windows
+#### Windows
 
 ![Shortcuts](https://code.visualstudio.com/assets/docs/getstarted/tips-and-tricks/KeyboardReferenceSheet.png)
+
+## Trouble Shooting
+
+### Remove VSCode from MacOS Completely
+
+```shell
+rm -fr ~/Library/Preferences/com.microsoft.VSCode.helper.plist
+rm -fr ~/Library/Preferences/com.microsoft.VSCode.plist
+rm -fr ~/Library/Caches/com.microsoft.VSCode
+rm -fr ~/Library/Caches/com.microsoft.VSCode.ShipIt/
+rm -fr ~/Library/Application\ Support/Code/
+rm -fr ~/Library/Saved\ Application\ State/com.microsoft.VSCode.savedState/
+rm -fr ~/.vscode/
+```
+
+### Export/Import Extensions
+
+```shell
+code --list-extensions > extensions-list.txt
+cat extensions-list.txt | xargs -L 1 code --install-extension
+```
+
+### Unknown SCSS Properties
+
+Update your workspace settings to include the following:
+
+```json
+{
+  "css.lint.validProperties": ["rx", "ry", "cx", "cy", "r"],
+  "scss.lint.validProperties": ["rx", "ry", "cx", "cy", "r"],
+}
+```

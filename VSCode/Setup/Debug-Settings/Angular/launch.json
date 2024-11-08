@@ -1,0 +1,40 @@
+{
+  "configurations": [
+    {
+      "cwd": "${workspaceFolder}/apps/.../<app-name>",
+      "name": "Attach NestJS App Name",
+      "port": 9229,
+      "request": "attach",
+      "type": "node"
+    },
+    {
+      "name": "Launch Angular App Name",
+      "request": "launch",
+      "sourceMapPathOverrides": {
+        "/*": "*",
+        "/./*": "${webRoot}/*",
+        "/./~/*": "${webRoot}/node_modules/*",
+        "/src/*": "${webRoot}/*",
+        "webpack:/*": "${webRoot}/*"
+      },
+      "type": "chrome",
+      "url": "https://localhost:4200/",
+      "webRoot": "${workspaceFolder}"
+    },
+    {
+      "args": [
+        "-P",
+        "tsconfig-debug.json",
+        "-r",
+        "tsconfig-paths/register",
+        "${relativeFile}"
+      ],
+      "cwd": "${workspaceRoot}",
+      "name": "TypeScript Debugging (ts-node)",
+      "request": "launch",
+      "runtimeExecutable": "ts-node",
+      "type": "node"
+    }
+  ],
+  "version": "0.2.0"
+}
