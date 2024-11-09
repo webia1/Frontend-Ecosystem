@@ -18,6 +18,17 @@
 - [Textcolor with Gradient Trick (CSS)](#textcolor-with-gradient-trick-css)
 - [Image Filters](#image-filters)
 - [Shake on Invalid Input](#shake-on-invalid-input)
+- [Modern Tricks](#modern-tricks)
+  - [Center anything](#center-anything)
+  - [Smart Text Cut](#smart-text-cut)
+  - [Clean Scrollbar](#clean-scrollbar)
+  - [Loading Skeleton](#loading-skeleton)
+  - [Modern Checkbox](#modern-checkbox)
+  - [Modern Text Balancing](#modern-text-balancing)
+  - [Smart Container](#smart-container)
+  - [Responsive Text Scaling](#responsive-text-scaling)
+  - [Print Ready](#print-ready)
+  - [Vertical Text](#vertical-text)
 - [Online Links](#online-links)
 
 <!-- /code_chunk_output -->
@@ -293,6 +304,118 @@ input:invalid {
   75% {
     transform: translateX(-0.25rem);
   }
+}
+```
+
+## Modern Tricks
+
+### Center anything
+
+```css
+.center-anything {
+  position: fixed;
+  inset: 0;
+  margin: auto;
+}
+```
+
+### Smart Text Cut
+Multiline Truncate with Ellipsis
+
+```css
+.truncate {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+```
+
+### Clean Scrollbar
+
+```css
+.clean-scroll {
+  scrollbar-width: thin;
+  scrollbar-gutter: stable;
+  scroll-behavior: smooth;
+}
+```
+
+### Loading Skeleton
+
+```css
+.loading {
+  background: linear-gradient(90deg, #fOf0f0 25%, #eDe®e0 50%, #f0f0f0 75%);
+  background-size: 200% 100%;
+  animation: shine 1.5s infinite linear;
+}
+
+@keyframes shine {
+  to { background-position: -200% 0; }
+ }
+```
+
+### Modern Checkbox
+
+```css
+.checkbox-modern {
+  appearance: none;
+  border: 1px solid #ccc;
+  border-radius: 0.25rem;
+}
+
+.checkbox-modern:checked {
+  background-color: #000;
+  color: #fff;
+}
+```
+
+### Modern Text Balancing
+
+```css
+.text-balancing {
+  text-wrap: balance;
+  max-width: 50ch;
+}
+```
+
+### Smart Container
+
+```css
+.wrapper {
+  width: min(100% - 2rem, 900px);
+  margin-inline: auto;
+}
+```
+
+### Responsive Text Scaling
+
+```css
+.text-scaling {
+  font-size: clamp(1rem, 0.5rem + 2vw, 2rem);
+}
+```
+
+### Print Ready
+
+```css
+@media print {
+  .no-print {
+    display: none;
+  }
+  a[href]::after {
+    content: " (" attr(href) ")";
+  }
+
+}
+```
+
+### Vertical Text
+
+```css
+.vertical-text {
+  writing-mode: vertical-rl;
+  text-orientation: mixed;
 }
 ```
 
