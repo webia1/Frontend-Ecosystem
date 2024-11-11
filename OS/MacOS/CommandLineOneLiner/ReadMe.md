@@ -4,6 +4,7 @@
 
 <!-- code_chunk_output -->
 
+- [Find the big files in a certain directory](#find-the-big-files-in-a-certain-directory)
 - [LogFiles](#logfiles)
   - [Show](#show)
   - [Sort](#sort)
@@ -28,6 +29,16 @@
 - [Search for a file but exclude a directory](#search-for-a-file-but-exclude-a-directory)
 
 <!-- /code_chunk_output -->
+
+## Find the big files in a certain directory
+
+```shell
+# 20 largest files in current directory
+du -h -d 1 | sort -rh | head -n 20
+
+# 20 largest files in /Users/username/
+sudo du -h -d 1 /Users/username/ | sort -rh | head -n 20
+```
 
 ## LogFiles
 
