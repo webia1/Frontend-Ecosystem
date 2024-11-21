@@ -34,9 +34,9 @@ E.g. **Markdown Preview Enhanced** is a powerful extension that enables you to p
 
 F1 -> Markdown Preview Enhanced: Customize CSS
 
+Please visit the URL below for more information: <https://shd101wyy.github.io/markdown-preview-enhanced/#/customize-css>
+
 ```css
-/* Please visit the URL below for more information: */
-/*   https://shd101wyy.github.io/markdown-preview-enhanced/#/customize-css */
 
 .markdown-preview.markdown-preview {
   pre, code {

@@ -242,6 +242,8 @@ Turborepo is a high-performance build system for JavaScript and TypeScript codeb
 
 Yarn workspaces aim to make working with monorepos easy
 
+<https://yarnpkg.com/features/workspaces>
+
 ### Yalc
 
 Work with yarn/npm packages locally like a boss.
@@ -257,6 +259,8 @@ A tool for managing JavaScript projects with multiple packages.
 ### npm Workspaces
 
 Manage multiple packages from your local file system from within a singular top-level, root package.
+
+<https://docs.npmjs.com/cli/v8/using-npm/workspaces>
 
 ### pnpm
 
