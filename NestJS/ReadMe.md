@@ -7,6 +7,7 @@ All Samples: <https://github.com/nestjs/nest/tree/master/sample/>
 <!-- code_chunk_output -->
 
 - [Nx Setup](#nx-setup)
+  - [Use for Demos](#use-for-demos)
   - [Nx Workspace: Run the NestJS Application](#nx-workspace-run-the-nestjs-application)
   - [Or run via `nest` (If created with NestJS CLI)](#or-run-via-nest-if-created-with-nestjs-cli)
   - [Nx & SWC](#nx--swc)
@@ -196,6 +197,18 @@ npx nx generate @nx/nest:application
   --tags=middleware-basis-app
   --no-interactive
   # --dry-run
+```
+
+### Use for Demos
+
+```shell
+npm i -S --legacy-peer-deps @nestjs/common @nestjs/core @nestjs/jwt @nestjs/passport @nestjs/platform-express @nestjs/serve-static @nestjs/swagger
+
+npm i -D --legacy-peer-deps @nestjs/devtools-integration @nestjs/mapped-types @nestjs/schematics @nestjs/typeorm @nx/nest @nx/node @nx/workspace --verbose
+```
+
+```shell
+npm i -g @nestjs/cli
 ```
 
 ### Nx Workspace: Run the NestJS Application
@@ -4637,7 +4650,7 @@ To get started, first install the required package:
 
 ```bash
 
-$ npm i --save-dev @nestjs/testing
+npm i --save-dev @nestjs/testing
 ```
 
 #### Unit testing

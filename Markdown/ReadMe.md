@@ -20,6 +20,7 @@ E.g. **Markdown Preview Enhanced** is a powerful extension that enables you to p
 - [Frontmatter](#frontmatter)
 - [Simple Table Format for Pandoc](#simple-table-format-for-pandoc)
   - [Pandoc Lua Filters](#pandoc-lua-filters)
+  - [Pandoc Syntax Highlighting](#pandoc-syntax-highlighting)
 - [VSCode Extension](#vscode-extension)
   - [Markdown Preview Enhanced](#markdown-preview-enhanced)
     - [Install Pandoc](#install-pandoc)
@@ -98,6 +99,12 @@ To be absolutely sure, that `prettier` ignores all markdown files, add the follo
 
 So finally, you can use this beautiful pandoc table format (You have to set **pandoc** as your **default markdown renderer** in `markdown-preview-enhanced`):
 
+```shell
+"markdown-preview-enhanced.enableCriticMarkupSyntax": true,
+"markdown-preview-enhanced.enableExtendedTableSyntax": true,
+"markdown-preview-enhanced.usePandocParser": true,
+```
+
 -------------------------------------------------------------
  Centered   Default           Right Left
   Header    Aligned         Aligned Aligned
@@ -115,9 +122,45 @@ So finally, you can use this beautiful pandoc table format (You have to set **pa
 ### Pandoc Lua Filters
 
 Pandoc Lua Filters are a powerful way to extend Pandoc. They are written in Lua and can be used to modify the abstract syntax tree (AST) that Pandoc uses to represent the document being converted. This allows you to customize look and feel, add metadata, and perform many other functions. Lua filters can be used with all of Pandoc’s input formats (Markdown, reStructuredText, HTML, LaTeX, etc.), and can produce any of its output formats (including native Haskell formats).
+
 ...
 
 See [Pandoc Lua Filters](https://pandoc.org/lua-filters.html) for more details.
+
+### Pandoc Syntax Highlighting
+
+Use the following frontmatter to enable syntax highlighting in pandoc:
+
+```yaml
+---
+title: "Document Title"
+output:
+  pdf_document:
+    highlight: tango
+---
+```
+
+If you get errors like:
+
+```shell
+Error: Command failed: pandoc -f markdown+tex_math_single_backslash -o ReadMe.pdf --highlight-style=tango --pdf-engine=pdflatex
+Error producing PDF.
+! LaTeX Error: File `framed.sty' not found.
+```
+
+You have to install the missing package:
+
+```shell
+# get the latest upgrade script
+wget https://mirror.ctan.org/systems/texlive/tlnet/update-tlmgr-latest.sh
+sudo sh ./update-tlmgr-latest.sh
+# See installed packages
+tlmgr list --only-installed | grep framed
+# Install the missing package
+sudo tlmgr install framed
+```
+
+See more online: <https://pandoc.org/MANUAL.html#syntax-highlighting>
 
 ## VSCode Extension
 
