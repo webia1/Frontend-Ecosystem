@@ -36,8 +36,9 @@ wget https://mirror.ctan.org/systems/texlive/tlnet/update-tlmgr-latest.sh
 sudo sh ./update-tlmgr-latest.sh
 # See installed packages
 tlmgr list --only-installed | grep framed
-# Install the missing package
-sudo tlmgr install framed
+# Install the missing packages
+sudo tlmgr install framed # for boxes
+sudo tlmgr install soul # for highlighting
 ```
 
 ## Frontmatter
