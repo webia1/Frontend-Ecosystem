@@ -39,6 +39,7 @@ tlmgr list --only-installed | grep framed
 # Install the missing packages
 sudo tlmgr install framed # for boxes
 sudo tlmgr install soul # for highlighting
+sudo tlmgr install fvextra # for fancyvrb
 ```
 
 ## Frontmatter

@@ -6,50 +6,36 @@ output:
     highlight: tango
     keep_tex: true
     pdf_engine: xelatex
-pandoc_args: 
+    number_sections: true
+pandoc_args:
   - "--pdf-engine=xelatex"
+  - "--highlight-style=tango"
+  - "--number-sections"
+  - "--listings"
 header-includes:
   - |
     ```{=latex}
     \usepackage{xcolor}
     \usepackage{fontspec}
-    \usepackage{listings}
-    \usepackage{url}
-    \usepackage{soul}
-    \usepackage[unicode]{hyperref}
+    \usepackage{fvextra}
+    \usepackage{caption}
+    \usepackage{longtable}
+    \usepackage{fancyvrb}
+    \usepackage{upquote}
     \setmonofont{JetBrains Mono}
+    \DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\},breaklines=true,breakanywhere=true,numbers=left,numbersep=5pt,frame=single}
+    \renewcommand{\theFancyVerbLine}{\textcolor{gray}{\tiny\arabic{FancyVerbLine}}}
+    \usepackage{hyperref}
     \definecolor{linkcolor}{RGB}{0,0,255}
     \hypersetup{
-      colorlinks=true,
-      linkcolor=linkcolor,
-      urlcolor=linkcolor,
-      citecolor=linkcolor
-    }
-    \lstset{
-      basicstyle=\ttfamily\footnotesize,
-      breaklines=true,
-      breakatwhitespace=false,
-      postbreak=\mbox{\textcolor{red}{$\hookrightarrow$}\space},
-      columns=fullflexible,
-      keepspaces=true,
-      showlines=true,
-      numbers=left,
-      numberstyle=\tiny\color{gray},
-      stepnumber=1,
-      numbersep=5pt,
-      keywordstyle=\color{blue},
-      commentstyle=\color{green!60!black},
-      stringstyle=\color{red},
-      frame=single,
-      framesep=5pt,
-      xleftmargin=15pt,
-      showstringspaces=false,
-      linewidth=0.95\linewidth,
-      aboveskip=10pt,
-      belowskip=10pt
+        colorlinks=true,
+        linkcolor=linkcolor,
+        filecolor=linkcolor,
+        urlcolor=linkcolor,
+        citecolor=linkcolor
     }
     \let\oldhref\href
-    \renewcommand{\href}[2]{\oldhref{#1}{\color{linkcolor}\underline{#2}}}
+    \renewcommand{\href}[2]{\oldhref{#1}{\textcolor{linkcolor}{#2}}}
     ```
 ---
 
