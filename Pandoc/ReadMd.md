@@ -1,41 +1,67 @@
 ---
-title: "Pandoc"
-output: pdf_document
-toc: true
-toc-depth: 6
-number-sections: true
-highlight-style: kate
+title: "Example Markdown Configuration for Pandoc"
+output:
+  pdf_document:
+    toc: true
+    highlight: tango
+    keep_tex: true
+    pdf_engine: xelatex
+    number_sections: true
+pandoc_args:
+  - "--pdf-engine=xelatex"
+  - "--highlight-style=tango"
+  - "--number-sections"
+  - "--listings"
+geometry:
+  - a4paper
+  - left=2cm
+  - top=1.7cm
+  - right=1.5cm
+  - bottom=1.2cm
+header-includes:
+  - |
+    ```{=latex}
+    \usepackage{xcolor}
+    \usepackage{fontspec}
+    \usepackage{fvextra}
+    \usepackage{caption}
+    \usepackage{longtable}
+    \usepackage{fancyvrb}
+    \usepackage{upquote}
+    \setmonofont{JetBrains Mono}
+    \DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\},breaklines=true,breakanywhere=true,numbers=left,numbersep=5pt,frame=single}
+    \renewcommand{\theFancyVerbLine}{\textcolor{gray}{\tiny\arabic{FancyVerbLine}}}
+    \usepackage{hyperref}
+    \definecolor{linkcolor}{RGB}{0,0,255}
+    \hypersetup{
+        colorlinks=true,
+        linkcolor=linkcolor,
+        filecolor=linkcolor,
+        urlcolor=linkcolor,
+        citecolor=linkcolor
+    }
+    \let\oldhref\href
+    \renewcommand{\href}[2]{\oldhref{#1}{\textcolor{linkcolor}{#2}}}
+    \usepackage{listings}
+    ```
 ---
 
 # Pandoc
 
-<!-- @import "[TOC]" {cmd="toc" depthFrom=2 depthTo=6 orderedList=false} -->
-
-<!-- code_chunk_output -->
-
-- [Installation MacOS](#installation-macos)
-- [Frontmatter](#frontmatter)
-- [Pandoc Arguments](#pandoc-arguments)
-- [Simple Table Format for Pandoc](#simple-table-format-for-pandoc)
-- [Pandoc Lua Filters](#pandoc-lua-filters)
-- [Shared Options](#shared-optionshttpsshd101wyygithubiomarkdown-preview-enhancedpandoc-wordidshared-options)
-
-<!-- /code_chunk_output -->
+See the *source code of this Markdown file* to see the configuration settings. **Die Reihenfolge im YAML-Block ist sehr wichtig!**
 
 ## Installation MacOS
 
 ```bash
-# First install pandoc via brew
+# Install pandoc
 brew install pandoc
-
-# Then install basictex
+# Install basictex (It is a small TeX Live distribution)
 brew install basictex
-
-# Then get the latest tlmgr script
+# Install tlmgr (TeX Live Manager)
 wget https://mirror.ctan.org/systems/texlive/tlnet/update-tlmgr-latest.sh
 sudo sh ./update-tlmgr-latest.sh
 # See installed packages
-tlmgr list --only-installed | grep framed
+tlmgr list --only-installed
 # Install the missing packages
 sudo tlmgr install framed # for boxes
 sudo tlmgr install soul # for highlighting
@@ -44,52 +70,8 @@ sudo tlmgr install fvextra # for fancyvrb
 
 ## Frontmatter
 
-That's the so called frontmatter and it should be placed at the beginning of the markdown file. Following and more settings are possible:
-
-```yaml
----
-title: "Show must go on"
-author: "George Michael, Michael Jackson"
-date: "2024-12-31"
-output:
-  pdf_document:
-    toc: true
-    number_sections: true
-    papersize: A4
-    highlight: tango
-    keep_tex: true
-    pdf_engine: xelatex
-    extra_dependencies:
-      - xcolor
-      - hyperref
-      - fontspec
-      - listings
-pandoc_args: ["--pdf-engine=xelatex"]
-header-includes:
-  - |
-    ```{=latex}
-    \usepackage{xcolor}
-    \usepackage{hyperref}
-    \usepackage{fontspec}
-    \usepackage{listings}
-    \hypersetup{colorlinks=true, linkcolor=blue, urlcolor=blue, citecolor=blue}
-    \setmonofont{JetBrains Mono}
-    \lstset{
-      basicstyle=\ttfamily\footnotesize,
-      breaklines=true,
-      keywordstyle=\color{blue},
-      commentstyle=\color{green!60!black},
-      stringstyle=\color{red},
-      numbers=left,
-      numberstyle=\tiny,
-      numbersep=5pt,
-      frame=single,
-      framesep=5pt
-    }
-    ```
----
-```
-
+- Pandoc Frontmatter
+  - <https://pandoc.org/MANUAL.html#metadata-blocks>
 - Pandoc Variables
   - <https://pandoc.org/MANUAL.html#variables-for-latex>
 - Pandoc Arguments
@@ -124,7 +106,7 @@ output:
 
 ## Simple Table Format for Pandoc
 
-Prettier has still problems with markdown-linters in VSCode. If you use prettier, it changes its formatting and table is broken. Therefore use markdownlint instead and change the settings for markdown in vscodesettings to:
+**Prettier has still problems with markdown-linters in VSCode**. If you use prettier, it changes its formatting and table is broken. Therefore **use markdownlint** instead and change the settings for markdown in **VSCode settings** to:
 
 ```json
   "[markdown]": {
@@ -135,29 +117,29 @@ Prettier has still problems with markdown-linters in VSCode. If you use prettier
 
 To be absolutely sure, that `prettier` ignores all markdown files, add the following to your `.prettierignore` file:
 
-```shell
+```bash
 *.md
 ```
 
 So finally, you can use this beautiful pandoc table format (You have to set **pandoc** as your **default markdown renderer** in `markdown-preview-enhanced`):
 
-```shell
+```json
 "markdown-preview-enhanced.enableCriticMarkupSyntax": true,
 "markdown-preview-enhanced.enableExtendedTableSyntax": true,
 "markdown-preview-enhanced.usePandocParser": true,
 ```
 
--------------------------------------------------------------
- Centered   Default           Right Left
-  Header    Aligned         Aligned Aligned
------------ ------- --------------- -------------------------
-   First    row                12.0 Example of a row that
-                                    spans multiple lines.
+----------------------------------------------------------------------
+ Centered   Default                    Right Left
+  Header    Aligned                  Aligned Aligned
+----------- ---------------- --------------- -------------------------
+   First    row              12.0            Example of a row that
+                                             spans multiple lines.
 
-  Second    row                 5.0 Here's another one. Note
-                                    the blank line between
-                                    rows.
--------------------------------------------------------------
+  Second    row              5.0             Here's another one. Note
+                                             the blank line between
+                                             rows.
+----------------------------------------------------------------------
 
 **GitHub cannot render the table correctly.**
 
@@ -169,7 +151,9 @@ Pandoc Lua Filters are a powerful way to extend Pandoc. They are written in Lua 
 
 See [Pandoc Lua Filters](https://pandoc.org/lua-filters.html) for more details.
 
-## [Shared Options](https://shd101wyy.github.io/markdown-preview-enhanced/#/pandoc-word?id=shared-options)
+## Shared Options
+
+See  <https://shd101wyy.github.io/markdown-preview-enhanced/#/pandoc-word?id=shared-options>
 
 If you want to specify a set of default options to be shared by multiple documents within a directory you can include a file named `_output.yaml` within the directory. Note that no YAML delimiters or enclosing output object are used in this file. For example:
 
