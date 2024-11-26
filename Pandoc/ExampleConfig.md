@@ -12,6 +12,12 @@ pandoc_args:
   - "--highlight-style=tango"
   - "--number-sections"
   - "--listings"
+geometry:
+  - a4paper
+  - left=2cm
+  - top=1.7cm
+  - right=1.5cm
+  - bottom=1.2cm
 header-includes:
   - |
     ```{=latex}
@@ -36,6 +42,7 @@ header-includes:
     }
     \let\oldhref\href
     \renewcommand{\href}[2]{\oldhref{#1}{\textcolor{linkcolor}{#2}}}
+    \usepackage{listings}
     ```
 ---
 
