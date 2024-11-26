@@ -6,25 +6,25 @@ output:
     highlight: tango
     keep_tex: true
     pdf_engine: xelatex
-    extra_dependencies:
-      - fontspec
-      - hyperref
-      - listings
-      - url
-      - xcolor
-      - soul
-pandoc_args: ["--pdf-engine=xelatex"]
+pandoc_args:
+  - "--pdf-engine=xelatex"
 header-includes:
   - |
     ```{=latex}
+    \usepackage{xcolor}
     \usepackage{fontspec}
-    \usepackage{hyperref}
     \usepackage{listings}
     \usepackage{url}
-    \usepackage{xcolor}
     \usepackage{soul}
-    \hypersetup{colorlinks=true, linkcolor=blue, urlcolor=blue, citecolor=blue}
+    \usepackage[unicode]{hyperref}
     \setmonofont{JetBrains Mono}
+    \definecolor{linkcolor}{RGB}{0,0,255}
+    \hypersetup{
+      colorlinks=true,
+      linkcolor=linkcolor,
+      urlcolor=linkcolor,
+      citecolor=linkcolor
+    }
     \lstset{
       basicstyle=\ttfamily\footnotesize,
       breaklines=true,
@@ -37,13 +37,14 @@ header-includes:
       frame=single,
       framesep=5pt
     }
-    \newcommand{\hlurl}[1]{\href{#1}{\color{blue}\ul{#1}}}
+    \let\oldhref\href
+    \renewcommand{\href}[2]{\oldhref{#1}{\color{linkcolor}\underline{#2}}}
     ```
 ---
 
 # Example Configuration for Pandoc
 
-See the *source code of this Markdown file* to see the configuration settings.
+See the *source code of this Markdown file* to see the configuration settings. **Die Reihenfolge im YAML-Block ist sehr wichtig!**
 
 ## Introduction
 
