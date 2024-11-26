@@ -12,6 +12,7 @@ output:
       - listings
       - url
       - xcolor
+      - soul
 pandoc_args: ["--pdf-engine=xelatex"]
 header-includes:
   - |
@@ -21,6 +22,7 @@ header-includes:
     \usepackage{listings}
     \usepackage{url}
     \usepackage{xcolor}
+    \usepackage{soul}
     \hypersetup{colorlinks=true, linkcolor=blue, urlcolor=blue, citecolor=blue}
     \setmonofont{JetBrains Mono}
     \lstset{
@@ -35,6 +37,7 @@ header-includes:
       frame=single,
       framesep=5pt
     }
+    \newcommand{\hlurl}[1]{\href{#1}{\color{blue}\ul{#1}}}
     ```
 ---
 
