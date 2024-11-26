@@ -40,6 +40,8 @@ header-includes:
 
 # Example Configuration for Pandoc
 
+See the *source code of this Markdown file* to see the configuration settings.
+
 ## Introduction
 
 This is an example Markdown configuration file with colored links and highlighted code using JetBrains Mono font. You have to open this file in a text editor to see the configuration settings.
