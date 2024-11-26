@@ -43,6 +43,15 @@ header-includes:
     \let\oldhref\href
     \renewcommand{\href}[2]{\oldhref{#1}{\textcolor{linkcolor}{#2}}}
     \usepackage{listings}
+    \usepackage{zref-abspage}
+    \usepackage{mdframed}
+    \definecolor{lightgreen}{HTML}{F3FCE3}
+    \newenvironment{myquote}{%
+      \vspace{16pt}%
+      \begin{mdframed}[backgroundcolor=lightgreen,linewidth=0pt,leftmargin=0.5cm]%
+      \bfseries}
+    {\end{mdframed}\vspace{16pt}}
+    \renewenvironment{quote}{\begin{myquote}}{\end{myquote}}
     ```
 ---
 

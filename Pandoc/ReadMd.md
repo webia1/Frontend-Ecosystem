@@ -66,6 +66,10 @@ tlmgr list --only-installed
 sudo tlmgr install framed # for boxes
 sudo tlmgr install soul # for highlighting
 sudo tlmgr install fvextra # for fancyvrb
+sudo tlmgr install mdframed
+sudo tlmgr install zref
+sudo tlmgr install needspace
+
 ```
 
 ## Frontmatter
