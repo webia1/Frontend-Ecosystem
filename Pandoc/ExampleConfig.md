@@ -6,7 +6,7 @@ output:
     highlight: tango
     keep_tex: true
     pdf_engine: xelatex
-pandoc_args:
+pandoc_args: 
   - "--pdf-engine=xelatex"
 header-includes:
   - |
@@ -29,19 +29,24 @@ header-includes:
       basicstyle=\ttfamily\footnotesize,
       breaklines=true,
       breakatwhitespace=false,
-      columns=fixed,
-      basewidth=0.5em,
-      linewidth=70em,
+      postbreak=\mbox{\textcolor{red}{$\hookrightarrow$}\space},
+      columns=fullflexible,
+      keepspaces=true,
+      showlines=true,
+      numbers=left,
+      numberstyle=\tiny\color{gray},
+      stepnumber=1,
+      numbersep=5pt,
       keywordstyle=\color{blue},
       commentstyle=\color{green!60!black},
       stringstyle=\color{red},
-      numbers=left,
-      numberstyle=\tiny,
-      numbersep=5pt,
       frame=single,
       framesep=5pt,
       xleftmargin=15pt,
-      showstringspaces=false
+      showstringspaces=false,
+      linewidth=0.95\linewidth,
+      aboveskip=10pt,
+      belowskip=10pt
     }
     \let\oldhref\href
     \renewcommand{\href}[2]{\oldhref{#1}{\color{linkcolor}\underline{#2}}}
