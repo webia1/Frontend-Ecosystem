@@ -7,18 +7,20 @@ output:
     keep_tex: true
     pdf_engine: xelatex
     extra_dependencies:
-      - xcolor
-      - hyperref
       - fontspec
+      - hyperref
       - listings
+      - url
+      - xcolor
 pandoc_args: ["--pdf-engine=xelatex"]
 header-includes:
   - |
     ```{=latex}
-    \usepackage{xcolor}
-    \usepackage{hyperref}
     \usepackage{fontspec}
+    \usepackage{hyperref}
     \usepackage{listings}
+    \usepackage{url}
+    \usepackage{xcolor}
     \hypersetup{colorlinks=true, linkcolor=blue, urlcolor=blue, citecolor=blue}
     \setmonofont{JetBrains Mono}
     \lstset{
@@ -49,7 +51,9 @@ The configuration settings are placed in a so called YAML front matter block at 
 If you use assets folder, then better change to the directory, where the markdown file is located and run the following command:
 
 ```shell
-pandoc ExampleConfig.md -o ExampleConfig.pdf --pdf-engine=xelatex && echo "PDF generated successfully" || echo "Error generating PDF"
+pandoc ExampleConfig.md -o \
+  ExampleConfig.pdf --pdf-engine=xelatex \
+  && echo "PDF generated successfully" || echo "Error generating PDF"
 ```
 
 ## Links
