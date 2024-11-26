@@ -2,7 +2,42 @@
 /*   https://shd101wyy.github.io/markdown-preview-enhanced/#/customize-css */
 
 .markdown-preview.markdown-preview {
-  pre, code {
+  u,
+  i,
+  em {
+    text-decoration: none;
+    color: black;
+    background-color: rgba(244, 248, 170, 0.76);
+    font-weight: 500;
+    font-style: normal;
+    padding: 0.25rem;
+    border-radius: 0.25rem;
+    border-bottom: 1px dotted gray;
+    line-height: 2rem;
+  }
+
+  blockquote {
+    background-color: rgb(243, 252, 227);
+    padding: 0.5rem 1em;
+    margin: 1rem 0;
+    font-weight: bold;
+    color: black;
+    font-family: Trebuchet MS;
+    border-radius: 0.25rem;
+    border: 1px dotted rgb(0, 116, 15);
+    border-left: 4px solid rgb(0, 116, 15);
+  }
+
+  pre,
+  code {
     white-space: pre-wrap;
+    font-family: 'Fira Code', monospace;
+    color: rgb(0, 0, 0);
+    background-color: #efefef;
+  }
+  a,
+  a:hover {
+    color: #007acc;
+    font-weight: 500;
   }
 }
