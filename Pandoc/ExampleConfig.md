@@ -28,6 +28,10 @@ header-includes:
     \lstset{
       basicstyle=\ttfamily\footnotesize,
       breaklines=true,
+      breakatwhitespace=false,
+      columns=fixed,
+      basewidth=0.5em,
+      linewidth=70em,
       keywordstyle=\color{blue},
       commentstyle=\color{green!60!black},
       stringstyle=\color{red},
@@ -35,7 +39,9 @@ header-includes:
       numberstyle=\tiny,
       numbersep=5pt,
       frame=single,
-      framesep=5pt
+      framesep=5pt,
+      xleftmargin=15pt,
+      showstringspaces=false
     }
     \let\oldhref\href
     \renewcommand{\href}[2]{\oldhref{#1}{\color{linkcolor}\underline{#2}}}
@@ -57,9 +63,7 @@ The configuration settings are placed in a so called YAML front matter block at 
 If you use assets folder, then better change to the directory, where the markdown file is located and run the following command:
 
 ```shell
-pandoc ExampleConfig.md -o \
-  ExampleConfig.pdf --pdf-engine=xelatex \
-  && echo "PDF generated successfully" || echo "Error generating PDF"
+pandoc ExampleConfig.md -o ExampleConfig.pdf --pdf-engine=xelatex && echo "PDF generated successfully" || echo "Error generating PDF"
 ```
 
 ## Links
