@@ -63,6 +63,7 @@ sudo sh ./update-tlmgr-latest.sh
 # See installed packages
 tlmgr list --only-installed
 # Install the missing packages
+sudo tlmgr install xetex # for xelatex
 sudo tlmgr install framed # for boxes
 sudo tlmgr install soul # for highlighting
 sudo tlmgr install fvextra # for fancyvrb

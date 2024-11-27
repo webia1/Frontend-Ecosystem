@@ -46,9 +46,10 @@ header-includes:
     \usepackage{zref-abspage}
     \usepackage{mdframed}
     \definecolor{lightgreen}{HTML}{F3FCE3}
+    \definecolor{bordergreen}{HTML}{007410}
     \newenvironment{myquote}{%
       \vspace{16pt}%
-      \begin{mdframed}[backgroundcolor=lightgreen,linewidth=0pt,leftmargin=0.5cm]%
+      \begin{mdframed}[backgroundcolor=lightgreen,leftmargin=0.5cm,linewidth=4pt,leftline=true,rightline=false,topline=false,bottomline=false,linecolor=bordergreen]%
       \bfseries}
     {\end{mdframed}\vspace{16pt}}
     \renewenvironment{quote}{\begin{myquote}}{\end{myquote}}
