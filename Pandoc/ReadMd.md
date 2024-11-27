@@ -70,6 +70,7 @@ sudo tlmgr install fvextra # for fancyvrb
 sudo tlmgr install mdframed
 sudo tlmgr install zref
 sudo tlmgr install needspace
+sudo tlmgr install titlesec
 
 ```
 

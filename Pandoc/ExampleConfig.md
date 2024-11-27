@@ -53,6 +53,17 @@ header-includes:
       \bfseries}
     {\end{mdframed}\vspace{16pt}}
     \renewenvironment{quote}{\begin{myquote}}{\end{myquote}}
+    \usepackage{parskip}
+    \makeatletter
+    \renewcommand\paragraph{\@startsection{paragraph}{4}{\z@}%
+      {-3.25ex\@plus -1ex \@minus -.2ex}%
+      {1.5ex \@plus .2ex}%
+      {\normalfont\normalsize\bfseries}}
+    \renewcommand\subparagraph{\@startsection{subparagraph}{5}{\z@}%
+      {-3.25ex\@plus -1ex \@minus -.2ex}%
+      {1.5ex \@plus .2ex}%
+      {\normalfont\normalsize\bfseries}}
+    \makeatother
     ```
 ---
 
@@ -120,3 +131,17 @@ do
    echo "Count: $i"
 done
 ```
+
+## Nested Headings
+
+### Third Level
+
+Some third level text.
+
+#### Fourth Level
+
+Some fourth level text.
+
+##### Fifth Level
+
+Some fifth level text.
