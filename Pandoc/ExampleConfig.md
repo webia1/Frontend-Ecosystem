@@ -64,6 +64,9 @@ header-includes:
       {1.5ex \@plus .2ex}%
       {\normalfont\normalsize\bfseries}}
     \makeatother
+    \usepackage[bottom]{footmisc}
+    \setlength{\footnotesep}{20pt}
+    \addtolength{\skip\footins}{10pt}
     ```
 ---
 
@@ -73,7 +76,10 @@ See the *source code of this Markdown file* to see the configuration settings. *
 
 ## Introduction
 
-This is an example Markdown configuration file with colored links and highlighted code using JetBrains Mono font. You have to open this file in a text editor to see the configuration settings.
+This is an example Markdown configuration file with colored links and highlighted code using JetBrains Mono font[^longnote].
+
+[^longnote]: You have to open this file in a text editor to see the configuration settings.
+  BTW: This is a long footnote.
 
 The configuration settings are placed in a so called YAML front matter block at the beginning of the file. The settings are used by the Pandoc document converter to create a PDF file from this Markdown file.
 
@@ -82,7 +88,7 @@ The configuration settings are placed in a so called YAML front matter block at 
 If you use assets folder, then better change to the directory, where the markdown file is located and run the following command:
 
 ```shell
-pandoc ExampleConfig.md -o ExampleConfig.pdf --pdf-engine=xelatex && echo "PDF generated successfully" || echo "Error generating PDF"
+pandoc ReadMe.md -o ReadMe.pdf --pdf-engine=xelatex --toc=true --toc-depth=5 --highlight=tango --number-sections --shift-heading-level-by=-1  -s && echo "\n\nPDF generated successfully\n\n" || echo "\n\nError generating PDF\n\n"
 ```
 
 ## Links

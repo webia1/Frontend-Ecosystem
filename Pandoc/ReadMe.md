@@ -71,6 +71,8 @@ sudo tlmgr install mdframed
 sudo tlmgr install zref
 sudo tlmgr install needspace
 sudo tlmgr install titlesec
+sudo tlmgr install footnotebackref
+sudo tlmgr install newunicodechar
 
 ```
 
