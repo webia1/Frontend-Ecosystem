@@ -71,14 +71,14 @@ header-includes:
     \newcommand{\alert}{\twemoji{1f6a8}\space}
     \newcommand{\alerttext}{\texttwemoji{1f6a8}\space}
     \newcommand{\alertbig}{\twemoji[height=2em]{1f6a8}\space}
-        \directlua{luaotfload.add_fallback
+    \directlua{luaotfload.add_fallback
       ("emojifallback",
         {
           "NotoColorEmoji:mode=harf;"
         }
       )}
 
-    \setmainfont{TeX Gyre Termes}[
+    \setmainfont{Latin Modern Roman}[
       RawFeature={fallback=emojifallback}
     ]
     ```
@@ -86,7 +86,9 @@ header-includes:
 
 # Example Configuration for Pandoc
 
-See the *source code of this Markdown file* to see the configuration settings. **Die Reihenfolge im YAML-Block ist sehr wichtig!**
+> See the *source code of this Markdown file* to see the configuration settings. **Die Reihenfolge im YAML-Block ist sehr wichtig!**
+
+\pagebreak
 
 ## Introduction
 
@@ -101,7 +103,7 @@ The configuration settings are placed in a so called YAML front matter block at 
 
 If you use assets folder, then better change to the directory, where the markdown file is located and run the following command:
 
-```shell
+```bash
 # This file with xelatex engine
 pandoc ExampleConfig.md -o ExampleConfig.pdf --pdf-engine=lualatex --pdf-engine-opt=-shell-escape --toc=true --toc-depth=5 --highlight=tango --number-sections -f markdown+emoji+pipe_tables+raw_html --shift-heading-level-by=-1 -s -o ExampleConfig.pdf
 ```
@@ -110,58 +112,16 @@ pandoc ExampleConfig.md -o ExampleConfig.pdf --pdf-engine=lualatex --pdf-engine-
 
 💣 👀 😇 🤭 💡 ✅ 🏆 💥 ⚠️ 🧨 🎯 🚫 🔑 🔥
 
-- Normal Text \alert  important text.
-- Adapts to text size \alerttext
-- Bigger Alarm: \alertbig
-- Das geht auch `\texttwemoji{smile}`: \texttwemoji{smile}
+- `\alertbig`: \alertbig
+- `\texttwemoji{smile}`: \texttwemoji{smile}
 
-You can create custom commands for emojis like this, see `Pandoc/Offical-Documentations/twemojis.pdf`.
+You can create custom commands for emojis like this, see [Pandoc/Offical-Documentations/twemojis.pdf](Offical-Documentations/twemojis.pdf).
 
 ```yaml
-% Light bulb (idea) - 1f4a1
-\newcommand{\idea}{\twemoji{1f4a1}\space}
-\newcommand{\ideatext}{\texttwemoji{1f4a1}\space}
-\newcommand{\ideabig}{\twemoji[height=2em]{1f4a1}\space}
-
-% Man dancing - 1f57a
-\newcommand{\dancer}{\twemoji{1f57a}\space}
-\newcommand{\dancertext}{\texttwemoji{1f57a}\space}
-\newcommand{\dancerbig}{\twemoji[height=2em]{1f57a}\space}
-
-% Key - 1f511
-\newcommand{\key}{\twemoji{1f511}\space}
-\newcommand{\keytext}{\texttwemoji{1f511}\space}
-\newcommand{\keybig}{\twemoji[height=2em]{1f511}\space}
-
-% Prohibited - 1f6ab
-\newcommand{\prohibited}{\twemoji{1f6ab}\space}
-\newcommand{\prohibitedtext}{\texttwemoji{1f6ab}\space}
-\newcommand{\prohibitedbig}{\twemoji[height=2em]{1f6ab}\space}
-
-% Target/Bullseye - 1f3af
-\newcommand{\target}{\twemoji{1f3af}\space}
-\newcommand{\targettext}{\texttwemoji{1f3af}\space}
-\newcommand{\targetbig}{\twemoji[height=2em]{1f3af}\space}
-
-% Firecracker - 1f9e8
-\newcommand{\firecracker}{\twemoji{1f9e8}\space}
-\newcommand{\firecrackertext}{\texttwemoji{1f9e8}\space}
-\newcommand{\firecrackerbig}{\twemoji[height=2em]{1f9e8}\space}
-
-% Warning - 26a0
-\newcommand{\warning}{\twemoji{26a0}\space}
-\newcommand{\warningtext}{\texttwemoji{26a0}\space}
-\newcommand{\warningbig}{\twemoji[height=2em]{26a0}\space}
-
-% Trophy - 1f3c6
-\newcommand{\trophy}{\twemoji{1f3c6}\space}
-\newcommand{\trophytext}{\texttwemoji{1f3c6}\space}
-\newcommand{\trophybig}{\twemoji[height=2em]{1f3c6}\space}
-
-% Alert - 1f6a8 (from previous example)
-\newcommand{\alert}{\twemoji{1f6a8}\space}
-\newcommand{\alerttext}{\texttwemoji{1f6a8}\space}
-\newcommand{\alertbig}{\twemoji[height=2em]{1f6a8}\space}
+  % Light bulb (idea) - 1f4a1
+  \newcommand{\idea}{\twemoji{1f4a1}\space}
+  \newcommand{\ideatext}{\texttwemoji{1f4a1}\space}
+  \newcommand{\ideabig}{\twemoji[height=2em]{1f4a1}\space}
 ```
 
 ## Links
@@ -224,3 +184,12 @@ Some fourth level text.
 ##### Fifth Level
 
 Some fifth level text.
+
+## TODOs
+
+### Experiment with Fontsizes
+
+```yaml
+\usepackage{anyfontsize}
+\fontsize{13pt}{15.6pt}\selectfont
+```
