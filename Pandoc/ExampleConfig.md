@@ -108,7 +108,7 @@ pandoc ExampleConfig.md -o ExampleConfig.pdf --pdf-engine=lualatex --pdf-engine-
 
 ## Emojis
 
-💣 👀 😇 🤭 💡 ✅ 🏆 💥 ⚠️ 🧨 🎯 🚫 🔑
+💣 👀 😇 🤭 💡 ✅ 🏆 💥 ⚠️ 🧨 🎯 🚫 🔑 🔥
 
 - Normal Text \alert  important text.
 - Adapts to text size \alerttext
