@@ -68,9 +68,19 @@ header-includes:
     \usepackage[bottom]{footmisc}
     \setlength{\footnotesep}{20pt}
     \addtolength{\skip\footins}{10pt}
-    \newcommand{\alert}{\twemoji{1f6a8}}
-    \newcommand{\alerttext}{\texttwemoji{1f6a8}}
-    \newcommand{\alertbig}{\twemoji[height=2em]{1f6a8}}
+    \newcommand{\alert}{\twemoji{1f6a8}\space}
+    \newcommand{\alerttext}{\texttwemoji{1f6a8}\space}
+    \newcommand{\alertbig}{\twemoji[height=2em]{1f6a8}\space}
+        \directlua{luaotfload.add_fallback
+      ("emojifallback",
+        {
+          "NotoColorEmoji:mode=harf;"
+        }
+      )}
+
+    \setmainfont{TeX Gyre Termes}[
+      RawFeature={fallback=emojifallback}
+    ]
     ```
 ---
 
@@ -93,24 +103,17 @@ If you use assets folder, then better change to the directory, where the markdow
 
 ```shell
 # This file with xelatex engine
-pandoc ExampleConfig.md -o ExampleConfig.pdf --pdf-engine=xelatex --toc=true --toc-depth=5 --highlight=tango --number-sections --shift-heading-level-by=-1  -s && echo "\n\nPDF generated successfully\n\n" || echo "\n\nError generating PDF\n\n"
-```
-
-```shell
-# This file with lualatex engine
-pandoc ExampleConfig.md -o ExampleConfig.pdf --pdf-engine=lualatex --toc=true --toc-depth=5 --highlight=tango --number-sections --shift-heading-level-by=-1  -s && echo "\n\nPDF generated successfully\n\n" || echo "\n\nError generating PDF\n\n"
-```
-
-```shell
-# Or any other file
-pandoc ReadMe.md -o ReadMe.pdf --pdf-engine=xelatex --toc=true --toc-depth=5 --highlight=tango --number-sections --shift-heading-level-by=-1  -s && echo "\n\nPDF generated successfully\n\n" || echo "\n\nError generating PDF\n\n"
+pandoc ExampleConfig.md -o ExampleConfig.pdf --pdf-engine=lualatex --pdf-engine-opt=-shell-escape --toc=true --toc-depth=5 --highlight=tango --number-sections -f markdown+emoji+pipe_tables+raw_html --shift-heading-level-by=-1 -s -o ExampleConfig.pdf
 ```
 
 ## Emojis
 
+💣 👀 😇 🤭 💡 ✅ 🏆 💥 ⚠️ 🧨 🎯 🚫 🔑
+
 - Normal Text \alert  important text.
 - Adapts to text size \alerttext
 - Bigger Alarm: \alertbig
+- Das geht auch `\texttwemoji{smile}`: \texttwemoji{smile}
 
 You can create custom commands for emojis like this, see `Pandoc/Offical-Documentations/twemojis.pdf`.
 
