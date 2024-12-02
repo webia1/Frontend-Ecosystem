@@ -23,11 +23,13 @@ header-includes:
     ```{=latex}
     \usepackage{xcolor}
     \usepackage{fontspec}
+    \usepackage{emoji}
     \usepackage{fvextra}
     \usepackage{caption}
     \usepackage{longtable}
     \usepackage{fancyvrb}
     \usepackage{upquote}
+    \setemojifont{Apple Color Emoji}
     \setmonofont{JetBrains Mono}
     \DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\},breaklines=true,breakanywhere=true,numbers=left,numbersep=5pt,frame=single}
     \renewcommand{\theFancyVerbLine}{\textcolor{gray}{\tiny\arabic{FancyVerbLine}}}
@@ -67,12 +69,13 @@ header-includes:
     \usepackage[bottom]{footmisc}
     \setlength{\footnotesep}{20pt}
     \addtolength{\skip\footins}{10pt}
+
     ```
 ---
 
 # Example Configuration for Pandoc
 
-See the *source code of this Markdown file* to see the configuration settings. **Die Reihenfolge im YAML-Block ist sehr wichtig!**
+See the *source code of this Markdown file* to see the configuration settings. **Die Reihenfolge im YAML-Block ist sehr wichtig!** 🚨
 
 ## Introduction
 

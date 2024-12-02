@@ -55,61 +55,51 @@ See the *source code of this Markdown file* to see the configuration settings. *
 ```bash
 # Install pandoc
 brew install pandoc
-# Install basictex (It is a small TeX Live distribution)
-brew install basictex
-# Install tlmgr (TeX Live Manager)
+
+# Install MacTeX Full Version
+Download here: https://tug.org/mactex/
+
+# Install tlmgr (TeX Live Manager if not already installed)
 wget https://mirror.ctan.org/systems/texlive/tlnet/update-tlmgr-latest.sh
 sudo sh ./update-tlmgr-latest.sh
-# See installed packages
+
+# Update Registries
+sudo tlmgr option repository ctan
+
+
+# Update Everything
+sudo tlmgr update --self
+sudo tlmgr update --all # takes time for the first time
+
+# Search for installed packages
 tlmgr list --only-installed
+tlmgr list --only-installed | grep emoji
+
+# Search for available packages
+tlmgr search --global emoji
+
 # Install the missing packages
 sudo tlmgr install xetex # for xelatex
 sudo tlmgr install framed # for boxes
 sudo tlmgr install soul # for highlighting
 sudo tlmgr install fvextra # for fancyvrb
+sudo tlmgr install emoji # for emojis
 sudo tlmgr install mdframed
 sudo tlmgr install zref
 sudo tlmgr install needspace
 sudo tlmgr install titlesec
 sudo tlmgr install footnotebackref
 sudo tlmgr install newunicodechar
+sudo tlmgr install graphviz
+sudo tlmgr install dot2texi
+sudo tlmgr install moreverb
 
-```
+# Install pandoc-fignos
+pip install pandoc-fignos
 
-## Frontmatter
-
-- Pandoc Frontmatter
-  - <https://pandoc.org/MANUAL.html#metadata-blocks>
-- Pandoc Variables
-  - <https://pandoc.org/MANUAL.html#variables-for-latex>
-- Pandoc Arguments
-  - <https://shd101wyy.github.io/markdown-preview-enhanced/#/pandoc-word?id=pandoc-arguments>
-- Pandoc Syntax Highlighting
-  - <https://pandoc.org/MANUAL.html#syntax-highlighting>
-- Pandoc Word
-  - <https://shd101wyy.github.io/markdown-preview-enhanced/#/pandoc-word?id=pandoc-arguments>
-- Pandoc Highlighting Themes
-  - *tango*, *pygments*, *kate*, *monochrome*, *espresso*, *zenburn*, *haddock*, *breezedark*, *breezelight*, *textmate*, and *zenburn*
-
-**TOC** is the table of contents.
-
-But it is better to generate `toc` by `markdown-preview-enchanced`, because you can set here not only the depts of the `toc`, but also the starting level and the end level, e.g. `depthFrom=2 depthTo=4`.
-
-However, **Pandoc** can **number the chapters and sub-chapters better**, something that markdown-preview-enhanced doesn't do as well.
-
-If you want to create a print document, use pandoc's toc, if you want to read at the internet, use markdown-preview-enhanced's toc. In this file, both are used.
-
-## Pandoc Arguments
-
-If there are pandoc features you want to use that lack equivalents in the YAML options described above you can still use them by passing custom `pandoc_args`. For example:
-
-```yaml
----
-title: "Habits"
-output:
-  word_document:
-    pandoc_args: ["--csl", "/var/csl/acs-nano.csl"]
----
+# Install fonts
+brew tap homebrew/cask-fonts
+brew install --cask font-noto-color-emoji
 ```
 
 ## Simple Table Format for Pandoc
