@@ -50,7 +50,33 @@ header-includes:
 
 See the *source code of this Markdown file* to see the configuration settings. **Die Reihenfolge im YAML-Block ist sehr wichtig!**
 
-## Installation MacOS
+## Install Fonts
+
+### TwemojiMozilla
+
+```bash
+# MacOS
+cd ~/Downloads
+curl -LO https://github.com/mozilla/twemoji-colr/releases/download/v0.5.1/TwemojiMozilla.ttf
+mv TwemojiMozilla.ttf ~/Library/Fonts/
+
+# Check if it is installed
+fc-list | grep -i twemoji
+
+
+```
+
+### JetBrains Mono
+
+```bash
+# MacOS
+cd ~/Downloads
+curl -LO https://download.jetbrains.com/fonts/JetBrainsMono-2.242.zip
+unzip JetBrainsMono-2.242.zip
+mv JetBrainsMono-2.242/variable_ttf/JetBrainsMono-*.ttf ~/Library/Fonts/
+```
+
+## Install Pandoc
 
 ```bash
 # Install pandoc
@@ -100,6 +126,28 @@ pip install pandoc-fignos
 # Install fonts
 brew tap homebrew/cask-fonts
 brew install --cask font-noto-color-emoji
+```
+
+## Useful Commands
+
+```bash
+kpsewhich twemoji-colr.sty # Check if the package is installed
+kpsewhich -var-value TEXMFMAIN # Check the main directory of TeX
+
+# Find installed files (e.g. twemoji)
+find /usr/local/texlive/2024/texmf-dist -name "twemoji*"
+/usr/local/texlive/2024/texmf-dist/tex/latex/twemojis
+/usr/local/texlive/2024/texmf-dist/tex/latex/twemojis/twemojis.sty
+/usr/local/texlive/2024/texmf-dist/source/latex/twemojis
+/usr/local/texlive/2024/texmf-dist/source/latex/twemojis/twemojis.ins
+/usr/local/texlive/2024/texmf-dist/source/latex/twemojis/twemojis.dtx
+/usr/local/texlive/2024/texmf-dist/doc/latex/twemojis
+/usr/local/texlive/2024/texmf-dist/doc/latex/twemojis/twemojis.pdf
+/usr/local/texlive/2024/texmf-dist/doc/fonts/twemoji-colr
+/usr/local/texlive/2024/texmf-dist/fonts/truetype/public/twemoji-colr
+
+# Find Documentation
+texdoc twemojis
 ```
 
 ## Simple Table Format for Pandoc
