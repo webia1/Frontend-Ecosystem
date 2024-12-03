@@ -141,6 +141,9 @@ find /usr/local/texlive/2024/texmf-dist -name "twemoji*"
 
 # Find Documentation
 texdoc twemojis
+
+# Dot2Tex Check
+dot2tex --version # Dot2tex version 2.11.3
 ```
 
 ## Simple Table Format for Pandoc
