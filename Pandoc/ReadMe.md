@@ -133,8 +133,15 @@ sudo tlmgr install moreverb
 ## Useful Commands
 
 ```bash
-kpsewhich twemoji-colr.sty # Check if the package is installed
-kpsewhich -var-value TEXMFMAIN # Check the main directory of TeX
+
+# List all available extensions
+pandoc --list-extensions=markdown
+
+# Check if the package is installed
+kpsewhich twemoji-colr.sty
+
+# Check the main directory of TeX
+kpsewhich -var-value TEXMFMAIN
 
 # Find installed files (e.g. twemoji)
 find /usr/local/texlive/2024/texmf-dist -name "twemoji*"
@@ -144,6 +151,7 @@ texdoc twemojis
 
 # Dot2Tex Check
 dot2tex --version # Dot2tex version 2.11.3
+dot -V # dot - graphviz version 12.2.0 (20241103.1931)
 ```
 
 ## Simple Table Format for Pandoc

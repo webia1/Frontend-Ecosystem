@@ -8,16 +8,17 @@ output:
     pdf_engine: xelatex
     number_sections: true
 pandoc_args:
-  - "--pdf-engine=xelatex"
+  - "--pdf-engine=lualatex"
   - "--highlight-style=tango"
   - "--number-sections"
   - "--listings"
+  - "--shift-heading-level-by=-1"
 geometry:
   - a4paper
   - left=2cm
   - top=1.7cm
   - right=1.5cm
-  - bottom=1.2cm
+  - bottom=1.7cm
 header-includes:
   - |
     ```{=latex}
@@ -88,7 +89,7 @@ header-includes:
 
 > See the *source code of this Markdown file* to see the configuration settings. **Die Reihenfolge im YAML-Block ist sehr wichtig!**
 
-\pagebreak
+\clearpage
 
 ## Introduction
 
@@ -104,8 +105,17 @@ The configuration settings are placed in a so called YAML front matter block at 
 If you use assets folder, then better change to the directory, where the markdown file is located and run the following command:
 
 ```bash
-# This file with xelatex engine
-pandoc ExampleConfig.md -o ExampleConfig.pdf --pdf-engine=lualatex --pdf-engine-opt=-shell-escape --toc=true --toc-depth=5 --highlight=tango --number-sections -f markdown+emoji+pipe_tables+raw_html --shift-heading-level-by=-1 -s -o ExampleConfig.pdf
+pandoc ExampleConfig.md \
+  --pdf-engine=lualatex \
+  --pdf-engine-opt=-shell-escape \
+  --lua-filter=graphviz-svg.lua \
+  --toc=true \
+  --toc-depth=5 \
+  --highlight=tango \
+  --number-sections \
+  -f markdown+emoji+pipe_tables+raw_html \
+  --shift-heading-level-by=-1 \
+  -s -o ExampleConfig.pdf
 ```
 
 ## Emojis
@@ -127,6 +137,64 @@ You can create custom commands for emojis like this, see [Pandoc/Offical-Documen
 ## Links
 
 Here's a [blue link to Google](https://www.google.com).
+
+## Graphviz
+
+```graphviz
+digraph {
+  rankdir=LR;
+  nodesep=0.5;
+  edge [dir=none];
+
+  subgraph MyGraph {
+    node [shape=circle, style=filled width=0.2 label=""]
+
+
+    subgraph cluster_0 {
+      label="Some &rarr; Text"
+      labelloc="b"
+      style=filled
+      bgcolor="#c9dbd7"
+      color="#c9dbd7"
+      node [shape=box fillcolor="white" label="Some\nDescription"] E;
+      node [shape=circle fillcolor="#bcc7d3" label=""] p1 p2 p3
+    }
+
+    subgraph cluster_1 {
+      label="Level 1"
+      labelloc="b"
+      style=filled
+      bgcolor="#bcc7d3"
+      color="#bcc7d3"
+      node [fillcolor="#e8ddcc"] r1 r2 r3;
+    }
+
+    subgraph cluster_2 {
+      label="Level 2"
+      labelloc="b"
+      style=filled
+      bgcolor="#e8ddcc"
+      color="#e8ddcc"
+      node [fillcolor="#ffdbd0"] s1 s2 s3;
+    }
+
+    subgraph cluster_3 {
+      label="Level 3"
+      labelloc="b"
+      style=filled
+      bgcolor="#eddbd0"
+      color="#eddbd0"
+      node [fillcolor="#c9dbd7"] t1 t2 t3;
+    }
+
+    E -> { p1 p2 p3}
+    p3 -> {r1 r2 r3}
+    r1 -> {s1 s2 s3}
+    s3 -> {t1 t2 t3}
+  }
+}
+
+```
 
 ## Block Quotes
 
