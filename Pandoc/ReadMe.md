@@ -48,22 +48,16 @@ header-includes:
 
 # Pandoc
 
-See the *source code of this Markdown file* to see the configuration settings. **Die Reihenfolge im YAML-Block ist sehr wichtig!**
+See the *source code of this Markdown file* to see the configuration settings. **The order within YAML-Block is important!**
 
 ## Install Fonts
 
-### TwemojiMozilla
+### Notos Color Emoji
 
 ```bash
 # MacOS
-cd ~/Downloads
-curl -LO https://github.com/mozilla/twemoji-colr/releases/download/v0.5.1/TwemojiMozilla.ttf
-mv TwemojiMozilla.ttf ~/Library/Fonts/
-
-# Check if it is installed
-fc-list | grep -i twemoji
-
-
+brew tap homebrew/cask-fonts
+brew install --cask font-noto-color-emoji
 ```
 
 ### JetBrains Mono
@@ -74,6 +68,17 @@ cd ~/Downloads
 curl -LO https://download.jetbrains.com/fonts/JetBrainsMono-2.242.zip
 unzip JetBrainsMono-2.242.zip
 mv JetBrainsMono-2.242/variable_ttf/JetBrainsMono-*.ttf ~/Library/Fonts/
+```
+
+## Install Graphviz & Pandoc Filters
+
+```bash
+# Install Graphviz
+brew install graphviz
+
+# Install Pandoc Filters
+pip install pandoc-fignos
+pip install dot2tex
 ```
 
 ## Install Pandoc
@@ -120,12 +125,9 @@ sudo tlmgr install graphviz
 sudo tlmgr install dot2texi
 sudo tlmgr install moreverb
 
-# Install pandoc-fignos
-pip install pandoc-fignos
 
-# Install fonts
-brew tap homebrew/cask-fonts
-brew install --cask font-noto-color-emoji
+
+
 ```
 
 ## Useful Commands
@@ -136,15 +138,6 @@ kpsewhich -var-value TEXMFMAIN # Check the main directory of TeX
 
 # Find installed files (e.g. twemoji)
 find /usr/local/texlive/2024/texmf-dist -name "twemoji*"
-/usr/local/texlive/2024/texmf-dist/tex/latex/twemojis
-/usr/local/texlive/2024/texmf-dist/tex/latex/twemojis/twemojis.sty
-/usr/local/texlive/2024/texmf-dist/source/latex/twemojis
-/usr/local/texlive/2024/texmf-dist/source/latex/twemojis/twemojis.ins
-/usr/local/texlive/2024/texmf-dist/source/latex/twemojis/twemojis.dtx
-/usr/local/texlive/2024/texmf-dist/doc/latex/twemojis
-/usr/local/texlive/2024/texmf-dist/doc/latex/twemojis/twemojis.pdf
-/usr/local/texlive/2024/texmf-dist/doc/fonts/twemoji-colr
-/usr/local/texlive/2024/texmf-dist/fonts/truetype/public/twemoji-colr
 
 # Find Documentation
 texdoc twemojis
