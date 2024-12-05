@@ -24,6 +24,7 @@ header-includes:
     ```{=latex}
     \usepackage{xcolor}
     \usepackage{fontspec}
+    \usepackage{enumitem}
     \usepackage{fvextra}
     \usepackage{caption}
     \usepackage{longtable}
@@ -92,6 +93,20 @@ header-includes:
     \setmainfont{Latin Modern Roman}[
       RawFeature={fallback=emojifallback}
     ]
+
+    \makeatletter
+    \renewcommand{\labelitemi}{---}
+    \AtBeginDocument{
+        \setlist[itemize]{
+            topsep=0.5em,
+        }
+    }
+    \renewcommand{\tightlist}{
+      \setlength{\itemsep}{0.25em}
+      \setlength{\parskip}{0.25em}
+    }
+    \makeatother
+
     ```
 ---
 
