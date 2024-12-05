@@ -3,7 +3,7 @@ title: "Example Markdown Configuration for Pandoc"
 output:
   pdf_document:
     toc: true
-    highlight: tango
+    highlight: kate
     keep_tex: true
     pdf_engine: xelatex
     number_sections: true
@@ -31,10 +31,20 @@ header-includes:
     \usepackage{upquote}
     \usepackage{twemojis}
     \setmonofont{JetBrains Mono}
-    \DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\},breaklines=true,breakanywhere=true,numbers=left,numbersep=5pt,frame=single}
+    \definecolor{codecolor}{HTML}{0d6ea4}
+    \DefineVerbatimEnvironment{Highlighting}{Verbatim}{
+        commandchars=\\\{\},
+        breaklines=true,
+        breakanywhere=true,
+        numbers=left,
+        numbersep=5pt,
+        frame=none,
+        xleftmargin=2em,
+        formatcom=\color{codecolor}
+    }
     \renewcommand{\theFancyVerbLine}{\textcolor{gray}{\tiny\arabic{FancyVerbLine}}}
     \usepackage{hyperref}
-    \definecolor{linkcolor}{RGB}{0,0,255}
+    \definecolor{linkcolor}{HTML}{0d6ea4}
     \hypersetup{
         colorlinks=true,
         linkcolor=linkcolor,
@@ -43,15 +53,15 @@ header-includes:
         citecolor=linkcolor
     }
     \let\oldhref\href
-    \renewcommand{\href}[2]{\oldhref{#1}{\textcolor{linkcolor}{#2}}}
+    \renewcommand{\href}[2]{\oldhref{#1}{\textcolor{linkcolor}{\textbf{#2}}}}
     \usepackage{listings}
     \usepackage{zref-abspage}
     \usepackage{mdframed}
-    \definecolor{lightgreen}{HTML}{F3FCE3}
-    \definecolor{bordergreen}{HTML}{007410}
+    \definecolor{lightbackground}{HTML}{edf6ff}
+    \definecolor{darkbackground}{HTML}{189cff}
     \newenvironment{myquote}{%
       \vspace{16pt}%
-      \begin{mdframed}[backgroundcolor=lightgreen,leftmargin=0.5cm,linewidth=4pt,leftline=true,rightline=false,topline=false,bottomline=false,linecolor=bordergreen]%
+      \begin{mdframed}[backgroundcolor=lightbackground,leftmargin=0.5cm,linewidth=4pt,leftline=true,rightline=false,topline=false,bottomline=false,linecolor=darkbackground]%
       \bfseries}
     {\end{mdframed}\vspace{16pt}}
     \renewenvironment{quote}{\begin{myquote}}{\end{myquote}}
@@ -111,7 +121,7 @@ pandoc ExampleConfig.md \
   --lua-filter=graphviz-svg.lua \
   --toc=true \
   --toc-depth=5 \
-  --highlight=tango \
+  --highlight=kate \
   --number-sections \
   -f markdown+emoji+pipe_tables+raw_html \
   --shift-heading-level-by=-1 \
@@ -155,6 +165,53 @@ highlight:
 ## Links
 
 Here's a [blue link to Google](https://www.google.com).
+
+## Lists
+
+### Unordered List
+
+- Item 1
+  - Subitem 1
+    - Subsubitem 1
+      - Subsubsubitem 1
+      - Subsubsubitem 2
+- Item 2
+  - Subitem 1
+  - Subitem 2
+    - Subsubitem 1
+- Item 3
+  - Subitem 1
+
+### Ordered List
+
+1. Item 1
+   1. Subitem 1
+      1. Subsubitem 1
+         1. Subsubsubitem 1
+         2. Subsubsubitem 2
+2. Item 2
+    1. Subitem 1
+    2. Subitem 2
+        1. Subsubitem 1
+3. Item 3
+    1. Subitem 1
+
+### Configuration
+
+```yaml
+  \makeatletter
+  \renewcommand{\labelitemi}{---}
+  \AtBeginDocument{
+      \setlist[itemize]{
+          topsep=0.5em,    % Space before and after the list
+      }
+  }
+  \renewcommand{\tightlist}{
+    \setlength{\itemsep}{0.25em}   % Space between items
+    \setlength{\parskip}{0.25em}   % Paragraph spacing within items
+  }
+  \makeatother
+```
 
 ## Graphviz
 
