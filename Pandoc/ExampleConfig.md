@@ -134,6 +134,24 @@ You can create custom commands for emojis like this, see [Pandoc/Offical-Documen
   \newcommand{\ideabig}{\twemoji[height=2em]{1f4a1}\space}
 ```
 
+## Highlighted Code
+
+```yaml
+highlight:
+  - tango       # Current
+  - pygments    # Python-style
+  - kate        # KDE editor style
+  - monochrome  # Black and white
+  - espresso    # Dark theme
+  - zenburn     # Low contrast dark
+  - haddock     # Haskell docs style
+  - breezedark  # KDE Breeze dark
+  - vs          # Visual Studio style
+  - github      # GitHub style
+  - monokai     # Sublime Text default
+  - dracula     # Dark theme popular in VS Code
+```
+
 ## Links
 
 Here's a [blue link to Google](https://www.google.com).
