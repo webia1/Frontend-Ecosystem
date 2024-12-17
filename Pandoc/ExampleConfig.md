@@ -348,16 +348,16 @@ Some fifth level text.
 [https://github.com/stathissideris/ditaa](https://github.com/stathissideris/ditaa)
 
 ```ditaa {kroki=true}
-+--------+   +-------+    +-------+
-|        +---+ ditaa +--> |       |
-|  Text  |   +-------+    |diagram|
-|Document|   |!magic!|    |       |
-|     {d}|   |       |    |       |
-+---+----+   +-------+    +-------+
-    :                         ^
-    |       Lots of work      |
-    +-------------------------+
-
++--------+   +-------+    +--------+
+|        +---+ ditaa +--->*        |
+|  Text  |   +-------+    |diagram |
+|Document|   |!magic!|    |        |
+|     {d}|   |       |    |        |
++-+-+----+   +-------+    +------+-+
+  |  :                         ^ |
+  |  |       Lots of work      | |
+  |  +-------------------------+ |
+  \------------------------------/
 
 +---------+  /--------\   +-------+
 | cBLU    +--+cAAA    +---+Version|
@@ -371,11 +371,11 @@ Some fifth level text.
 |  |
 +--/
 
-+-----+ +-----+ +-----+ +-----+ +-----+
-|{d}  | |{s}  | |{io} | |{o}  | |{c}  |
-|     | |     | |     | |     | |     |
-|     | |     | |     | |     | |     |
-+-----+ +-----+ +-----+ +-----+ +-----+
++-----+ +-----+ +-----+ +-----+ +-----*-----+
+|{d}  | |{s}  | |{io} | |{o}  | |{c}        |
+|     | |     | |     | |     | *   yes/no  *
+|     | |     | |     | |     | |           |
++-----+ +-----+ +-----+ +-----+ +-----*-----+
 
 *----*
 |    |      /--*
@@ -386,10 +386,10 @@ Some fifth level text.
 /-----------------\
 | Things to do    |
 | cGRE            |
-| o Cut the grass |
-| o Buy jam       |
-| o Fix car       |
-| o Make website  |
+| - Cut the grass |
+| - Buy jam       |
+| - Fix car       |
+| - Make website  |
 \-----------------/
 
 
