@@ -97,7 +97,7 @@ header-includes:
     \makeatletter
     \renewcommand{\labelitemi}{---}
     \AtBeginDocument{
-        \setlist[itemize]{
+        \setlist[itemize,enumerate]{
             topsep=0.5em,
         }
     }
@@ -217,7 +217,7 @@ Here's a [blue link to Google](https://www.google.com).
   \makeatletter
   \renewcommand{\labelitemi}{---}
   \AtBeginDocument{
-      \setlist[itemize]{
+      \setlist[itemize,enumerate]{
           topsep=0.5em,    % Space before and after the list
       }
   }
@@ -342,6 +342,61 @@ Some fourth level text.
 ##### Fifth Level
 
 Some fifth level text.
+
+## Ditaa
+
+[https://github.com/stathissideris/ditaa](https://github.com/stathissideris/ditaa)
+
+```ditaa {kroki=true}
++--------+   +-------+    +-------+
+|        +---+ ditaa +--> |       |
+|  Text  |   +-------+    |diagram|
+|Document|   |!magic!|    |       |
+|     {d}|   |       |    |       |
++---+----+   +-------+    +-------+
+    :                         ^
+    |       Lots of work      |
+    +-------------------------+
+
+
++---------+  /--------\   +-------+
+| cBLU    +--+cAAA    +---+Version|
+|         |  |  Data  |   |   V3  |
+|    +----+  |  Base  |   |cRED{d}|
+|    |cPNK|  |     {s}|   +-------+
+|    |    |  \---+----/
++----+----+
+
+/--+
+|  |
++--/
+
++-----+ +-----+ +-----+ +-----+ +-----+
+|{d}  | |{s}  | |{io} | |{o}  | |{c}  |
+|     | |     | |     | |     | |     |
+|     | |     | |     | |     | |     |
++-----+ +-----+ +-----+ +-----+ +-----+
+
+*----*
+|    |      /--*
+*    *      |
+|    |  -*--+
+*----*
+
+/-----------------\
+| Things to do    |
+| cGRE            |
+| o Cut the grass |
+| o Buy jam       |
+| o Fix car       |
+| o Make website  |
+\-----------------/
+
+
+
+
+
+```
 
 ## TODOs
 
