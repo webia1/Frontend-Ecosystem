@@ -10,6 +10,7 @@
   - [Sort](#sort)
 - [Change or Add Environment Variables](#change-or-add-environment-variables)
 - [Show OS Version](#show-os-version)
+- [Show Architecture](#show-architecture)
 - [Kill Port](#kill-port)
 - [Show Running Webserver](#show-running-webserver)
 - [Command Timing](#command-timing)
@@ -81,6 +82,13 @@ and restart the Web App.
 
 ```shell
 cat /etc/os-release
+```
+
+## Show Architecture
+
+```shell
+uname -m
+arch
 ```
 
 ## Kill Port

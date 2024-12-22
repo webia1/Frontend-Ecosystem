@@ -201,9 +201,11 @@ ortoni.ortoni
 #### Sometimes very important
 
 ```shell
-ArturoDent.custom-language-syntax   # Custom Language Syntax
-paulomenezes.duplicated-code        # Duplicate Code Finder
-ukoloff.win-ca                      # CRT Converter
+ArturoDent.custom-language-syntax       # Custom Language Syntax
+paulomenezes.duplicated-code            # Duplicate Code Finder
+ukoloff.win-ca                          # CRT Converter
+adamrybak.vscode-nonprinting-characters # Non-Printing Characters
+
 ```
 
 #### Nice to have
