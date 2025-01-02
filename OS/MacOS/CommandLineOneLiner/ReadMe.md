@@ -28,6 +28,7 @@
   - [Simple Examples](#simple-examples)
   - [A more sophisticated example](#a-more-sophisticated-example)
 - [Search for a file but exclude a directory](#search-for-a-file-but-exclude-a-directory)
+- [Ressources](#ressources)
 
 <!-- /code_chunk_output -->
 
@@ -259,3 +260,16 @@ find . -name "FILE-TO-FIND" -not -path "./node_modules/*"
 # Example
 find . -name 'esbuild.config.js' -not -path './node_modules/*'
 ```
+
+## Ressources
+
+- `dscacheutil -q user` - Shows cached user records on macOS, similar to getent on Linux
+- `dtrace -n 'syscall:::entry { @num[execname] = count(); }' -c 'sleep 1'` - System call profiling on macOS/BSD
+- `fs_usage -f filesys ls` - Shows all filesystem operations in real-time (macOS equivalent to strace)
+- `sample $PID 5 -file /tmp/profile.txt` - Quick process sampling without instruments
+- `system_profiler SPHardwareDataType SPSoftwareDataType` - Detailed system info
+- `sysctl -a | grep kern.maxfiles` - Shows file descriptor limits
+- `lsof -i 4 -n -P | grep -i listen` - Network ports without DNS resolution
+- `vmmap $PID` - Shows virtual memory layout of process
+- `heap $PID` - Analyze process heap (requires developer tools)
+- `leaks --atExit -- your_program` - Memory leak detection at runtime
